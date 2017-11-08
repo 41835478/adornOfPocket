@@ -1,0 +1,21 @@
+<view class='delivery_list_content'>
+  <view class='list_item' wx:for="{{deliveryList}}" wx:key='{{index}}'>
+    <view class='left' bindtap='select' data-index='{{index}}'>
+      <view class="dot class='{{index==selectId?'dot_selected':''}}">
+        <image src='../../images/gou.png' class='.gou'></image>
+      </view>
+    </view>
+    <view class='mid' bindtap='select' data-index='{{index}}'>
+      <view class='info_person'>
+        <span style="letter-spacing: 2px;">{{item.name}}</span>,{{item.mobile}}</view>
+      <view class='info_address'>
+        <span style="letter-spacing: 2px;">收获地址</span>： {{item.address}}</view>
+    </view>
+    <view class='right' bindtap='skipPage' data-url='/pages/delivery/deliveryDetail/deliveryDetail?flag=0&id={{item.id}}'>
+      <image class='img' src='../../images/edit.png'></image>
+    </view>
+  </view>
+</view>
+<view class='add_btn' bindtap='skipPage' data-url="/pages/delivery/deliveryDetail/deliveryDetail?flag=1">
+  新增收货地址
+</view>

@@ -1,0 +1,22 @@
+<view class="ticket_container">
+  <view class='ticket_item' wx:for="{{ticketList}}">
+    <view class='ticket_content'>
+      <view class='content_lf'>
+        ¥
+        <span class='money'>{{item.money}}</span>
+      </view>
+      <view class='content_rg'>
+        <view class='least_money'>满{{item.least}}可用</view>
+        <view class='use_range'>{{item.range}}</view>
+      </view>
+    </view>
+    <view class='ticket_footer'>
+      <span class='footer_lf'>
+        {{item.type}}
+      </span>
+      <span class='footer_rg'>
+        {{item.timeRange}}
+      </span>
+    </view>
+  </view>
+</view>

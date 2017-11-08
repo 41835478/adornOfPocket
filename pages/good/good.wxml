@@ -1,0 +1,81 @@
+<!--good商品详情页-->
+<import src='../../component/zanui-weapp/dist/quantity/index.wxml' />
+<view class="good_container">
+  <view class='good_north '>
+    <swiper class='good_scroll border_north' indicator-dots='true' autoplay='true' circular='true'>
+      <swiper-item>
+        <image src="https://haitao.nos.netease.com/f9ddc412985540479e8d1a58e683ef0215083243862041.jpg?imageView&quality=98&crop=0_0_750_500&imageView&thumbnail=710x0&quality=85"></image>
+      </swiper-item>
+      <swiper-item>
+        <image src="https://haitao.nos.netease.com/f9ddc412985540479e8d1a58e683ef0215083243862041.jpg?imageView&quality=98&crop=0_0_750_500&imageView&thumbnail=710x0&quality=85"></image>
+      </swiper-item>
+    </swiper>
+    <view class='good_price border_north'>
+      {{goodInfo.goodName}}
+      <view class='single_price'>
+        <span style="text-decoration:line-through;margin-right:20rpx;">¥ {{goodInfo.price}}</span>¥ {{goodInfo.promotion}}</view>
+    </view>
+    <view class='good_selled'>
+      <span class='sell_item'>运费:免运费 </span>
+      <span class='sell_item'>剩余:{{goodInfo.stock}} </span>
+      <span class='sell_item'>销售:{{goodInfo.saleVolume}} </span>
+    </view>
+  </view>
+  <view class='good_south'>
+    <view class='shop_type'>
+      <view class='zan-icon zan-icon-certificate type_item'>
+        <span class='word'>企业认证</span>
+      </view>
+    </view>
+    <view class='pic_introduce'>
+    </view>
+  </view>
+</view>
+<view class="zan-dialog {{ showDialog ? 'zan-dialog--show' : '' }}">
+  <view class="zan-dialog__mask" bindtap="toggleDialog" />
+  <view class="zan-dialog__container">
+    <view>
+      <view class='confirm_content'>
+        <view class='confirm_good_info'>
+          <image class='confirm_pic' src="https://haitao.nos.netease.com/f9ddc412985540479e8d1a58e683ef0215083243862041.jpg?imageView&quality=98&crop=0_0_750_500&imageView&thumbnail=710x0&quality=85"></image>
+          <view class='confirm_good_introduce'>
+            <view>{{goodInfo.goodName}}</view>
+            <view class='confirm_single_price'> ¥ {{goodInfo.promotion}}</view>
+          </view>
+        </view>
+        <!--类目  -->
+        <view class='good_category'>
+          <view class='category_list'>
+            <view class='item_tit'>尺寸:</view>
+            <view class='item_list' wx:for='{{specs}}' wx:for-item="item">
+              <button wx:if="{{item.showSelect==false}}" class="zan-btn zan-btn--mini" bindtap='chickAction' id='{{item.id}}'>{{item.name}}cm</button>
+              <button wx:else class="zan-btnSelect zan-btn--mini" bindtap='chickAction' id='{{item.id}}'>{{item.name}}cm</button>
+            </view>
+          </view>
+        </view>
+        <view class='confirm_good_count'>
+          <view class='count_lf'>
+            <p>购买数量:</p>
+            <p>剩余{{goodInfo.stock}}件</p>
+          </view>
+          <view class='count_rg'>
+            <template is='zan-quantity' data="{{min:1,max:10,quantity:quantity,componentId:'quantity'}}">
+            </template>
+          </view>
+        </view>
+      </view>
+      <button class='zan-btn zan-btn--large zan-btn--danger' style='height:100rpx;' bindtap='skipToPay' id='{{goodInfo.id}}' data-count='{{quantity}}'>下一步</button>
+    </view>
+  </view>
+</view>
+<view class='order_btn'>
+  <view class='back'>
+    <navigator url="/pages/index/index" open-type="reLaunch" hover-class="navigator-hover">
+      <view class="icon-wrap" style='height:100rpx;'>
+        <view class="zan-icon zan-icon-home" style="font-size: 40rpx; color: #ff4343;margin-top:8rpx;"></view>
+        <view class="icon-classname" style="font-size:24rpx;color: #ff4343;">首页</view>
+      </view>
+    </navigator>
+  </view>
+  <button class="zan-btn zan-btn--large zan-btn--danger" bindtap='toggleDialog'>立即下单</button>
+</view>
