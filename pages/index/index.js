@@ -24,7 +24,7 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   },
   onShow() {
     // 滚动通告栏需要initScroll
-    this.initZanNoticeBarScroll('movable');
+    // this.initZanNoticeBarScroll('movable');
   },
   // 上拉加载
   pullUp: function () {

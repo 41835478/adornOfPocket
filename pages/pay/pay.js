@@ -73,7 +73,7 @@ Page({
     let mainUrl = this.data.payUrl
     let order = {}
     order.goodId = "1"
-    order.deliveryId = "3"
+    order.deliveryId = "1"
     order.orderFee = "1"
     order.count = "1"
     order.message = "尽量快点"
