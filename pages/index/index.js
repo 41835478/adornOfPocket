@@ -28,7 +28,10 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   },
   // 上拉加载
   pullUp: function () {
+    
+    console.log(this.data.lastPage)
     //最后一页，不再进行请求
+
     if (this.data.lastPage || !this.data.pageComplete) {
       return;
     }
@@ -143,6 +146,7 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   },
   // 页面上拉触底事件的处理函数
   onReachBottom: function () {
+    this.pullUp()
     // let pageNo = this.data.page.pageNo + 1;
     // this.setData({
     //   page: {

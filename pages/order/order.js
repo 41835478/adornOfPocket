@@ -2,99 +2,154 @@
 var Zan = require('../../component/zanui-weapp/dist/tab/index');
 Page(Object.assign({}, Zan, {
   data: {
+    url: 'http://ycb8pe.natappfree.cc/mall/wx/order/findByUserId',
     tab: {
       list: [{
         id: 'all',
-        title: '全部'
+        title: '全部',
       }, {
         id: 'topay',
-        title: '待付款'
+        title: '待付款',
       }, {
         id: 'tosend',
-        title: '待发货'
+        title: '待发货',
       }, {
         id: 'send',
-        title: '待收货'
+        title: '待收货',
       }, {
         id: 'sign',
-        title: '已完成'
+        title: '已完成',
       }],
       selectedId: 'all',
       scroll: false,
       fixed: true
     },
+    wxCode: '', //微信code
+    lastPage: false,
+    pageComplete: true,
+    pageNo: 1,
     goods: [],
     selectType: '',//当前目录
     goodsTest: '',
   },
   handleZanTabChange(e) {
+    console.log(e)
     var componentId = e.componentId;
     var selectedId = e.selectedId;
     //控制选中样式
     this.setData({
       [componentId + `.selectedId`]: selectedId
     });
-    this.getDataFromNet(selectedId)
+    console.log("selected ==" + selectedId)
+    this.getDataFromNet(0, selectedId)
   },
   /**
    * 去付款
    */
-  goodsAction(e) {
-    var dataItem = e.currentTarget.dataset;
-    console.log(dataItem.item)
-    if (dataItem.item.buttonTitle == "去付款") {
-      // let goodsId = dataItem.item.goodId
-      let goodsId = e.currentTarget.id
-      wx.navigateTo({
-        url: '/pages/pay/pay?id=' + goodsId,
-      })
-    }
-  },
-  getDataFromNet(id) {
-    this.setData({
-      goods: [
-        {
-          goodId: "2030",
-          goodsImg: "https://img10.360buyimg.com/n5/jfs/t3394/97/927974603/289198/faa13081/5816f2e5Nab3d62be.jpg",
-          goodsStr: "清风(APP)抽纸 原木纯品金装系列3层130抽*16包纸巾(整箱销售)",
-          goodsSttus: "已完成",
-          price: "40",
-          buttonTitle: "再次购买"
-        }, {
-          goodId: "2031",
-          goodsImg: "https://img11.360buyimg.com/n5/jfs/t11401/34/504898878/183378/5a6a8a48/59f1c3a1N2174c8cc.jpg",
-          goodsStr: "清风(APP)抽纸 原木纯品金装系列3层130抽*16包纸巾(整箱销售)",
-          goodsSttus: "待付款",
-          price: "50",
-          buttonTitle: "去付款"
-        }, {
-          goodId: "2032",
-          goodsImg: "https://img11.360buyimg.com/n5/jfs/t9853/275/2215551794/187986/425288fd/59f1c3a2Ne3576868.jpg",
-          goodsStr: "清风(APP)抽纸 原木纯品金装系列3层130抽*16包纸巾(整箱销售)",
-          goodsSttus: "待发货",
-          price: "60",
-          buttonTitle: "再次购买"
-        }, {
-          goodId: "2033",
-          goodsImg: "https://img10.360buyimg.com/n5/jfs/t3394/97/927974603/289198/faa13081/5816f2e5Nab3d62be.jpg",
-          goodsStr: "清风(APP)抽纸 原木纯品金装系列3层130抽*16包纸巾(整箱销售)",
-          goodsSttus: "待收货",
-          price: "70",
-          buttonTitle: "确认收货"
-        },
-      ]
+  goodsPayAction(e) {
+    var data = {}
+    data = e.currentTarget;
+    console.log("data====" + data.id)
+    let goodsId = data.id
+    wx.navigateTo({
+      url: '/pages/pay/pay?id=' + goodsId,
     })
-    let params = {}
-
+  },
+  goodsBackAction(e){
+    var data = {}
+    data = e.currentTarget;
+    let url = 'http://ycb8pe.natappfree.cc/mall/wx/order/refund'
     wx.request({
-      url: '',
-      method: 'GET',
-      data: params,
-      success: function (res) {
-        console.log(res)
-      },
-      fail: function (err) {
-        console.log(err)
+      url: url,
+      method: 'POST',
+      data:{'orderId':data.id},
+      success: res =>{
+
+      }
+      
+    })
+  },
+  /**
+   * 获取当前列订单信息 e:0 导航栏点击 1:上拉刷新
+   */
+  getDataFromNet(e, selectedId) {
+
+    let that = this
+    wx.showLoading({
+      title: '加载中',
+    })
+    let pageNo
+    if (e == 0) {
+      pageNo = 1
+    } else
+      if (e == 1) {
+        pageNo = this.data.pageNo + 1
+        if (that.data.lastPage || !that.data.pageComplete) {
+          wx.hideLoading()
+          return;
+        }
+        // 防止过度频繁请求
+        this.setData({
+          pageComplete: false
+        })
+      }
+    //根据selectId设置请求orderStatus
+    var status = 0
+    console.log("code=" + selectedId)
+    if (selectedId == 'all') {
+      status = 0
+    }
+    if (selectedId == 'topay') {
+      status = 1
+    }
+    if (selectedId == 'tosend') {
+      status = 2
+    }
+    if (selectedId == 'send') {
+      status = 3
+    }
+    if (selectedId == 'sign') {
+      status = 4
+    }//+that.data.wxCode
+    wx.login({
+      success: res => {
+        console.log(res);
+        if (res.code) {
+          let url = that.data.url + "?wxCode=" + res.code + "&pageNo=" + pageNo + "&pageSize=5" + "&orderStatus=" + status
+          console.log(url)
+          wx.request({
+            url: url,
+            method: 'GET',
+            success: function (res) {
+              wx.hideLoading()
+              if (res.statusCode == 200) {
+                console.log(res);
+                if (e == 0) {
+                  that.setData({
+                    goods: res.data.list,
+                    lastPage: res.data.lastPage,
+                    pageComplete: true,
+                    pageNo: pageNo
+                  })
+                } else {
+                  let arr = that.data.goods.concat(res.data.list);
+                  console.log(res.data.list)
+                  that.setData({
+                    goods: arr,
+                    lastPage: res.data.lastPage,
+                    pageComplete: true,
+                    pageNo: pageNo
+                  })
+                }
+              }
+            },
+            fail: function (err) {
+              wx.hideLoading()
+              console.log(err)
+            }
+          })
+
+        }
       }
     })
   },
@@ -102,7 +157,8 @@ Page(Object.assign({}, Zan, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("options");
+    let that = this
+    that.getDataFromNet(0, 0)
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -115,7 +171,7 @@ Page(Object.assign({}, Zan, {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.getDataFromNet()
+
   },
 
   /**
@@ -143,7 +199,7 @@ Page(Object.assign({}, Zan, {
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    this.getDataFromNet(1)
   },
 
   /**

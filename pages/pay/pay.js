@@ -8,6 +8,7 @@ Page({
     url: 'http://ycb8pe.natappfree.cc/mall/wx/good/findByGoodId?goodId=',
     payUrl: 'http://ycb8pe.natappfree.cc/mall/wx/jsapi/order/preOrder',
     goodInfo: {},
+    payInfo: {},
     quantity: 1,
     totalPrice: 0,
     customerOpt: {
@@ -67,54 +68,61 @@ Page({
     wx.showLoading({
       title: '加载中',
     })
+    let that = this
     var wxcode
     let mainUrl = this.data.payUrl
-    wx.getStorage({
-      key: 'code',
-      success: function (res) {
-        console.log(res.data)
-        if (res.data) {
-          let order = {}
-          order.goodId = "1"
-          order.deliveryId = "3"
-          order.count = "1"
-          order.message = "尽量快点"
-          order.ticket = "1"
-          order.userTicket = false
-          order.point = "22"
-          order.totalFee = "1"
-          let url = mainUrl + "?wxCode=" + res.data + "&order=" + JSON.stringify(order)
+    let order = {}
+    order.goodId = "1"
+    order.deliveryId = "3"
+    order.orderFee = "1"
+    order.count = "1"
+    order.message = "尽量快点"
+    order.ticket = "1"
+    order.userTicket = false
+    order.point = "22"
+    order.totalFee = "1"
+    wx.login({
+      success: res => {
+        console.log(res);
+        if (res.code) {
+          let url = mainUrl + "?wxCode=" + res.code + "&order=" + JSON.stringify(order)
           wx.request({
             url: url,
             method: 'GET',
-            success: function (res) {
+            success: res => {
               console.log(res);
+              wx.hideLoading()
+              that.setData({
+                payInfo: res.data.data
+              })
+              that.readyToPay()
             },
             fail: function (err) {
               console.log(err);
+              wx.hideLoading()
             }
           })
-        }
-      },
+      }
+    }
     })
-    console.log(wxcode)
-
-    wx.hideLoading()
-    this.readyToPay()
   },
   /**
    * 准备支付
    */
-  readyToPay: function () {
-    console.log("去支付!!!")
-    // wx.hideLoading()
-    // wx.requestPayment({
-    //   timeStamp: '',
-    //   nonceStr: '',
-    //   package: '',
-    //   signType: '',
-    //   paySign: '',
-    // })
+  readyToPay() {
+    console.log(this.data.payInfo)
+    wx.hideLoading()
+    wx.requestPayment({
+      timeStamp: this.data.payInfo.timeStamp,
+      nonceStr: this.data.payInfo.nonce_str,
+      package: 'prepay_id=' + this.data.payInfo.prepay_id,
+      signType: 'MD5',
+      paySign: this.data.payInfo.paySign,
+      'success': function (res) { console.log(res) },
+      'fail': function (res) { },
+      'complete': function (res) { }
+    })
+
   },
 
   /**
@@ -123,22 +131,56 @@ Page({
   onLoad: function (options) {
 
     console.log(options);
-
-    wx.request({
-      url: this.data.url + options.goodId,
-      method: 'GET',
-      success: res => {
-        console.log(res.data.data)
-        this.setData({
-          goodInfo: res.data.data,
-          quantity: options.quantity,
-        })
-        let price = res.data.data.promotion * options.quantity
-        this.setData({
-          totalPrice: price.toFixed(2)
-        })
-      }
-    })
+    if(options.id){
+      wx.showLoading({
+        title: '加载中',
+      })
+      wx.login({
+        success: res =>{
+          if(res.code){
+            let url = 'http://ycb8pe.natappfree.cc/mall/wx/jsapi/order/pay?orderId=' + options.id + '&wxCode=' + res.code
+            wx.request({
+              url: url,
+              success: res => {
+                wx.hideLoading()
+                console.log(JSON.stringify(res))
+                console.log("重新申请 =" + res.data)
+                wx.hideLoading()
+                wx.requestPayment({
+                  timeStamp: res.data.data.timeStamp,
+                  nonceStr: res.data.data.nonce_str,
+                  package: res.data.data.prepay_id,
+                  signType: 'MD5',
+                  paySign: res.data.data.paySign,
+                  'success': function (res) { console.log(res) },
+                  'fail': function (res) { },
+                  'complete': function (res) { }
+                })
+              }
+            })
+          
+          }
+        }
+      })
+      
+    }else{
+      wx.request({
+        url: this.data.url + options.goodId,
+        method: 'GET',
+        success: res => {
+          console.log(res.data.data)
+          this.setData({
+            goodInfo: res.data.data,
+            quantity: options.quantity,
+          })
+          let price = res.data.data.promotion * options.quantity
+          this.setData({
+            totalPrice: price.toFixed(2)
+          })
+        }
+      })
+    }
+    
   },
 
   /**

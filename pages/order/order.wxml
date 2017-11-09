@@ -7,13 +7,15 @@
     <view wx:for="{{goods}}" wx:for-item="item" class='order_index'>
       <view class="order_item">
         <image class='order_img' class="order_img" mode="widthFix" src='{{item.goodsImg}}'></image>
-        <label class='order_item_label'>{{item.goodsStr}}</label>
+        <label class='order_item_label'>{{item.goodName}}</label>
       </view>
       <view>
-        <label class='order_status'>{{item.goodsSttus}}</label>
-        <label class='order_label'>共1件商品 实付款:¥{{item.price}}.00</label>
+        <label class='order_status'>{{item.goodsStatus}}</label>
+        <label class='order_label'>共1件商品 实付款:¥{{item.totalFee}}.00</label>
       </view>
-      <button bindtap='goodsAction' data-item='{{item}}' id='{{item.goodId}}' type='primary' class='order_button' size="mini">{{item.buttonTitle}}</button>
+      <button bindtap='goodsPayAction' wx:if="{{item.orderStatus==1}}" id='{{item.id}}' type='primary' class='order_button' size="mini">去付款</button>
+      <button bindtap='goodsBackAction' wx:if="{{item.orderStatus==2||item.orderStatus==3}}" id='{{item.id}}' type='primary' class='order_button' size="mini">退款</button>
+      <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==4}}" id='{{item.id}}' type='primary' class='order_button' size="mini">申请售后</button>
     </view>
   </scroll-view>
 </view>
