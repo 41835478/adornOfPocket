@@ -16,25 +16,25 @@
       <view class='form_item'>
         <span class='tit '>收货地区</span>
         <view class='area '>
-            <picker  bindchange="getData" data-name='province' value="{{index}}" range="{{cityList}}">
+            <picker  bindchange="getDataPick" id='province' data-name='{{cityList}}' value="{{index}}" range="{{cityList}}">
               <view class="val">
-                {{cityList[index]}}
+                {{cityList[indexPro]}}
               </view>
             </picker>
         </view>
          <view class='area'>
-            <picker bindchange="getData" data-name='city' value="{{index}}" 
+            <picker bindchange="getDataPick" id='city' data-name='{{cityList}}' value="{{index}}" 
             range="{{cityList}}">
               <view class="picker">
-                {{cityList[index]}}
+                {{cityList[indexCity]}}
               </view>
             </picker>
         </view>
          <view class='area'>
-            <picker bindchange="getData" data-name='countryside' value="{{index}}"
+            <picker bindchange="getDataPick" id='countryside' data-name='{{csideList}}' value="{{index}}"
             range="{{csideList}}">
               <view class="picker">
-                {{csideList[index]}}
+                {{csideList[indexCount]}}
               </view>
             </picker>
         </view>

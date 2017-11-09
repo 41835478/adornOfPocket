@@ -2,7 +2,7 @@
 var Zan = require('../../component/zanui-weapp/dist/tab/index');
 Page(Object.assign({}, Zan, {
   data: {
-    url: 'http://ycb8pe.natappfree.cc/mall/wx/order/findByUserId',
+    url: 'wx/order/findByUserId',
     tab: {
       list: [{
         id: 'all',
@@ -55,14 +55,16 @@ Page(Object.assign({}, Zan, {
       url: '/pages/pay/pay?id=' + goodsId,
     })
   },
+
   goodsBackAction(e){
     var data = {}
     data = e.currentTarget;
-    let url = 'http://ycb8pe.natappfree.cc/mall/wx/order/refund'
+    console.log(e.currentTarget)
+    let url = getApp().globalData.baseUrl + 'wx/order/refund?orderId='+data.id
     wx.request({
       url: url,
       method: 'POST',
-      data:{'orderId':data.id},
+
       success: res =>{
 
       }
@@ -117,7 +119,7 @@ Page(Object.assign({}, Zan, {
       success: res => {
         console.log(res);
         if (res.code) {
-          let url = that.data.url + "?wxCode=" + res.code + "&pageNo=" + pageNo + "&pageSize=5" + "&orderStatus=" + status
+          let url = getApp().globalData.baseUrl + that.data.url + "?wxCode=" + res.code + "&pageNo=" + pageNo + "&pageSize=5" + "&orderStatus=" + status
           console.log(url)
           wx.request({
             url: url,

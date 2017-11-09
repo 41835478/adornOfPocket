@@ -5,8 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    url: 'http://ycb8pe.natappfree.cc/mall/wx/good/findByGoodId?goodId=',
-    payUrl: 'http://ycb8pe.natappfree.cc/mall/wx/jsapi/order/preOrder',
+    url: '',
+    payUrl: 'wx/jsapi/order/preOrder',
     goodInfo: {},
     payInfo: {},
     quantity: 1,
@@ -70,7 +70,6 @@ Page({
     })
     let that = this
     var wxcode
-    let mainUrl = this.data.payUrl
     let order = {}
     order.goodId = "1"
     order.deliveryId = "1"
@@ -85,7 +84,7 @@ Page({
       success: res => {
         console.log(res);
         if (res.code) {
-          let url = mainUrl + "?wxCode=" + res.code + "&order=" + JSON.stringify(order)
+          let url = getApp().globalData.baseUrl + that.data.payUrl + "?wxCode=" + res.code + "&order=" + JSON.stringify(order)
           wx.request({
             url: url,
             method: 'GET',
@@ -138,7 +137,7 @@ Page({
       wx.login({
         success: res =>{
           if(res.code){
-            let url = 'http://ycb8pe.natappfree.cc/mall/wx/jsapi/order/pay?orderId=' + options.id + '&wxCode=' + res.code
+            let url = getApp().globalData.baseUrl + 'wx/jsapi/order/pay?orderId=' + options.id + '&wxCode=' + res.code
             wx.request({
               url: url,
               success: res => {
@@ -164,7 +163,7 @@ Page({
       
     }else{
       wx.request({
-        url: this.data.url + options.goodId,
+        url: getApp().globalData.baseUrl + this.data.url + options.goodId,
         method: 'GET',
         success: res => {
           console.log(res.data.data)

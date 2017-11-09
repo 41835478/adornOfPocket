@@ -5,6 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    url: 'wx/delivery/list',
+
     deliveryList: [
       {
         id: 1,
@@ -57,7 +59,34 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    let that = this
+    wx.showLoading({
+      title: '加载中',
+    })
+    wx.login({
+      success: res => {
+        console.log(res);
+        if (res.code) {
+          let url = getApp().globalData.baseUrl + that.data.url + "?wxCode=" + res.code + "&pageNo=1%pageSize=5"
+          if(res.code){
+            wx.request({
+              url: url,
+              success: res =>{
+                console.log(res)
+                that.setData({
+                  deliveryList: res.data
+                })
+              },
+              fail: err =>{
+                console.log(res)
+              }
+            })
+          }
+         
+        }
+      }
+    })
+    
   },
 
   /**

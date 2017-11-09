@@ -7,7 +7,7 @@ Page(Object.assign({}, quantity, {
    */
   data: {
     goodInfo: {},
-    url: 'http://ycb8pe.natappfree.cc/mall/wx/good/findByGoodId?goodId=',
+    url: 'wx/good/findByGoodId?goodId=',
     showDialog: false,//dialog开关
     quantity: 1,//件数
     specs: [],
@@ -88,7 +88,7 @@ Page(Object.assign({}, quantity, {
       }
     })
     wx.request({
-      url: this.data.url + options.goodId,
+      url: getApp().globalData.baseUrl + this.data.url + options.goodId,
       method: 'GET',
       success: res => {
         this.setData({

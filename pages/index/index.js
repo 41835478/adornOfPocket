@@ -5,7 +5,7 @@ var Zan = require('../../component/zanui-weapp/dist/index');
 var Hongbao = require('../../common/template/hongbao/hongbao');
 Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   data: {
-    baseUrl: 'http://ycb8pe.natappfree.cc/mall/',
+    // baseUrl: 'http://ycb8pe.natappfree.cc/mall/',
     userInfo: {},
     goodList: [],
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -44,7 +44,7 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
     });
     let pageNo = this.data.page.pageNo + 1;
     console.log(pageNo);
-    let url = this.data.baseUrl + 'wx/good/findAll?pageNo=' + pageNo + '&pageSize=5';
+    let url = getApp().globalData.baseUrl + 'wx/good/findAll?pageNo=' + pageNo + '&pageSize=5';
     wx.request({
       url: url,
       method: "GET",
@@ -105,7 +105,7 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
       }
     })
     wx.request({
-      url: this.data.baseUrl + 'wx/good/findAll?pageNo=1&pageSize=5',
+      url: getApp().globalData.baseUrl + 'wx/good/findAll?pageNo=1&pageSize=5',
       method: 'GET',
       success: res => {
         console.log(res);

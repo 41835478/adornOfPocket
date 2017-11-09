@@ -40,6 +40,7 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    baseUrl:'http://ycb8pe.natappfree.cc/mall/'
   }
 })
