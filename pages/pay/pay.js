@@ -148,8 +148,8 @@ Page({
                 wx.hideLoading()
                 wx.requestPayment({
                   timeStamp: res.data.data.timeStamp,
-                  nonceStr: res.data.data.nonce_str,
-                  package: res.data.data.prepay_id,
+                  nonceStr: res.data.data.nonceStr,
+                  package: res.data.data.package,
                   signType: 'MD5',
                   paySign: res.data.data.paySign,
                   'success': function (res) { console.log(res) },
