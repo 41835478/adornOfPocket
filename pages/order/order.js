@@ -111,6 +111,8 @@ Page(Object.assign({}, Zan, {
     if (selectedId == 'sign') {
       status = 4
     }//+that.data.wxCode
+    wx.setStorageSync('selectedId',selectedId)
+
     wx.login({
       success: res => {
         console.log(res);
@@ -164,28 +166,40 @@ Page(Object.assign({}, Zan, {
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    console.log("onready")
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    //重新进入页面刷新数据
+    let that = this
+    wx.getStorage({
+      key: 'selectedId',
+      success: function(res) {
+        if(res){
+          // console.log("onshow and selectedId=" + res.data)
+          that.getDataFromNet(0, res.data)
+        }else{
+          that.getDataFromNet(0,'all')
+        }
+      },
+    })
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    console.log("onhide")
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    console.log("onunload")
   },
 
   /**

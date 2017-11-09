@@ -143,7 +143,6 @@ Page({
               url: url,
               success: res => {
                 wx.hideLoading()
-                console.log(JSON.stringify(res))
                 console.log("重新申请 =" + res.data)
                 wx.hideLoading()
                 wx.requestPayment({
