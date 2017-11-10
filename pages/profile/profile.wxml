@@ -1,25 +1,10 @@
 <import src="../../component/zanui-weapp/dist/toast/index.wxml" />
-<view class="container">
-  <view class="member_card_component">
-    <view class="member_card">
-      <view class="member_head">
-        <view class="member_picture">
-          <image src="{{userInfo.avatarUrl}}"></image>
-        </view>
-        <view class="member_name_sex">
-          <view class="member_name">昵称 {{userInfo.nickName}}</view>
-          <view class="member_sex">性别 {{userInfo.gender}}</view>
-        </view>
-      </view>
-      <view class="member_info">
-        <view class="member_info_detail">
-          <view class="member_point">积分 100000</view>
-          <view class="member_level">等级 白金会员</view>
-        </view>
-      </view>
-      <view class="member_card_no" style="">
-        1234567890987623
-      </view>
+<view style='background: #F9F9F9;'>
+  <view style='width: 100%;height: 300rpx;background: #ff0066;'>
+     <image style='width: 180rpx;height: 180rpx;border-radius: 50%;margin-top: 20rpx;margin-left: 20rpx;float: left;' src="{{userInfo.avatarUrl}}"></image>
+    <view style='width: 50%;color: #fff;margin-left:300rpx;line-height: 80rpx'>
+      <view> {{userInfo.nickName}}</view>
+      <view>白金会员</view>
     </view>
   </view>
   <view class="zan-panel">
@@ -30,11 +15,7 @@
   </view>
   <view class="zan-panel">
     <view class="zan-cell zan-cell--access" bindtap='pageSkip' data-url='/pages/ticket/ticket'>
-      <view class="zan-cell__bd">卡包</view>
-      <view class="zan-cell__ft"></view>
-    </view>
-    <view class="zan-cell zan-cell--access" bindtap="pageSkip" data-url="/pages/wallet/wallet">
-      <view class="zan-cell__bd">钱包</view>
+      <view class="zan-cell__bd">优惠券</view>
       <view class="zan-cell__ft"></view>
     </view>
   </view>
@@ -43,13 +24,11 @@
       <view class="zan-cell__bd">联系客服</view>
       <view class="zan-cell__ft"></view>
     </view>
-
-  </view>
-  <view class="zan-panel">
     <view class="zan-cell zan-cell--access" bindtap="pageSkip" data-url='/pages/help/help'>
       <view class="zan-cell__bd">帮助中心</view>
       <view class="zan-cell__ft"></view>
     </view>
+
   </view>
   <view class="zan-panel">
     <view class="zan-cell zan-cell--access" bindtap="showToast">

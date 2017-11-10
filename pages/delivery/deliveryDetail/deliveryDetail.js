@@ -116,7 +116,7 @@ Page({
     params.postCode = this.data.code;
     console.log(params);
     wx.request({
-      url: getApp().globalData.baseUrl + 'delivery/save',
+      url: getApp().globalData.baseUrl + 'mall/delivery/save',
       method: 'POST',
       data: params,
       success: function (res) {

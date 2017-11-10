@@ -2,7 +2,7 @@
 var Zan = require('../../component/zanui-weapp/dist/tab/index');
 Page(Object.assign({}, Zan, {
   data: {
-    url: 'wx/order/findByUserId',
+    url: 'mall/wx/order/findByUserId',
     tab: {
       list: [{
         id: 'all',
@@ -44,6 +44,18 @@ Page(Object.assign({}, Zan, {
     this.getDataFromNet(0, selectedId)
   },
   /**
+   * 再次购买
+   */
+  goodsBuyAction(e){
+    var data = {}
+    data = e.currentTarget;
+    console.log("data====" + data.id)
+    let goodsId = data.id
+    wx.navigateTo({
+      url: '/pages/pay/pay?id=' + goodsId,
+    })
+  },
+  /**
    * 去付款
    */
   goodsPayAction(e) {
@@ -55,20 +67,28 @@ Page(Object.assign({}, Zan, {
       url: '/pages/pay/pay?id=' + goodsId,
     })
   },
-
-  goodsBackAction(e){
+  /**
+   * 去退款
+   */
+  goodsBackAction(e) {
+    wx.showLoading({
+      title: '加载中',
+    })
     var data = {}
     data = e.currentTarget;
     console.log(e.currentTarget)
-    let url = getApp().globalData.baseUrl + 'wx/order/refund?orderId='+data.id
+    let url = getApp().globalData.baseUrl + 'mall/wx/order/refund?orderId=' + data.id
     wx.request({
       url: url,
       method: 'POST',
-
-      success: res =>{
-
+      success: res => {
+        wx.hideLoading()
+        console.log(res.data)
+      },
+      fail: err => {
+        wx.hideLoading()
+        console.log(err)
       }
-      
     })
   },
   /**
@@ -113,7 +133,7 @@ Page(Object.assign({}, Zan, {
     if (selectedId == 'sign') {
       status = 4
     }//+that.data.wxCode
-    wx.setStorageSync('selectedId',selectedId)
+    wx.setStorageSync('selectedId', selectedId)
 
     wx.login({
       success: res => {
@@ -178,12 +198,12 @@ Page(Object.assign({}, Zan, {
     let that = this
     wx.getStorage({
       key: 'selectedId',
-      success: function(res) {
-        if(res){
+      success: function (res) {
+        if (res) {
           // console.log("onshow and selectedId=" + res.data)
           that.getDataFromNet(0, res.data)
-        }else{
-          that.getDataFromNet(0,'all')
+        } else {
+          that.getDataFromNet(0, 'all')
         }
       },
     })

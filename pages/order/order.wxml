@@ -13,9 +13,16 @@
         <label class='order_status'>{{item.goodsStatus}}</label>
         <label class='order_label'>共1件商品 实付款:¥{{item.totalFee}}.00</label>
       </view>
+      <view style='display:inline-flex;flex-direction:row;align-items:center;margin-left:40%'>
+      <button bindtap='goodsBuyAction' id='{{item.id}}' type='primary' class='order_button2' size="mini">再次购买</button>
       <button bindtap='goodsPayAction' wx:if="{{item.orderStatus==1}}" id='{{item.id}}' type='primary' class='order_button' size="mini">去付款</button>
-      <button bindtap='goodsBackAction' wx:if="{{item.orderStatus==2||item.orderStatus==3}}" id='{{item.id}}' type='primary' class='order_button' size="mini">退款</button>
+      <button bindtap='goodsBackAction' wx:if="{{item.orderStatus==2}}" id='{{item.id}}' type='default' disabled='true'  class='order_button' size="mini">运输中</button>
+      <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==3}}" id='{{item.id}}' type='primary' class='order_button' size="mini">确认收货</button>
       <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==4}}" id='{{item.id}}' type='primary' class='order_button' size="mini">申请售后</button>
+      <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==5}}" id='{{item.id}}' type='primary' class='order_button' size="mini">申请退款中</button>
+      <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==6}}" id='{{item.id}}' type='default' disabled='true'  class='order_button' size="mini">退款完成</button>
+      <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==7}}" id='{{item.id}}' type='default' disabled='true' class='order_button' size="mini">退款拒绝</button>
+      </view>
     </view>
   </scroll-view>
 </view>

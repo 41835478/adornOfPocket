@@ -7,7 +7,7 @@ Page(Object.assign({}, quantity, {
    */
   data: {
     goodInfo: {},
-    url: 'wx/good/findByGoodId?goodId=',
+    url: 'mall/wx/good/findByGoodId?goodId=',
     showDialog: false,//dialog开关
     quantity: 1,//件数
     specs: [],

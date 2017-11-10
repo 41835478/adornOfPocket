@@ -41,6 +41,6 @@ App({
   },
   globalData: {
     userInfo: null,
-    baseUrl:'http://ycb8pe.natappfree.cc/mall/'
+   baseUrl: 'http://zqqhp4.natappfree.cc/'
   }
 })

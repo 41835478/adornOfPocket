@@ -43,16 +43,18 @@
 
 .order_label
 {
- margin-left: 30%;
  width: 100%;
  height: 40rpx;
  font-size: 30rpx;
  text-align: right;
 }
 .order_button{
-  margin-top: 20rpx;
+  margin: 20rpx;
   text-align: center;
-  margin-right: 20rpx;
+  width:180rpx;
+}
+.order_button2{
+  margin: 20rpx;
+  text-align: center;
   width: 180rpx;
-  margin-left: 70%;
 }

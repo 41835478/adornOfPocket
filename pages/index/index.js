@@ -5,9 +5,9 @@ var Zan = require('../../component/zanui-weapp/dist/index');
 var Hongbao = require('../../common/template/hongbao/hongbao');
 Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   data: {
-    // baseUrl: 'http://ycb8pe.natappfree.cc/mall/',
     userInfo: {},
     goodList: [],
+    baseUrl:getApp().globalData.baseUrl,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     page: {
       pageSize: 5,
@@ -25,6 +25,16 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   onShow() {
     // 滚动通告栏需要initScroll
     // this.initZanNoticeBarScroll('movable');
+    wx.request({
+      url: getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=1&pageSize=5',
+      method: 'GET',
+      success: res => {
+        console.log(res);
+        this.setData({
+          goodList: res.data.list
+        })
+      }
+    })
   },
   // 上拉加载
   pullUp: function () {
@@ -44,7 +54,7 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
     });
     let pageNo = this.data.page.pageNo + 1;
     console.log(pageNo);
-    let url = getApp().globalData.baseUrl + 'wx/good/findAll?pageNo=' + pageNo + '&pageSize=5';
+    let url = getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=' + pageNo + '&pageSize=5';
     wx.request({
       url: url,
       method: "GET",
@@ -104,16 +114,16 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
         })
       }
     })
-    wx.request({
-      url: getApp().globalData.baseUrl + 'wx/good/findAll?pageNo=1&pageSize=5',
-      method: 'GET',
-      success: res => {
-        console.log(res);
-        this.setData({
-          goodList: res.data.list
-        })
-      }
-    })
+    // wx.request({
+    //   url: getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=1&pageSize=5',
+    //   method: 'GET',
+    //   success: res => {
+    //     console.log(res);
+    //     this.setData({
+    //       goodList: res.data.list
+    //     })
+    //   }
+    // })
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,

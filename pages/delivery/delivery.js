@@ -5,7 +5,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    url: 'wx/delivery/list',
+    url: 'mall/wx/delivery/list',
 
     deliveryList: [
       {
@@ -27,7 +27,8 @@ Page({
         address: "中国武林路346号"
       },
     ],
-    selectId:0
+    selectId: 0,
+    pageNo:1
   },
   /**
    * input输入
@@ -43,50 +44,65 @@ Page({
    */
   select(val) {
     this.setData({
-      selectId:val.currentTarget.dataset.index
+      selectId: val.currentTarget.dataset.index
     })
   },
   /**
    * 跳转
    */
-  skipPage(val){
+  skipPage(val) {
     let url = val.currentTarget.dataset.url
     wx.navigateTo({
       url: url,
     })
   },
   /**
-   * 生命周期函数--监听页面加载
+   * 网络获取地址信息 style: 0 获取第1页5条数据 1 上拉获取数据
    */
-  onLoad: function (options) {
+  getDataFromNet(style) {
     let that = this
     wx.showLoading({
       title: '加载中',
     })
+    let pageNo 
+    if(style == 0){
+      pageNo = 1;
+    }else if(style == 1){
+      pageNo = that.data.pageNo +1
+    }
     wx.login({
       success: res => {
         console.log(res);
         if (res.code) {
-          let url = getApp().globalData.baseUrl + that.data.url + "?wxCode=" + res.code + "&pageNo=1%pageSize=5"
-          if(res.code){
+          let url = getApp().globalData.baseUrl + that.data.url + "?wxCode=" + res.code + "&pageNo="+ pageNo +"&pageSize=5"
+          if (res.code) {
             wx.request({
               url: url,
-              success: res =>{
-                console.log(res)
+              success: res => {
+                wx.hideLoading()
+                console.log("收货地址:" + res)
                 that.setData({
-                  deliveryList: res.data
+                  deliveryList: res.data,
+                  pageNo: pageNo
                 })
               },
-              fail: err =>{
+              fail: err => {
+                wx.hideLoading()
                 console.log(res)
               }
             })
           }
-         
         }
       }
     })
-    
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+
+    this.getDataFromNet(0)
   },
 
   /**
@@ -128,7 +144,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    this.getDataFromNet(1)
   },
 
   /**
