@@ -5,7 +5,11 @@ Page({
    * 页面的初始数据
    */
   data: {
+    addUrl: 'mall/wx/delivery/add',
+    delUrl: 'mall/wx/delivery/delete',
+    saveUrl: 'mall/wx/delivery/update',
     typeFlag: "0",//页面标识：0,编辑;1,新增
+    addressList: {},
     deliveryId: '',
     provList: ['选择省份', '浙江', '江苏', '安徽', '上海'],
     cityList: ['选择城市', '杭州', '南京', '合肥', '上海'],
@@ -44,7 +48,7 @@ Page({
         indexPro: index
       })
     }
-    if (id == 'city'){
+    if (id == 'city') {
       this.setData({
         indexCity: index
       })
@@ -74,29 +78,29 @@ Page({
         if (res.code) {
           let params = {};
           params.wxCode = res.code;
-          params.recipients = that.data.name;
-          params.phone = that.data.phone;
-          params.province = that.data.province;
-          params.city = that.data.city;
-          params.area = that.data.countrySide;
-          params.address = that.data.address;
-          params.postCode = that.data.code;
+          params.recipients = "张三"//that.data.name;
+          params.phone = 18506823333 //that.data.phone;
+          params.province = "安徽"// that.data.province;
+          params.city = "合肥"//that.data.city;
+          params.area = "主城区"//that.data.countrySide;
+          params.address = "长江路345号"//that.data.address;
+          params.postCode = "213320"//that.data.code;
           console.log(params);
-          // wx.request({
-          //   url: this.data.baseUrl + 'wx/delivery/add',
-          //   method: 'POST',
-          //   data: params,
-          //   success: function (res) {
-          //     console.log(res);
-          //     this.setData({
-          //       deliveryId: res.data.data.id
-          //     });
-          //     wx.navigateBack({ delta: 1 });
-          //   },
-          //   fail: function (err) {
-          //     console.log(err);
-          //   }
-          // })
+          wx.request({
+            url: getApp().globalData.baseUrl + that.data.addUrl,
+            method: 'POST',
+            data: params,
+            success: function (res) {
+              console.log("添加地址返回:" + JSON.stringify(res.data));
+              // that.setData({
+              // deliveryId: res.data.data.id
+              // });
+              wx.navigateBack({ delta: 1 });
+            },
+            fail: function (err) {
+              console.log(err);
+            }
+          })
         }
       }
     })
@@ -106,24 +110,26 @@ Page({
    */
   save() {
     let params = {};
-    params.id = this.data.id;
-    params.recipients = this.data.name;
-    params.phone = this.data.phone;
-    params.province = this.data.province;
-    params.city = this.data.city;
-    params.area = this.data.countrySide;
-    params.address = this.data.address;
-    params.postCode = this.data.code;
+    params.id = this.data.deliveryId;
+    params.recipients = "张三"//that.data.name;
+    params.phone = 18506823333 //that.data.phone;
+    params.province = "安徽"// that.data.province;
+    params.city = "合肥"//that.data.city;
+    params.area = "主城区"//that.data.countrySide;
+    params.address = "长江路345号"//that.data.address;
+    params.postCode = "213320"//that.data.code;
+    let that = this
     console.log(params);
     wx.request({
-      url: getApp().globalData.baseUrl + 'mall/delivery/save',
+      url: getApp().globalData.baseUrl + that.data.saveUrl,
       method: 'POST',
       data: params,
       success: function (res) {
         console.log(res);
-        this.setData({
-          deliveryId: res.data.data.id
+        that.setData({
+          // deliveryId: res.data.data.id
         })
+        wx.navigateBack({ delta: 1 });
       },
       fail: function (err) {
         console.log(err);
@@ -134,11 +140,22 @@ Page({
    * 删除收获地址
    */
   del() {
-    let self = this;
+    let that = this;
     wx.showModal({
       content: "确定要删除该地址吗?",
       success: function () {
-        console.log("确定");
+        console.log("确定;"+ that.data.deliveryId);
+        wx.request({
+          url: getApp().globalData.baseUrl + that.data.delUrl + "?id=" + that.data.deliveryId ,
+          method: 'POST',
+          success: res => {
+            console.log(JSON.stringify(res.data))
+            wx.navigateBack({ delta: 1 });
+          },
+          fail: err => {
+
+          }
+        })
       }
     })
   },
@@ -146,10 +163,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options);
     if (options.flag == "1") {
       this.setData({
-        typeFlag: options.flag
+        typeFlag: options.flag,
       })
       wx.setNavigationBarTitle({
         title: '新增收获地址',
@@ -157,9 +173,12 @@ Page({
     } else {
       this.setData({
         deliveryId: options.id,
+        addressList: options.data,
         delFlag: true
       })
-      this.init(this.data.deliveryId);
+      console.log(JSON.stringify(options.data)
+      )
+      // this.init(this.data.de);
     }
   },
 

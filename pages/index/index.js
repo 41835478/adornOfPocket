@@ -18,13 +18,8 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
     lastPage: false,
     pageComplete: true,
     animationData: {},
-    movable: {
-      text: '每天多奋斗一点,也为自己老去后以免遗憾年轻时的一事无成.每天多奋斗一点,也为自己老去后以免遗憾年轻时的一事无成.'
-    }
   },
   onShow() {
-    // 滚动通告栏需要initScroll
-    // this.initZanNoticeBarScroll('movable');
     wx.request({
       url: getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=1&pageSize=5',
       method: 'GET',
@@ -38,10 +33,8 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   },
   // 上拉加载
   pullUp: function () {
-    
     console.log(this.data.lastPage)
     //最后一页，不再进行请求
-
     if (this.data.lastPage || !this.data.pageComplete) {
       return;
     }
@@ -60,16 +53,18 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
       method: "GET",
       success: res => {
         if (res.statusCode == 200) {
-          console.log(res);
           let arr = this.data.goodList.concat(res.data.list);
-          this.setData({
-            goodList: arr,
-            lastPage: res.data.lastPage,
-            page: {
-              pageNo: pageNo
-            },
-            pageComplete: true
-          });
+          console.log(arr);
+          if (res.data.list.length>0){
+            this.setData({
+              goodList: arr,
+              lastPage: res.data.lastPage,
+              page: {
+                pageNo: pageNo
+              },
+              pageComplete: true
+            });
+          }
           wx.hideLoading();
         }
       },
@@ -114,16 +109,6 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
         })
       }
     })
-    // wx.request({
-    //   url: getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=1&pageSize=5',
-    //   method: 'GET',
-    //   success: res => {
-    //     console.log(res);
-    //     this.setData({
-    //       goodList: res.data.list
-    //     })
-    //   }
-    // })
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -157,33 +142,6 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   // 页面上拉触底事件的处理函数
   onReachBottom: function () {
     this.pullUp()
-    // let pageNo = this.data.page.pageNo + 1;
-    // this.setData({
-    //   page: {
-    //     pageNo: pageNo
-    //   }
-    // })
-    // console.log(pageNo);
-    // console.log(this.data.page)
-    // let url = this.data.baseUrl + 'good/preference-given?pageNo=' + this.data.page.pageNo + '&  pageSize=5';
-    // wx.request({
-    //   url: url,
-    //   method: "GET",
-    //   success: res => {
-    //     console.log(res);
-    //     if (res.statusCode == 200) {
-    //       let arr = this.data.goodList;
-    //       arr.concat(res.data.list);
-    //       this.setData({
-    //         goodList: arr
-    //       });
-    //       console.log(this.data.goodList);
-    //     }
-    //   },
-    //   fail: error => {
-    //     console.log(error);
-    //   }
-    // })
   },
   // 下拉刷新事件
   onPullDownRefresh() {

@@ -79,7 +79,6 @@
   margin-left: 20rpx;
   margin-right: 20rpx;
   height: 40rpx;
-  background: #fff;
   font-size: 18px;
 }
 .label_style2{
@@ -89,7 +88,6 @@
   margin-left: 20rpx;
   margin-right: 20rpx;
   height: 100rpx;
-  background: #fff;
   font-size: 15px;
 }
 .label_style3{

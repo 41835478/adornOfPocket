@@ -7,26 +7,7 @@ Page({
   data: {
     url: 'mall/wx/delivery/list',
 
-    deliveryList: [
-      {
-        id: 1,
-        name: "你好",
-        mobile: "15757135983",
-        address: "中国武林路346号"
-      },
-      {
-        id: 2,
-        name: "你好",
-        mobile: "15757135983",
-        address: "中国武林路346号"
-      },
-      {
-        id: 3,
-        name: "你好",
-        mobile: "15757135983",
-        address: "中国武林路346号"
-      },
-    ],
+    deliveryList: [],
     selectId: 0,
     pageNo:1
   },
@@ -75,14 +56,16 @@ Page({
         console.log(res);
         if (res.code) {
           let url = getApp().globalData.baseUrl + that.data.url + "?wxCode=" + res.code + "&pageNo="+ pageNo +"&pageSize=5"
+          console.log("url=" +url)
           if (res.code) {
             wx.request({
               url: url,
               success: res => {
                 wx.hideLoading()
-                console.log("收货地址:" + res)
+                let str =JSON.stringify(res.data)
+                console.log("收货地址:" + str)
                 that.setData({
-                  deliveryList: res.data,
+                  deliveryList: res.data.list,
                   pageNo: pageNo
                 })
               },
@@ -102,7 +85,6 @@ Page({
    */
   onLoad: function (options) {
 
-    this.getDataFromNet(0)
   },
 
   /**
@@ -117,6 +99,7 @@ Page({
    */
   onShow: function () {
 
+    this.getDataFromNet(0)
   },
 
   /**
