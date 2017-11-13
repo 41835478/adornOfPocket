@@ -5,8 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    url: '',
-    payUrl: 'wx/jsapi/order/preOrder',
+    url: 'mall/wx/good/findByGoodId',
+    payUrl: 'mall/wx/jsapi/order/preOrder',
     goodInfo: {},
     payInfo: {},
     quantity: 1,
@@ -85,6 +85,7 @@ Page({
         console.log(res);
         if (res.code) {
           let url = getApp().globalData.baseUrl + that.data.payUrl + "?wxCode=" + res.code + "&order=" + JSON.stringify(order)
+          console.log("下单地址:" +url)
           wx.request({
             url: url,
             method: 'GET',
@@ -94,6 +95,8 @@ Page({
               that.setData({
                 payInfo: res.data.data
               })
+              console.log("payInfo="+res.data.
+              data)
               that.readyToPay()
             },
             fail: function (err) {
@@ -163,7 +166,7 @@ Page({
       
     }else{
       wx.request({
-        url: getApp().globalData.baseUrl + this.data.url + options.goodId,
+        url: getApp().globalData.baseUrl + this.data.url + "?goodId="+ options.goodId,
         method: 'GET',
         success: res => {
           console.log(res.data.data)
@@ -173,8 +176,10 @@ Page({
           })
           let price = res.data.data.promotion * options.quantity
           this.setData({
-            totalPrice: price.toFixed(2)
+            totalPrice: price.toFixed(2),
+            
           })
+          console.log("price="+price)
         }
       })
     }
