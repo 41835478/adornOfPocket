@@ -6,18 +6,12 @@ Page({
    */
   data: {
 
-   cityUrl : 'http://japi.zto.cn/zto/api_utf8/baseArea?msg_type=GET_AREA&data=',
+    cityUrl : 'http://japi.zto.cn/zto/api_utf8/baseArea?msg_type=GET_AREA&data=',
     addUrl: 'mall/wx/delivery/add',
     delUrl: 'mall/wx/delivery/delete',
     saveUrl: 'mall/wx/delivery/update',
     typeFlag: "0",//页面标识：0,编辑;1,新增
-    addressList: {
-      // name: null,
-      // phone:null,
-      // address:[],
-      // addressDetail:null,
-      // postCode:null
-    },
+    addressList: {},
     deliveryId: '',
     region: ['北京市', '北京市', '东城区'],
     delFlag: false
@@ -150,19 +144,16 @@ Page({
         title: '新增收获地址',
       })
     } else {
-      
+      var data = JSON.parse(options.data)
+      var province = data.province ? data.province:"北京市"
+      var city = data.city?data.city:"北京市"
+      var area = data.area?data.area:"东城区"
       this.setData({
         deliveryId: options.id,
-        addressList: {
-          name: options.data.recipients,
-          phone: options.data.phone,
-          address:[options.data.provincee,options.data.city,options.data.area],
-          addressDetail:options.data.address,
-          postCode:options.data.postCode,
-        },
+        addressList: data,
+        region: [province,city,area],
         delFlag: true
       })
-      console.log("修改的地址参数为:",this.addressList)
     }
   },
   /**
