@@ -28,7 +28,7 @@ Page({
     }
     obj.customerOpt[e.currentTarget.dataset.name] = e.detail.value;
     this.setData(obj);
-    console.log(this.data.customerOpt);
+    console.log("maijia =" + e.detail.value);
   },
   /**
    * 页面跳转
@@ -132,7 +132,7 @@ Page({
    */
   onLoad: function (options) {
 
-    console.log(options);
+    console.log("订单id="+options);
     if(options.id){
       wx.showLoading({
         title: '加载中',

@@ -32,10 +32,21 @@ Page({
    * 跳转
    */
   skipPage(val) {
-    let url = val.currentTarget.dataset.url
-    wx.navigateTo({
-      url: url,
-    })
+    let id = val.currentTarget.id
+    if(id == 'add'){
+      let addUrl = '/pages/delivery/deliveryDetail/deliveryDetail?flag=1'
+      wx.navigateTo({
+        url: addUrl,
+      })
+    }
+    if(id == 'modify'){
+      console.log("val=",val)
+      var modityData = val.currentTarget.dataset.address
+      let modifyUrl = '/pages/delivery/deliveryDetail/deliveryDetail?flag=0&id=' + modityData.id+'&data='+JSON.stringify(modityData)
+      wx.navigateTo({
+        url: modifyUrl,
+      })
+    }
   },
   /**
    * 网络获取地址信息 style: 0 获取第1页5条数据 1 上拉获取数据

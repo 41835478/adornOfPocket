@@ -5,19 +5,21 @@ Page({
    * 页面的初始数据
    */
   data: {
+
+   cityUrl : 'http://japi.zto.cn/zto/api_utf8/baseArea?msg_type=GET_AREA&data=',
     addUrl: 'mall/wx/delivery/add',
     delUrl: 'mall/wx/delivery/delete',
     saveUrl: 'mall/wx/delivery/update',
     typeFlag: "0",//页面标识：0,编辑;1,新增
-    addressList: {},
+    addressList: {
+      // name: null,
+      // phone:null,
+      // address:[],
+      // addressDetail:null,
+      // postCode:null
+    },
     deliveryId: '',
-    provList: ['选择省份', '浙江', '江苏', '安徽', '上海'],
-    cityList: ['选择城市', '杭州', '南京', '合肥', '上海'],
-    csideList: ['选择地区', '主城区', '鼓楼', '合肥', '徐家汇'],
-    indexCity: 0,
-    indexPro: 0,
-    indexCount: 0,
-    // val:["选择"],
+    region: ['北京市', '北京市', '东城区'],
     delFlag: false
   },
   /**
@@ -32,32 +34,13 @@ Page({
     console.log(obj[n])
   },
   /**
-   * 选择地区
-   */
-  getDataPick(val) {
-    console.log(val)
-    let obj = {}
-    let id = val.currentTarget.id;
-    let index = val.detail.value;
-    let data = val.currentTarget.dataset.name[index];
-    console.log("data =" + data)
-    obj[id] = data;
-    this.setData(obj)
-    if (id == 'province') {
-      this.setData({
-        indexPro: index
-      })
-    }
-    if (id == 'city') {
-      this.setData({
-        indexCity: index
-      })
-    }
-    if (id == 'countryside') {
-      this.setData({
-        indexCount: index
-      })
-    }
+ * 选择收货地址
+ */
+  bindRegionChange(e) {
+    console.log('选择的地址是:', e.detail.value)
+    this.setData({
+      region: e.detail.value
+    })
   },
   /**
    * 初始化
@@ -78,23 +61,19 @@ Page({
         if (res.code) {
           let params = {};
           params.wxCode = res.code;
-          params.recipients = "张三"//that.data.name;
-          params.phone = 18506823333 //that.data.phone;
-          params.province = "安徽"// that.data.province;
-          params.city = "合肥"//that.data.city;
-          params.area = "主城区"//that.data.countrySide;
-          params.address = "长江路345号"//that.data.address;
-          params.postCode = "213320"//that.data.code;
-          console.log(params);
+          params.recipients = that.data.name;
+          params.phone = that.data.phone;
+          params.province = that.data.region[0];
+          params.city = that.data.region[1];
+          params.area = that.data.region[2];
+          params.address = that.data.address;
+          params.postCode = that.data.code;
           wx.request({
             url: getApp().globalData.baseUrl + that.data.addUrl,
             method: 'POST',
             data: params,
             success: function (res) {
               console.log("添加地址返回:" + JSON.stringify(res.data));
-              // that.setData({
-              // deliveryId: res.data.data.id
-              // });
               wx.navigateBack({ delta: 1 });
             },
             fail: function (err) {
@@ -110,15 +89,15 @@ Page({
    */
   save() {
     let params = {};
-    params.id = this.data.deliveryId;
-    params.recipients = "张三"//that.data.name;
-    params.phone = 18506823333 //that.data.phone;
-    params.province = "安徽"// that.data.province;
-    params.city = "合肥"//that.data.city;
-    params.area = "主城区"//that.data.countrySide;
-    params.address = "长江路345号"//that.data.address;
-    params.postCode = "213320"//that.data.code;
     let that = this
+    params.id = that.data.deliveryId;
+    params.recipients = that.data.name;
+    params.phone = that.data.phone;
+    params.province = that.data.region[0];
+    params.city = that.data.region[1];
+    params.area = that.data.region[2];
+    params.address = that.data.address;
+    params.postCode = that.data.code;
     console.log(params);
     wx.request({
       url: getApp().globalData.baseUrl + that.data.saveUrl,
@@ -171,17 +150,21 @@ Page({
         title: '新增收获地址',
       })
     } else {
+      
       this.setData({
         deliveryId: options.id,
-        addressList: options.data,
+        addressList: {
+          name: options.data.recipients,
+          phone: options.data.phone,
+          address:[options.data.provincee,options.data.city,options.data.area],
+          addressDetail:options.data.address,
+          postCode:options.data.postCode,
+        },
         delFlag: true
       })
-      console.log(JSON.stringify(options.data)
-      )
-      // this.init(this.data.de);
+      console.log("修改的地址参数为:",this.addressList)
     }
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

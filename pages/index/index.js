@@ -84,11 +84,22 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
     console.log(e.detail.encryptedData)
   },
   //事件处理函数
-  bindViewTap: function () {
+  // bindViewTap: function () {
+  //   wx.navigateTo({
+  //     url: '../logs/logs'
+  //   })
+  // },
+  /**
+   * 点击查看商品详情
+   */
+  goTogoodInfo(e){
+    console.log("点击的数据="+e)
+    var goodID = e.currentTarget.id
     wx.navigateTo({
-      url: '../logs/logs'
+      url: '/pages/good/good?goodId='+goodID,
     })
   },
+  
   onLoad: function () {
     //判断本地是否有缓存
     wx.getStorage({

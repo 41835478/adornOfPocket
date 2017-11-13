@@ -11,11 +11,11 @@
       <view class='info_address'>
         <span style="letter-spacing: 2px;">收获地址</span>: {{item.province+item.city+item.area+item.address}}</view>
     </view>
-    <view class='right' bindtap='skipPage' data-url='/pages/delivery/deliveryDetail/deliveryDetail?flag=0&id={{item.id}}&data={{item}}'>
+    <view class='right' bindtap='skipPage' data-address='{{item}}' id='modify'>
       <image class='img' src='../../images/edit.png'></image>
     </view>
   </view>
 </view>
-<view class='add_btn' bindtap='skipPage' data-url="/pages/delivery/deliveryDetail/deliveryDetail?flag=1">
+<view class='add_btn' bindtap='skipPage' id='add'>
   新增收货地址
 </view>

@@ -36,27 +36,12 @@
   <scroll-view scroll-y="true" style='height:150px;' lower-threshold="5" bindscrolltolower='pullUp' style='background:#fff;'>
     <view class='pick_list'>
       <view wx:for="{{goodList}}" wx:key="unique" class='pick_item'>
-        <view style="padding:0 30rpx;" bindtap="goodInfo">
-          <navigator url="/pages/good/good?goodId={{item.id}}" hover-class="navigator-hover" style='height:150px'>
-            <view style='width: 100%;'>
+        <view style="padding:0 30rpx;height:150px;" bindtap="goTogoodInfo" id='{{item.id}}'>
               <image style="width: 45%; height: 120px; background-color: #eeeeee;" src="{{baseUrl+item.mainImgUrl}}"></image>
               <label class='label_style1'>{{item.goodName}}</label>
               <label class='label_style2'>{{item.description}}</label>
               <label class='label_style3'>¥ {{item.price}}</label>
-            </view>
-          </navigator>
         </view>
-        <!-- <view class="zan-cell">
-          <view class="zan-cell__bd">
-            <view class="zan-ellipsis" style="width: 300px;font-size:16px;font-weight:700;">
-              {{item.goodName}}
-            </view>
-          </view>
-        </view> -->
-        <!-- <view style="margin-top:10px;padding:0 50rpx">
-          <view class="zan-c-gray" style="float:left;">来自: 小米科技有限公司</view>
-          <view class="zan-c-gray"> | {{item.saleVolume}} 人购买</view>
-        </view> -->
       </view>
     </view>
   </scroll-view>

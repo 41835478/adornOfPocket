@@ -52,7 +52,7 @@ Page(Object.assign({}, Zan, {
     console.log("data====" + data.id)
     let goodsId = data.id
     wx.navigateTo({
-      url: '/pages/pay/pay?id=' + goodsId,
+      url: '/pages/good/good?id=' + goodsId,
     })
   },
   /**
