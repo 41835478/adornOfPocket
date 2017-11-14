@@ -7,9 +7,9 @@
     </view>
     <view class='mid' bindtap='select' data-index='{{index}}'>
       <view class='info_person'>
-        <span style="letter-spacing: 2px;">{{item.recipients}}</span>  {{item.phone}}</view>
+        <span style="letter-spacing: 0px;">{{item.recipients}}</span>  {{item.phone}}</view>
       <view class='info_address'>
-        <span style="letter-spacing: 2px;">收获地址</span>: {{item.province+item.city+item.area+item.address}}</view>
+        <span style="letter-spacing: 0px;">收货地址</span>: {{item.province+item.city+item.area+item.address}}</view>
     </view>
     <view class='right' bindtap='skipPage' data-address='{{item}}' id='modify'>
       <image class='img' src='../../images/edit.png'></image>

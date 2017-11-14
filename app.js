@@ -41,7 +41,7 @@ App({
   },
   globalData: {
     userInfo: null,
-    baseUrl: 'http://468vaj.natappfree.cc/'
-  // baseUrl:'http://192.168.0.112:8088/'
+    // baseUrl: 'http://468vaj.natappfree.cc/'
+  baseUrl:'http://192.168.0.105:8088/'
   }
 })

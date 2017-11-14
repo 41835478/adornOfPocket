@@ -7,7 +7,9 @@ Page(Object.assign({},Zan.Toast,{
    * 页面的初始数据
    */
   data: {
-      userInfo:{}
+    url:'mall/wx/point/findByUserId',
+      userInfo:{},
+      pointInfo:{}
   },
   /**
    * 页面跳转
@@ -28,6 +30,8 @@ Page(Object.assign({},Zan.Toast,{
     this.setData({
       userInfo:app.globalData.userInfo
     })
+    
+    
   },
 
   /**
@@ -41,7 +45,36 @@ Page(Object.assign({},Zan.Toast,{
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    let that = this
+    wx.showLoading({
+      title: '加载中',
+    })
+    wx.login({
+      success: res => {
+        if (res.code) {
+          let wxCode = res.code
+          let url = getApp().globalData.baseUrl + this.data.url + "?wxCode=" + wxCode
+          console.log("url = "+ url)
+          wx.request({
+            url: url,
+            success: res => {
+              wx.hideLoading()
+              let result = res.data.result
+              if(result == 1 ){
+                that.setData({
+                  pointInfo:res.data.data
+                })
+              }
+              console.log("backData=" + JSON.stringify(res.data.data))
+            },
+            fail: err => {
+              wx.hideLoading()
+              console.log("err="+ JSON.stringify(err))
+            }
+          })
+        }
+      }
+    })
   },
 
   /**

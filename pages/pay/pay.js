@@ -11,6 +11,7 @@ Page({
     payInfo: {},
     quantity: 1,
     totalPrice: 0,
+    word:'',
     customerOpt: {
       isMessage: true,
       word: ''
@@ -26,9 +27,11 @@ Page({
     let obj = {
       customerOpt: {}
     }
-    obj.customerOpt[e.currentTarget.dataset.name] = e.detail.value;
-    this.setData(obj);
-    console.log("maijia =" + e.detail.value);
+    var word = e.detail.value;
+    this.setData({
+      word:word
+    });
+    console.log("给卖家留言 =" + this.data.word );
   },
   /**
    * 页面跳转
@@ -71,15 +74,16 @@ Page({
     let that = this
     var wxcode
     let order = {}
-    order.goodId = "1"
-    order.deliveryId = "1"
-    order.orderFee = "1"
-    order.count = "1"
-    order.message = "尽量快点"
+    order.goodId = that.data.goodInfo.id
+    order.deliveryId = "10"
+    order.orderFee = that.data.quantity*that.data.goodInfo.price
+    order.count = that.data.quantity
+    order.message = that.data.word
     order.ticket = "1"
     order.userTicket = false
     order.point = "22"
     order.totalFee = "1"
+    console.log("order = " + JSON.stringify(order))
     wx.login({
       success: res => {
         console.log(res);
@@ -92,12 +96,13 @@ Page({
             success: res => {
               console.log(res);
               wx.hideLoading()
-              that.setData({
-                payInfo: res.data.data
-              })
-              console.log("payInfo="+res.data.
-              data)
-              that.readyToPay()
+              console.log("payInfo=" + JSON.stringify(res))
+              if(res.data.result == 1){
+                that.setData({
+                  payInfo: res.data.data
+                })
+                that.readyToPay()
+              }
             },
             fail: function (err) {
               console.log(err);

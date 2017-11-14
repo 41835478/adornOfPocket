@@ -4,7 +4,8 @@
      <image style='width: 180rpx;height: 180rpx;border-radius: 50%;margin-top: 20rpx;margin-left: 30rpx;float: left;' src="{{userInfo.avatarUrl}}"></image>
     <view style='width: 50%;color: #fff;margin-left:300rpx;line-height: 80rpx'>
       <view style='padding-top:20rpx'> {{userInfo.nickName}}</view>
-      <view>白金会员</view>
+      <view>{{pointInfo.levelName}}</view>
+      <view>积分:{{pointInfo.point}}</view>
     </view>
   </view>
   <view class="zan-panel">

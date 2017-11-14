@@ -6,7 +6,6 @@ Page({
    */
   data: {
     url: 'mall/wx/delivery/findByWxCode',
-
     deliveryList: [],
     selectId: 0,
     pageNo: 1,
@@ -82,6 +81,7 @@ Page({
               success: res => {
                 wx.hideLoading()
                 let arr = that.data.deliveryList.concat(res.data.list)
+                console.log(JSON.stringify(res.data))
                 if (res.data.list.length > 0) {
                   that.setData({
                     deliveryList: res.data.list,
@@ -149,10 +149,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    // this.getDataFromNet()
 
-    // this.getDataFromNet(0)
-    // wx.stopPullDownRefresh()
   },
 
   /**
@@ -160,7 +157,6 @@ Page({
    */
   onReachBottom: function () {
     this.getDataFromNet()
-    // wx.stopPullDownRefresh()
   },
 
   /**

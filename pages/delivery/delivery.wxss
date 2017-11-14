@@ -4,6 +4,7 @@
 /*列表项*/
 .list_item{
   width:100%;
+  background-color: white;
   position: relative;
   padding: 15rpx 0;
   border-bottom: 1px solid #f3f3f3;
