@@ -4,19 +4,19 @@
 @import 'common/template/help/help_template.wxss';
 
 .container {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        box-sizing: border-box;
-        background: #fff;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background: #fff;
 }
 
 page {
-        background: #f9f9f9;
+  background: #f9f9f9;
 }
 
-.absolute{
-  position:absolute;
+.absolute {
+  position: absolute;
 }
