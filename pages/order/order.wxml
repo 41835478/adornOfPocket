@@ -4,7 +4,7 @@
     <template is="zan-tab" data="{{tab: tab, componentId: 'tab'}}"></template>
   </view>
   <scroll-view scroll-y="true" style='width:100%'>
-    <view wx:for="{{goods}}" wx:for-item="item" class='order_index'>
+    <!-- <view wx:for="{{goods}}" wx:for-item="item" class='order_index'>
       <view class="order_item">
         <image class='order_img' class="order_img" mode="widthFix" src='{{item.goodsImg}}'></image>
         <label class='order_item_label'>{{item.goodName}}</label>
@@ -15,7 +15,7 @@
       </view>
       <view style='display:inline-flex;flex-direction:row;align-items:center;margin-left:65%;'>
         <button bindtap='goodsBuyAction' id='{{item.id}}' type='primary' class=' zan-btn zan-btn--mini zan-btn--primary zan-btn--plain'>再次购买</button>
-        <button bindtap='goodsPayAction' wx:if="{{item.orderStatus==1}}" id='{{item.id}}' class='zan-btn zan-btn--mini zan-btn--danger zan-btn--plain'>去付款</button>
+        <button bindtap='goodsPayAction' wx:if="{{item.orderStatus==1}}" id='{{item.id}}' data-good='{{item}}' class='zan-btn zan-btn--mini zan-btn--danger zan-btn--plain'>去付款</button>
         <button bindtap='goodsBackAction' wx:if="{{item.orderStatus==2}}" id='{{item.id}}' disabled='true' class='zan-btn zan-btn--mini zan-btn--plain'>正在运输</button>
         <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==3}}" id='{{item.id}}' type='primary' class='zan-btn zan-btn--mini zan-btn--warn zan-btn--plain'>确认收货</button>
         <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==4}}" id='{{item.id}}' class='zan-btn zan-btn--mini zan-btn--danger zan-btn--plain'>申请售后</button>
@@ -26,8 +26,9 @@
     </view>
 
 
-    
-    <view class="zan-panel">
+  <view wx:for="{{goods}}" wx:for-item="item" class='order_index'> -->
+
+    <view class="zan-panel" wx:for="{{goods}}" wx:for-item="item">
       <view class='zan-card'>
         <view class='zan-card__detail-row zan-c-gray-darker'>
           <view class="zan-card__right-col zan-c-red">等待买家付款</view>
@@ -37,25 +38,23 @@
         </view>
         <view class="zan-card__detail-row">
           <view class="zan-card__left-col-12 zan-c-gray-dark" style='font-size:26rpx;'>
-            订单编号: 2017119000318358283
+{{item.orderNo}}
           </view>
         </view>
       </view>
-
       <view class="zan-card">
         <view class="zan-card__thumb">
           <image class="zan-card__img" src="https://img.yzcdn.cn/upload_files/2016/11/25/FpqPXlrMRjKwJs8VdTu3ZDJCj4j5.jpeg?imageView2/2/w/200/h/200/q/90/format/jpeg" mode="aspectFit"></image>
         </view>
         <view class="zan-card__detail">
           <view class="zan-card__detail-row">
-            <view class="zan-card__right-col">¥ 999.99</view>
+            <view class="zan-card__right-col">¥ {{item.goodFee}}</view>
             <view class="zan-card__left-col zan-ellipsis--l2">
-              红烧牛肉【虚拟商品】【有库存】【有sku】
+             {{item.goodName}}
             </view>
           </view>
-
           <view class="zan-card__detail-row zan-c-gray-darker">
-            <view class="zan-card__right-col">x2</view>
+            <view class="zan-card__right-col">x{{item.count}}</view>
             <view class="zan-card__left-col">
               3000克 50%
             </view>
@@ -68,7 +67,7 @@
       <view class='zan-panel'>
         <view class='zan-card'>
           <view class="zan-card__detail-row">
-            <view class="zan-card__right-col zan-c-red">¥ 999.99</view>
+            <view class="zan-card__right-col zan-c-red">¥ {{item.paymentFee}}</view>
             <view class="zan-card__left-col zan-ellipsis--12" style='text-align:right'>
               合计
             </view>
@@ -78,9 +77,9 @@
       <view class='zan-card'>
         <view class="zan-card__detail-row">
           <view class="zan-card__right-col">
-            <button bindtap='goodsBuyAction' type='primary' class=' zan-btn zan-btn--small zan-btn--primary'>再次购买</button>
+            <button bindtap='goodsBuyAction' id='{{item.goodId}}' type='primary' class=' zan-btn zan-btn--small zan-btn--primary'>再次购买</button>
             <button bindtap='goodsBuyAction' class=' zan-btn zan-btn--small zan-btn--plain'>取消</button>
-            <button bindtap='goodsBuyAction' class=' zan-btn zan-btn--small zan-btn--danger'>付款</button>
+            <button class=' zan-btn zan-btn--small zan-btn--danger' bindtap='goodsPayAction' wx:if="{{item.orderStatus==1}}" id='{{item.id}}' data-good='{{item}}' >付款</button>
           </view>
         </view>
       </view>

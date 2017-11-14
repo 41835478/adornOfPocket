@@ -48,11 +48,10 @@ Page(Object.assign({}, Zan, {
    */
   goodsBuyAction(e) {
     var data = {}
-    data = e.currentTarget;
+    data = e.currentTarget.id;
     console.log("data====" + data.id)
-    let goodsId = data.id
     wx.navigateTo({
-      url: '/pages/good/good?id=' + goodsId,
+      url: '/pages/good/good?goodId=' + data,
     })
   },
   /**
@@ -60,11 +59,13 @@ Page(Object.assign({}, Zan, {
    */
   goodsPayAction(e) {
     var data = {}
-    data = e.currentTarget;
-    console.log("data====" + data.id)
-    let goodsId = data.id
+    data = e.currentTarget.dataset.good;
+    console.log("data====" + JSON.stringify(data))
+    let id = data.id
+    let count = data.count
+    let goodId = data.goodId
     wx.navigateTo({
-      url: '/pages/pay/pay?id=' + goodsId,
+      url: '/pages/pay/pay?id=' + id + '&quantity='+count +'&goodId='+goodId,
     })
   },
   /**
