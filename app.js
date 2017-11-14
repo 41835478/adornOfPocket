@@ -41,7 +41,7 @@ App({
   },
   globalData: {
     userInfo: null,
-    baseUrl: 'http://rejus3.natappfree.cc/'
+    baseUrl: 'http://468vaj.natappfree.cc/'
   // baseUrl:'http://192.168.0.112:8088/'
   }
 })

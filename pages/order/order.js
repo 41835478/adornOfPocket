@@ -46,7 +46,7 @@ Page(Object.assign({}, Zan, {
   /**
    * 再次购买
    */
-  goodsBuyAction(e){
+  goodsBuyAction(e) {
     var data = {}
     data = e.currentTarget;
     console.log("data====" + data.id)
