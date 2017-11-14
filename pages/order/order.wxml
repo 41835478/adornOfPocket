@@ -15,13 +15,74 @@
       </view>
       <view style='display:inline-flex;flex-direction:row;align-items:center;margin-left:65%;'>
         <button bindtap='goodsBuyAction' id='{{item.id}}' type='primary' class=' zan-btn zan-btn--mini zan-btn--primary zan-btn--plain'>再次购买</button>
-        <button bindtap='goodsPayAction' wx:if="{{item.orderStatus==1}}" id='{{item.id}}'  class='zan-btn zan-btn--mini zan-btn--danger zan-btn--plain'>去付款</button>
-        <button bindtap='goodsBackAction' wx:if="{{item.orderStatus==2}}" id='{{item.id}}'  disabled='true' class='zan-btn zan-btn--mini zan-btn--plain'>正在运输</button>
+        <button bindtap='goodsPayAction' wx:if="{{item.orderStatus==1}}" id='{{item.id}}' class='zan-btn zan-btn--mini zan-btn--danger zan-btn--plain'>去付款</button>
+        <button bindtap='goodsBackAction' wx:if="{{item.orderStatus==2}}" id='{{item.id}}' disabled='true' class='zan-btn zan-btn--mini zan-btn--plain'>正在运输</button>
         <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==3}}" id='{{item.id}}' type='primary' class='zan-btn zan-btn--mini zan-btn--warn zan-btn--plain'>确认收货</button>
         <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==4}}" id='{{item.id}}' class='zan-btn zan-btn--mini zan-btn--danger zan-btn--plain'>申请售后</button>
         <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==5}}" id='{{item.id}}' class='zan-btn zan-btn--mini zan-btn--plain'>申请退款中</button>
         <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==6}}" id='{{item.id}}' disabled='true' class='zan-btn zan-btn--mini zan-btn--plain'>退款完成</button>
         <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==7}}" id='{{item.id}}' disabled='true' class='zan-btn zan-btn--mini zan-btn--warn zan-btn--plain'>退款拒绝</button>
+      </view>
+    </view>
+
+
+    
+    <view class="zan-panel">
+      <view class='zan-card'>
+        <view class='zan-card__detail-row zan-c-gray-darker'>
+          <view class="zan-card__right-col zan-c-red">等待买家付款</view>
+          <view class="zan-card__left-col zan-ellipsis--l2">
+            商家:妆口袋
+          </view>
+        </view>
+        <view class="zan-card__detail-row">
+          <view class="zan-card__left-col-12 zan-c-gray-dark" style='font-size:26rpx;'>
+            订单编号: 2017119000318358283
+          </view>
+        </view>
+      </view>
+
+      <view class="zan-card">
+        <view class="zan-card__thumb">
+          <image class="zan-card__img" src="https://img.yzcdn.cn/upload_files/2016/11/25/FpqPXlrMRjKwJs8VdTu3ZDJCj4j5.jpeg?imageView2/2/w/200/h/200/q/90/format/jpeg" mode="aspectFit"></image>
+        </view>
+        <view class="zan-card__detail">
+          <view class="zan-card__detail-row">
+            <view class="zan-card__right-col">¥ 999.99</view>
+            <view class="zan-card__left-col zan-ellipsis--l2">
+              红烧牛肉【虚拟商品】【有库存】【有sku】
+            </view>
+          </view>
+
+          <view class="zan-card__detail-row zan-c-gray-darker">
+            <view class="zan-card__right-col">x2</view>
+            <view class="zan-card__left-col">
+              3000克 50%
+            </view>
+          </view>
+          <view class="zan-card__detail-row zan-c-gray-darker">
+            <view class="zan-card__left-col zan-c-red">已发货</view>
+          </view>
+        </view>
+      </view>
+      <view class='zan-panel'>
+        <view class='zan-card'>
+          <view class="zan-card__detail-row">
+            <view class="zan-card__right-col zan-c-red">¥ 999.99</view>
+            <view class="zan-card__left-col zan-ellipsis--12" style='text-align:right'>
+              合计
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class='zan-card'>
+        <view class="zan-card__detail-row">
+          <view class="zan-card__right-col">
+            <button bindtap='goodsBuyAction' type='primary' class=' zan-btn zan-btn--small zan-btn--primary'>再次购买</button>
+            <button bindtap='goodsBuyAction' class=' zan-btn zan-btn--small zan-btn--plain'>取消</button>
+            <button bindtap='goodsBuyAction' class=' zan-btn zan-btn--small zan-btn--danger'>付款</button>
+          </view>
+        </view>
       </view>
     </view>
   </scroll-view>
