@@ -11,7 +11,7 @@ Page({
     payInfo: {},
     quantity: 1,
     totalPrice: 0,
-    word:'',
+    word: '',
     customerOpt: {
       isMessage: true,
       word: ''
@@ -19,6 +19,7 @@ Page({
     btnTitle: "提交订单",
     showTokenDialog: false,//token优惠券Dialog开关
     deliveryFlag: true,
+    orderId:'' //订单ID
   },
   /**
    * 获取数据
@@ -29,9 +30,9 @@ Page({
     }
     var word = e.detail.value;
     this.setData({
-      word:word
+      word: word
     });
-    console.log("给卖家留言 =" + this.data.word );
+    console.log("给卖家留言 =" + this.data.word);
   },
   /**
    * 页面跳转
@@ -76,7 +77,7 @@ Page({
     let order = {}
     order.goodId = that.data.goodInfo.id
     order.deliveryId = "10"
-    order.orderFee = that.data.quantity*that.data.goodInfo.price
+    order.orderFee = that.data.quantity * that.data.goodInfo.price
     order.count = that.data.quantity
     order.message = that.data.word
     order.ticket = "1"
@@ -89,7 +90,7 @@ Page({
         console.log(res);
         if (res.code) {
           let url = getApp().globalData.baseUrl + that.data.payUrl + "?wxCode=" + res.code + "&order=" + JSON.stringify(order)
-          console.log("下单地址:" +url)
+          console.log("下单地址:" + url)
           wx.request({
             url: url,
             method: 'GET',
@@ -97,7 +98,7 @@ Page({
               console.log(res);
               wx.hideLoading()
               console.log("payInfo=" + JSON.stringify(res))
-              if(res.data.result == 1){
+              if (res.data.result == 1) {
                 that.setData({
                   payInfo: res.data.data
                 })
@@ -109,8 +110,8 @@ Page({
               wx.hideLoading()
             }
           })
+        }
       }
-    }
     })
   },
   /**
@@ -129,68 +130,79 @@ Page({
       'fail': function (res) { },
       'complete': function (res) { }
     })
-
   },
+  /**
+   * 订单页面重新付款
+   */
+  againToPay() {
 
+    wx.login({
+      success: res => {
+        if (res.code) {
+          let url = getApp().globalData.baseUrl + 'wx/jsapi/order/pay?orderId=' + options.id + '&wxCode=' + res.code
+          wx.request({
+            url: url,
+            success: res => {
+              wx.hideLoading()
+              console.log("重新申请 =" + res.data)
+              wx.hideLoading()
+              wx.requestPayment({
+                timeStamp: res.data.data.timeStamp,
+                nonceStr: res.data.data.nonceStr,
+                package: res.data.data.package,
+                signType: 'MD5',
+                paySign: res.data.data.paySign,
+                'success': function (res) { console.log(res) },
+                'fail': function (res) { },
+                'complete': function (res) { }
+              })
+            }
+          })
+        }
+      }
+    })
+  },
+  /**
+   * 获取商品信息
+   */
+  getGoodInfo(goodId){
+  wx.request({
+    url: getApp().globalData.baseUrl + this.data.url + "?goodId=" + goodId,
+    method: 'GET',
+    success: res => {
+      console.log(res.data.data)
+      this.setData({
+        goodInfo: res.data.data,
+      })
+      let price = res.data.data.promotion * options.quantity
+      this.setData({
+        totalPrice: price.toFixed(2),
+      })
+      console.log("price=" + price)
+    }
+  })
+},
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-    console.log("订单id="+options);
-    if(options.id){
-      wx.showLoading({
-        title: '加载中',
+    let goodId = options.goodId
+    console.log("订单id=" + options);
+    if (options.id) {
+      //订单页面而来
+      this.setData({
+        btnTitle: "去支付",
+        orderId:options.id
       })
-      wx.login({
-        success: res =>{
-          if(res.code){
-            let url = getApp().globalData.baseUrl + 'wx/jsapi/order/pay?orderId=' + options.id + '&wxCode=' + res.code
-            wx.request({
-              url: url,
-              success: res => {
-                wx.hideLoading()
-                console.log("重新申请 =" + res.data)
-                wx.hideLoading()
-                wx.requestPayment({
-                  timeStamp: res.data.data.timeStamp,
-                  nonceStr: res.data.data.nonceStr,
-                  package: res.data.data.package,
-                  signType: 'MD5',
-                  paySign: res.data.data.paySign,
-                  'success': function (res) { console.log(res) },
-                  'fail': function (res) { },
-                  'complete': function (res) { }
-                })
-              }
-            })
-          
-          }
-        }
-      })
-      
     }else{
-      wx.request({
-        url: getApp().globalData.baseUrl + this.data.url + "?goodId="+ options.goodId,
-        method: 'GET',
-        success: res => {
-          console.log(res.data.data)
-          this.setData({
-            goodInfo: res.data.data,
-            quantity: options.quantity,
-          })
-          let price = res.data.data.promotion * options.quantity
-          this.setData({
-            totalPrice: price.toFixed(2),
-            
-          })
-          console.log("price="+price)
-        }
+      //商品详情而来
+      this.setData({
+        quantity: options.quantity,
       })
     }
-    
+    //获取商品信息
+    this.getGoodInfo(goodId)
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
