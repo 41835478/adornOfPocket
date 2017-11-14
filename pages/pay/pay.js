@@ -140,7 +140,12 @@ Page({
       package: 'prepay_id=' + this.data.payInfo.prepay_id,
       signType: 'MD5',
       paySign: this.data.payInfo.paySign,
-      'success': function (res) { console.log(res) },
+      'success': function (res) { 
+        console.log(res)
+        wx.navigateBack({
+          delta:1
+        })
+         },
       'fail': function (res) { },
       'complete': function (res) { }
     })

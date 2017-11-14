@@ -83,7 +83,13 @@
     <view class='zan-cell cost_info'>
       <view class='zan-cell__bd'>优惠券</view>
       <view class='zan-cell__ft'>
-        - ¥ 优惠券折扣
+        暂无优惠劵可用
+      </view>
+    </view>
+    <view class='zan-cell'>
+      <view class='zan-cell__bd'>积分抵扣(100积分=1元)</view>
+      <view class='zan-cell__ft'>
+        ¥ -10
       </view>
     </view>
     <view class='zan-cell'>

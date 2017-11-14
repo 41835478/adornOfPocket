@@ -13,7 +13,7 @@
     <view class='good_price border_north'>
       {{goodInfo.goodName}}
       <view class='single_price'>
-        <span style="text-decoration:line-through;margin-right:20rpx;">¥ {{goodInfo.price/100}}</span>¥ {{goodInfo.promotion/100}}</view>
+        <span style="text-decoration:line-through;margin-right:20rpx;color:gray">¥ {{goodInfo.price/100}}</span>¥ {{goodInfo.promotion/100}}</view>
     </view>
     <view class='good_selled'>
       <span class='sell_item'>运费:免运费 </span>

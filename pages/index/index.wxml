@@ -37,7 +37,7 @@
     <view class='pick_list'>
       <view wx:for="{{goodList}}" wx:key="unique" class='pick_item'>
         <view style="padding:0 30rpx;height:150px;" bindtap="goTogoodInfo" id='{{item.id}}'>
-              <image style="width: 45%; height: 120px; background-color: #eeeeee;" src="{{baseUrl+item.mainImgUrl}}"></image>
+              <image style="width:100px; height: 100px; background-color: #eeeeee;" src="{{baseUrl+item.mainImgUrl}}"></image>
               <label class='label_style1'>{{item.goodName}}</label>
               <label class='label_style2'>{{item.description}}</label>
               <label class='label_style3'>¥ {{item.price}}</label>

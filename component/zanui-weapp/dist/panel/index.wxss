@@ -4,7 +4,10 @@
   margin-top: 10px;
   overflow: hidden;
 }
-
+.pick_item
+{
+  width: 100%;
+}
 .zan-panel-title {
   font-size: 14px;
   line-height: 1;
