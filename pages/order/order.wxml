@@ -3,32 +3,8 @@
   <view class='order_tab'>
     <template is="zan-tab" data="{{tab: tab, componentId: 'tab'}}"></template>
   </view>
-  <scroll-view scroll-y="true" style='width:100%'>
-    <!-- <view wx:for="{{goods}}" wx:for-item="item" class='order_index'>
-      <view class="order_item">
-        <image class='order_img' class="order_img" mode="widthFix" src='{{item.goodsImg}}'></image>
-        <label class='order_item_label'>{{item.goodName}}</label>
-      </view>
-      <view>
-        <label class='order_status'>{{item.goodsStatus}}</label>
-        <label class='order_label zan-font-bold'>共1件商品 实付款:¥{{item.totalFee}}.00</label>
-      </view>
-      <view style='display:inline-flex;flex-direction:row;align-items:center;margin-left:65%;'>
-        <button bindtap='goodsBuyAction' id='{{item.id}}' type='primary' class=' zan-btn zan-btn--mini zan-btn--primary zan-btn--plain'>再次购买</button>
-        <button bindtap='goodsPayAction' wx:if="{{item.orderStatus==1}}" id='{{item.id}}' data-good='{{item}}' class='zan-btn zan-btn--mini zan-btn--danger zan-btn--plain'>去付款</button>
-        <button bindtap='goodsBackAction' wx:if="{{item.orderStatus==2}}" id='{{item.id}}' disabled='true' class='zan-btn zan-btn--mini zan-btn--plain'>正在运输</button>
-        <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==3}}" id='{{item.id}}' type='primary' class='zan-btn zan-btn--mini zan-btn--warn zan-btn--plain'>确认收货</button>
-        <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==4}}" id='{{item.id}}' class='zan-btn zan-btn--mini zan-btn--danger zan-btn--plain'>申请售后</button>
-        <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==5}}" id='{{item.id}}' class='zan-btn zan-btn--mini zan-btn--plain'>申请退款中</button>
-        <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==6}}" id='{{item.id}}' disabled='true' class='zan-btn zan-btn--mini zan-btn--plain'>退款完成</button>
-        <button bindtap='goodsLastAction' wx:if="{{item.orderStatus==7}}" id='{{item.id}}' disabled='true' class='zan-btn zan-btn--mini zan-btn--warn zan-btn--plain'>退款拒绝</button>
-      </view>
-    </view>
-
-
-  <view wx:for="{{goods}}" wx:for-item="item" class='order_index'> -->
-
-    <view class="zan-panel" wx:for="{{goods}}" wx:for-item="item">
+  <scroll-view scroll-y="true" style='width:100%;background:#f9f9f9f9'>
+    <view class="zan-panel" wx:for="{{goods}}" wx:for-item="item" style='background:white'>
       <view class='zan-card'>
         <view class='zan-card__detail-row zan-c-gray-darker'>
           <view class="zan-card__right-col zan-c-red">等待买家付款</view>
@@ -48,7 +24,7 @@
         </view>
         <view class="zan-card__detail">
           <view class="zan-card__detail-row">
-            <view class="zan-card__right-col">¥ {{item.goodFee}}</view>
+            <view class="zan-card__right-col">¥ {{item.goodFee/100}}</view>
             <view class="zan-card__left-col zan-ellipsis--l2">
              {{item.goodName}}
             </view>
@@ -67,10 +43,10 @@
       <view class='zan-panel'>
         <view class='zan-card'>
           <view class="zan-card__detail-row">
-            <view class="zan-card__right-col zan-c-red">¥ {{item.paymentFee}}</view>
-            <view class="zan-card__left-col zan-ellipsis--12" style='text-align:right'>
+            <view class="zan-card__right-col zan-c-red">¥ {{item.paymentFee/100}}</view>
+             <view class="zan-card__left-col zan-ellipsis--l2" style='text-align:right;'> 
               合计
-            </view>
+             </view> 
           </view>
         </view>
       </view>

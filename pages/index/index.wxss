@@ -78,8 +78,9 @@
   margin-top: 0rpx;
   margin-left: 20rpx;
   margin-right: 20rpx;
-  height: 40rpx;
+  height: 50rpx;
   font-size: 18px;
+  overflow: hidden;
 }
 .label_style2{
   color: gray;
@@ -87,13 +88,15 @@
   margin-top: 60rpx;
   margin-left: 20rpx;
   margin-right: 20rpx;
-  height: 100rpx;
+  height: 120rpx;
   font-size: 15px;
+  overflow: hidden;
 }
 .label_style3{
   color: red;
   margin-left: 20rpx;
   font-size: 17px;
+  overflow: hidden;
 }
 /* .pick_tit{
   text-align: center;

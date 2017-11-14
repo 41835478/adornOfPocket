@@ -1,5 +1,4 @@
 .zan-panel {
-  background: #F9F9F9;
   border-top: 1rpx solid #e5e5e5;
   border-bottom: 1rpx solid #e5e5e5;
   margin-top: 10px;

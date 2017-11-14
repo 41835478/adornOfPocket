@@ -15,6 +15,7 @@ Page({
       isMessage: true,
       word: ''
     },
+    quantity:1,
     btnTitle: "提交订单",
     showTokenDialog: false,//token优惠券Dialog开关
     deliveryFlag: true,
@@ -67,7 +68,7 @@ Page({
    */
   gotoPay() {
 
-    if (this.data.again) {
+    if (this.data.againPay) {
         //去完成已下单的付款
 
         this.againToPay()
@@ -95,7 +96,7 @@ Page({
       order.paymentFee = 1    //实付金额
       order.reduceFee = 0       //优惠金额
       order.freightFee = 0       //运费金额
-      order.goodFee = that.data.quantity * that.data.goodInfo.price //商品金额
+      order.goodFee =  that.data.goodInfo.price //商品金额
       console.log("第一次下单order = " + JSON.stringify(order))
       wx.login({
         success: res => {
@@ -192,6 +193,7 @@ Page({
         let price = res.data.data.promotion * quantity
         this.setData({
           totalPrice: price.toFixed(2),
+          quantity: quantity
         })
         console.log("price=" + price)
       }
