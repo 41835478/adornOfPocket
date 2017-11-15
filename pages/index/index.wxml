@@ -33,16 +33,15 @@
       分类
     </view>
   </view>
-  <scroll-view scroll-y="true" style='height:150px;' lower-threshold="5" bindscrolltolower='pullUp' style='background:#fff;'>
-    <view class='pick_list'>
-      <view wx:for="{{goodList}}" wx:key="unique" class='pick_item'>
-        <view style="padding:0 30rpx;height:150px;" bindtap="goTogoodInfo" id='{{item.id}}'>
-              <image style="width:100px; height: 100px; background-color: #eeeeee;" src="{{baseUrl+item.mainImgUrl}}"></image>
+  <!-- <scroll-view scroll-y="true" style='height:150px;' lower-threshold="5" bindscrolltolower='pullUp' style='background:#fff;'> -->
+  <scroll-view scroll-y="{{true}}">
+  <view wx:for="{{goodList}}">
+  <view class='pick_list'>
+     <image style="width:100px; height: 100px;margin-left:5rpx; background-color: #eeeeee;" src="{{baseUrl+item.mainImgUrl}}"></image>
               <label class='label_style1'>{{item.goodName}}</label>
-              <label class='label_style2'>{{item.description}}</label>
-              <label class='label_style3'>¥ {{item.price}}</label>
-        </view>
-      </view>
-    </view>
+              <!-- <label class='label_style2'>{{item.description}}</label> -->
+              <label class='label_style3'>¥ {{item.price/100.00}}</label>
+  </view> 
+  </view>
   </scroll-view>
 </view>
