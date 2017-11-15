@@ -8,41 +8,39 @@
 /*优选列表*/
  .pick_list{
   background: #fff;
-  padding: 5rpx;
-   float: left; 
+  float: left; 
   width: 50%;
   box-sizing: border-box;
   overflow: hidden;
-
-  /* padding: 20rpx 0; */
-  /* position: relative; */
-  /* column-count: 2; */
 }  
+
+.item_image{
+  width:100%-7.5rpx;
+  height: 150px;
+  margin-left:5rpx;
+  margin-top:5rpx;
+  margin-right: 5prx;
+  background-color: #eeeeee;
+}
+
 .label_style1{
   color: black;
-  position: absolute;
-  /* margin-top: 0rpx; */
-   margin-left: 10rpx; 
-  /* margin-right: 51%; */
-  height: 140rpx;
-   width: 20%; 
+  float: left;
+  margin-left: 5rpx; 
+  width: 100%-7.5rpx;  
   font-size: 12px;
   overflow: hidden;
 }
 .label_style2{
-  color: gray;
-  position: absolute;
-  margin-top: 60rpx;
+  color: red;
   margin-left: 20rpx;
-  margin-right: 20rpx;
-  height: 141rpx;
-  width: 45%;
-  font-size: 10px;
+  font-size: 12px;
   overflow: hidden;
 }
 .label_style3{
-  color: red;
-  margin-left: 20rpx;
+  color: gray;
+  float: right;
+  margin-right: 10rpx;
   font-size: 12px;
   overflow: hidden;
 }

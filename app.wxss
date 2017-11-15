@@ -2,7 +2,6 @@
 @import 'component/zanui-weapp/dist/index.wxss';
 @import 'common/template/hongbao/hongbao.wxss';
 @import 'common/template/help/help_template.wxss';
-
 .container {
   height: 100%;
   display: flex;

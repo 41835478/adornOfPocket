@@ -1,5 +1,6 @@
 <!--good商品详情页-->
 <import src='../../component/zanui-weapp/dist/quantity/index.wxml' />
+<import src='../../common/template/wxParse/wxParse.wxml' />
 <view class="good_container">
   <view class='good_north '>
     <swiper class='good_scroll border_north' indicator-dots='true' autoplay='true' circular='true'>
@@ -13,7 +14,8 @@
     <view class='good_price border_north'>
       {{goodInfo.goodName}}
       <view class='single_price'>
-        <span style="text-decoration:line-through;margin-right:20rpx;color:gray">¥ {{goodInfo.price/100}}</span>¥ {{goodInfo.promotion/100}}</view>
+      ¥ {{goodInfo.promotion/100}}
+        <span style="text-decoration:line-through;margin-right:20rpx;color:gray;font-size: 12px;">¥ {{goodInfo.price/100}}</span></view>
     </view>
     <view class='good_selled'>
       <span class='sell_item'>运费:免运费 </span>
@@ -26,7 +28,11 @@
       <view class='zan-icon zan-icon-certificate type_item'>
         <span class='word'>企业认证</span>
       </view>
+      
     </view>
+    <view class='wxParse'>
+      <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+      </view>
     <view class='pic_introduce'>
     </view>
   </view>

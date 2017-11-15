@@ -1,4 +1,7 @@
+
+@import '../../common/template/wxParse/wxParse.wxss';
 .good_container {
+  margin-bottom: 100rpx;
 }
 
 .good-btn {

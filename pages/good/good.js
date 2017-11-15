@@ -1,6 +1,7 @@
 // pages/good/good.js
+var wxParse = require("../../common/template/wxParse/wxParse.js")
 let quantity = require("../../component/zanui-weapp/dist/quantity/index.js")
-Page(Object.assign({}, quantity, {
+Page(Object.assign({}, quantity,wxParse, {
 
   /**
    * 页面的初始数据
@@ -95,6 +96,10 @@ Page(Object.assign({}, quantity, {
           goodInfo: res.data.data
         })
         console.log(res.data.data)
+        var article = res.data.data.richContent
+        console.log("富文本:" + article)
+        var that = this
+        wxParse.wxParse('article', 'html', article, that, 0)
       }
     })
   },
