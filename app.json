@@ -6,6 +6,7 @@
     "pages/delivery/delivery",
     "pages/order/order",
     "pages/profile/profile",
+    "pages/profile/advice/advice",
     "pages/wallet/wallet",
     "pages/ticket/ticket",
     "pages/delivery/deliveryDetail/deliveryDetail",

@@ -1,0 +1,20 @@
+.adive_body{
+  background: #f9f9f9;
+  width: 100%;
+}
+
+.advice_label{
+  height:100px;
+  padding:10rpx;
+  width: 96%;
+  margin-left: 2%;
+  margin-top: 20rpx;
+  background:white;
+}
+
+.advice_button{
+  margin-top: 50px;
+  color: #fff;
+  background-color: #4b0;
+  border-color: #0a0;
+}

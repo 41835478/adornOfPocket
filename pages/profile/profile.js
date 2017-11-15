@@ -21,7 +21,10 @@ Page(Object.assign({},Zan.Toast,{
     })
   },
   showToast(){
-    this.showZanToast('toast的内容')
+    // this.showZanToast('toast的内容')
+    wx.navigateTo({
+      url: '/pages/profile/advice/advice',
+    })
   },
   /**
    * 生命周期函数--监听页面加载
