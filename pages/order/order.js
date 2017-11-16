@@ -31,6 +31,7 @@ Page(Object.assign({}, Zan, {
     goods: [],
     selectType: '',//当前目录
     goodsTest: '',
+    baseImgUrl:getApp().globalData.baseImgUrl,
   },
   handleZanTabChange(e) {
     console.log(e)
@@ -182,7 +183,7 @@ Page(Object.assign({}, Zan, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.getDataFromNet(0, 'all')
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

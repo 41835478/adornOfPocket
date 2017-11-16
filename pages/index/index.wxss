@@ -24,6 +24,7 @@
 }
 
 .label_style1{
+  background: white;
   color: black;
   float: left;
   margin-left: 5rpx;
