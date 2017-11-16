@@ -7,7 +7,7 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   data: {
     userInfo: {},
     goodList: [],
-    baseUrl:getApp().globalData.baseUrl,
+    baseUrl:getApp().globalData.baseImgUrl,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     page: {
       pageSize: 5,

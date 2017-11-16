@@ -11,6 +11,7 @@ Page({
     payInfo: {},
     totalPrice: 0,
     word: '',
+    goodImageUrl:'',
     customerOpt: {
       isMessage: true,
       word: ''
@@ -194,11 +195,12 @@ Page({
         console.log(res.data.data)
         this.setData({
           goodInfo: res.data.data,
+          goodImageUrl: getApp().globalData.baseImgUrl + res.data.data.mainImgUrl
         })
         let price = res.data.data.promotion * quantity
         this.setData({
           totalPrice: price.toFixed(2),
-          quantity: quantity
+          quantity: quantity,
         })
         console.log("price=" + price)
       }

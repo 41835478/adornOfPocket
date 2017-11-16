@@ -34,11 +34,11 @@
     </view>
   </view>
   <!-- <scroll-view scroll-y="true" style='height:150px;' lower-threshold="5" bindscrolltolower='pullUp' style='background:#fff;'> -->
-  <scroll-view scroll-y="{{true}}" bindscrolltolower='pullUp'>
+  <scroll-view scroll-y bindscrolltolower='pullUp' style='background:#f9f9f9'>
     <view wx:for="{{goodList}}" wx:for-item="item">
       <view class='pick_list' bindtap='goTogoodInfo' id='{{item.id}}'>
 
-        <image class='item_image' src="{{baseUrl+item.mainImgUrl}}"></image>
+        <image class='item_image' src="{{baseUrl+item.mainImgUrl}}" mode='aspectFit'></image>
         <label class='label_style1'>{{item.goodName}}</label>
          <view > 
                  <label class='label_style2'>¥ {{item.price/100.00}}</label>  

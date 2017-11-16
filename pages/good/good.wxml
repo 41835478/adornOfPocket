@@ -78,8 +78,8 @@
   <view class='back'>
     <navigator url="/pages/index/index" open-type="reLaunch" hover-class="navigator-hover">
       <view  style='height:100rpx;background:#f9f9f9'>
-        <view class="zan-icon zan-icon-home" style="font-size: 40rpx; color: #ff4343;margin-top:4rpx;"></view>
-        <view  style="font-size:24rpx;color: #ff4343;margin-top:-5rpx">首页</view>
+        <view class="zan-icon zan-icon-home" style="font-size: 38rpx; color: #ff4343;"></view>
+        <view  style="font-size:24rpx;color: #ff4343;margin-bottom:10rpx">首页</view>
       </view>
     </navigator>
   </view>

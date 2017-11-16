@@ -25,7 +25,7 @@
     </view>
     <view class="zan-card">
       <view class="zan-card__thumb">
-        <image class="zan-card__img" src="{{goodInfo.mainImgUrl}}" mode="aspectFit"></image>
+        <image class="zan-card__img" src="{{goodImageUrl}}" mode="aspectFit"></image>
       </view>
       <view class="zan-card__detail">
         <view class="zan-card__detail-row">
