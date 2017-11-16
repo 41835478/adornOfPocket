@@ -3,6 +3,8 @@ var Zan = require('../../component/zanui-weapp/dist/tab/index');
 Page(Object.assign({}, Zan, {
   data: {
     url: 'mall/wx/order/findByUserId',
+    confirmUrl: 'mall/wx/order/confirmReceipt',
+    cancelUrl: 'mall/wx/order/cancelOrder',
     tab: {
       list: [{
         id: 'all',
@@ -31,7 +33,7 @@ Page(Object.assign({}, Zan, {
     goods: [],
     selectType: '',//当前目录
     goodsTest: '',
-    baseImgUrl:getApp().globalData.baseImgUrl,
+    baseImgUrl: getApp().globalData.baseImgUrl,
   },
   handleZanTabChange(e) {
     console.log(e)
@@ -66,7 +68,7 @@ Page(Object.assign({}, Zan, {
     let count = data.count
     let goodId = data.goodId
     wx.navigateTo({
-      url: '/pages/pay/pay?id=' + id + '&quantity='+count +'&goodId='+goodId,
+      url: '/pages/pay/pay?id=' + id + '&quantity=' + count + '&goodId=' + goodId,
     })
   },
   /**
@@ -90,6 +92,44 @@ Page(Object.assign({}, Zan, {
       fail: err => {
         wx.hideLoading()
         console.log(err)
+      }
+    })
+  },
+  /**
+   * 确认收货,取消订单
+   */
+  confirmGood(e) {
+    let url 
+    let that = this
+    let status = e.currentTarget.dataset.good.orderStatus
+    console.log("status="+status)
+    if (status == 3) {
+      console.log("确认收货!")
+      url = getApp().globalData.baseUrl + that.data.confirmUrl
+    }
+    if (status == 1) {
+      console.log("取消订单!")
+      url = getApp().globalData.baseUrl + that.data.cancelUrl
+    }
+    let id = e.currentTarget.id
+    wx.login({
+      success: res => {
+        if (res.code) {
+          let requestUrl = url + '?id=' + id + '&wxCode=' + res.code
+          console.log("url=" + requestUrl)
+          wx.request({
+            url:requestUrl,
+            success: res => {
+              var result = res.data.result
+              if (result == 1) {
+                wx.showToast({
+                  title: '操作成功!',
+                })
+              }
+              console.log("返回数据=" + JSON.stringify(res.data))
+            }
+          })
+        }
       }
     })
   },
@@ -236,7 +276,18 @@ Page(Object.assign({}, Zan, {
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    this.getDataFromNet(1)
+
+    let that = this
+    wx.getStorage({
+      key: 'selectedId',
+      success: function (res) {
+        if (res) {
+          that.getDataFromNet(1, res.data)
+        } else {
+
+        }
+      },
+    })
   },
 
   /**
