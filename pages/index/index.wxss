@@ -8,11 +8,11 @@
 /*优选列表*/
  .pick_list{
   background: #fff;
-  float: left; 
+  float: left;
   width: 50%;
   box-sizing: border-box;
   overflow: hidden;
-}  
+}
 
 .item_image{
   width:100%-7.5rpx;
@@ -26,8 +26,8 @@
 .label_style1{
   color: black;
   float: left;
-  margin-left: 5rpx; 
-  width: 100%-7.5rpx;  
+  margin-left: 5rpx;
+  width: 100%-7.5rpx;
   font-size: 12px;
   overflow: hidden;
 }
