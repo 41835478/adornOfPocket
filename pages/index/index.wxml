@@ -40,10 +40,10 @@
 
         <image class='item_image' src="{{baseUrl+item.mainImgUrl}}" mode='aspectFit'></image>
         <label class='label_style1'>{{item.goodName}}</label>
-         <view > 
-                 <label class='label_style2'>¥ {{item.price/100.00}}</label>  
+         <view >
+                 <label class='label_style2'>¥ {{item.price/100.00}}</label>
                  <label class='label_style3'>已售出 {{item.saleVolume}}件</label>
-         </view> 
+         </view>
 
       </view>
     </view>
