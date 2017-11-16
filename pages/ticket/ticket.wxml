@@ -6,16 +6,16 @@
         <span class='money'>{{item.money}}</span>
       </view>
       <view class='content_rg'>
-        <view class='least_money'>满{{item.least}}可用</view>
-        <view class='use_range'>{{item.range}}</view>
+        <view class='least_money'>{{item.content}}</view>
+        <view class='use_range'>{{item.expire}}</view>
       </view>
     </view>
     <view class='ticket_footer'>
       <span class='footer_lf'>
-        {{item.type}}
+        <label wx:if='{{item.type==1}}'>全平台</label>
       </span>
       <span class='footer_rg'>
-        {{item.timeRange}}
+        有效期:{{item.startDate}}-{{item.endDate}}
       </span>
     </view>
   </view>

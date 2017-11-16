@@ -24,12 +24,24 @@ Page(Object.assign({}, Zan.CheckLabel, {
       },
     ],
     checkedValue: 1,
+    inputValue:'',
   },
-
+/**
+ * template回调
+ */
   handleZanCheckLabelSelect(e){
     this.setData({
       checkedValue: e.value
     });
+  },
+  /**
+   * 页面数据保存
+   */
+  inputDataAction(e){
+      this.setData({
+        inputValue: e.detail.value
+      })
+      console.log("输入的建议为:"+this.data.inputValue)
   },
   /**
    * 生命周期函数--监听页面加载

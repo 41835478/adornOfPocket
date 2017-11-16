@@ -51,7 +51,7 @@
     </view>
     <view class='zan-cell'>
       <view class='zan-cell__bd'>买家留言：
-        <input class='word_pay' placeholder='点击给商家留言' value='{{customerOpt.word}}' bindblur='getData' data-name='word' />
+        <input class='word_pay' placeholder='点击给商家留言' value='{{customerOpt.word}}' bindinput='getData' data-name='word' />
       </view>
     </view>
     <view class='zan-cell'>

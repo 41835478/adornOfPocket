@@ -3,9 +3,7 @@
   <view class="zan-panel">
         <template is="zan-check-label" data="{{items, checkedValue}}" />
   </view>
-  <!-- <view class='zan-panel> -->
-  <input placeholder='请留下您宝贵的建议...' class='zan-label advice_label'></input>
-  <!-- </view> -->
+  <input placeholder='请留下您宝贵的建议...' class='zan-label advice_label' bindinput='inputDataAction'></input>
 <view class='zan-panel'>
    <button type="primary" class='advice_button' bindtap='btnAction'> 提交建议</button> 
 

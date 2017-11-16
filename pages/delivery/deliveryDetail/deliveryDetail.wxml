@@ -4,13 +4,13 @@
     <view class='form_item' style='border-top:1px solid #f1f1f1;'>
       <span class='tit'>收货人</span>
       <view class='ipt'>
-         <input placeholder='请填写收货人' bindblur="getData" data-name='name' value='{{addressList.recipients}}'>{{name}}</input>
+         <input placeholder='请填写收货人' bindinput="getData" data-name='name' value='{{addressList.recipients}}'>{{name}}</input>
       </view>
     </view>
     <view class='form_item'>
       <span class='tit'>联系电话</span>
       <view class='ipt'>
-        <input placeholder='手机或固定电话' bindblur='getData' data-name='phone' value='{{addressList.phone}}'>{{phone}}</input>
+        <input placeholder='手机或固定电话' bindinput='getData' data-name='phone' value='{{addressList.phone}}'>{{phone}}</input>
       </view>
     </view>
     <view class='form_item'>
@@ -22,13 +22,13 @@
     <view class='form_item'>
       <span class='tit'>详细地址</span>
       <view class='ipt'>
-        <input placeholder='街道门牌信息' bindblur='getData' data-name='address' value='{{addressList.address}}'>{{address}}</input>
+        <input placeholder='街道门牌信息' bindinput='getData' data-name='address' value='{{addressList.address}}'>{{address}}</input>
       </view>
     </view>
     <view class='form_item'>
       <span class='tit'>邮政编码</span>
       <view class='ipt'>
-        <input placeholder='邮政编码（选填）' bindblur='getData' data-name='code' value='{{addressList.postCode}}'>{{code}}</input>
+        <input placeholder='邮政编码（选填）' bindinput='getData' data-name='code' value='{{addressList.postCode}}'>{{code}}</input>
       </view>
     </view>
     <button type="primary" bindtap="primary" class='btn zan-btn--large' bindtap='submit'> 保存 </button>

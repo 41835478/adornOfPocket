@@ -41,7 +41,7 @@ App({
   },
   globalData: {
     userInfo: null,
-    baseUrl: 'http://v6ekei.natappfree.cc/'
-    // baseUrl:'http://192.168.0.105:8088/'
+    // baseUrl: 'http://v6ekei.natappfree.cc/'
+    baseUrl:'http://192.168.0.121:8088/'
   }
 })
