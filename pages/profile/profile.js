@@ -26,6 +26,41 @@ Page(Object.assign({},Zan.Toast,{
       url: '/pages/profile/advice/advice',
     })
   },
+/**
+ * 获取积分信息
+ */
+getDataFromNet(){
+  let that = this
+  wx.showLoading({
+    title: '加载中',
+  })
+  wx.login({
+    success: res => {
+      if (res.code) {
+        let wxCode = res.code
+        let url = getApp().globalData.baseUrl + this.data.url + "?wxCode=" + wxCode
+        console.log("url = " + url)
+        wx.request({
+          url: url,
+          success: res => {
+            wx.hideLoading()
+            let result = res.data.result
+            if (result == 1) {
+              that.setData({
+                pointInfo: res.data.data
+              })
+            }
+            console.log("backData=" + JSON.stringify(res.data.data))
+          },
+          fail: err => {
+            wx.hideLoading()
+            console.log("err=" + JSON.stringify(err))
+          }
+        })
+      }
+    }
+  })
+},
   /**
    * 生命周期函数--监听页面加载
    */
@@ -33,8 +68,7 @@ Page(Object.assign({},Zan.Toast,{
     this.setData({
       userInfo:app.globalData.userInfo
     })
-    
-    
+    this.getDataFromNet()
   },
 
   /**
@@ -48,36 +82,7 @@ Page(Object.assign({},Zan.Toast,{
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    let that = this
-    wx.showLoading({
-      title: '加载中',
-    })
-    wx.login({
-      success: res => {
-        if (res.code) {
-          let wxCode = res.code
-          let url = getApp().globalData.baseUrl + this.data.url + "?wxCode=" + wxCode
-          console.log("url = "+ url)
-          wx.request({
-            url: url,
-            success: res => {
-              wx.hideLoading()
-              let result = res.data.result
-              if(result == 1 ){
-                that.setData({
-                  pointInfo:res.data.data
-                })
-              }
-              console.log("backData=" + JSON.stringify(res.data.data))
-            },
-            fail: err => {
-              wx.hideLoading()
-              console.log("err="+ JSON.stringify(err))
-            }
-          })
-        }
-      }
-    })
+   
   },
 
   /**

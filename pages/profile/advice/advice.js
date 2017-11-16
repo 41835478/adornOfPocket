@@ -10,17 +10,17 @@ Page(Object.assign({}, Zan.CheckLabel, {
       {
         padding: 0,
         value: '1',
-        name: '给UI界面的建议',
+        name: '给小程序界面优化的建议',
       },
       {
         padding: 0,
         value: '2',
-        name: '给应用使用便利的建议',
+        name: '给购物体验的建议',
       },
       {
         padding: 0,
         value: '3',
-        name: '给应用功能的建议',
+        name: '给售后服务的建议',
       },
     ],
     checkedValue: 1,

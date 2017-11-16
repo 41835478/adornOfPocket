@@ -15,7 +15,7 @@
         <label wx:if='{{item.type==1}}'>全平台</label>
       </span>
       <span class='footer_rg'>
-        有效期:{{item.startDate}}-{{item.endDate}}
+        有效期:{{item.startDate}} 至 {{item.endDate}}
       </span>
     </view>
   </view>
