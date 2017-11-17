@@ -14,8 +14,9 @@
     <view class='good_price border_north'>
       {{goodInfo.goodName}}
       <view class='single_price'>
-      ¥ {{goodInfo.promotion/100}}
-        <span style="text-decoration:line-through;margin-right:20rpx;color:gray;font-size: 12px;">¥ {{goodInfo.price/100}}</span></view>
+        ¥ {{goodInfo.promotion/100}}
+        <span style="text-decoration:line-through;margin-right:20rpx;color:gray;font-size: 12px;">¥ {{goodInfo.price/100}}</span>
+      </view>
     </view>
     <view class='good_selled'>
       <span class='sell_item'>运费:免运费 </span>
@@ -26,13 +27,40 @@
   <view class='good_south'>
     <view class='shop_type'>
       <view class='zan-icon zan-icon-certificate type_item'>
-        <span class='word'>企业认证</span>
+        <span class='word'>商品介绍</span>
       </view>
-      
+
     </view>
+    <!-- 商品详情 -->
     <view class='wxParse'>
-      <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+      <template is="wxParse" data="{{wxParseData:article.nodes}}" />
+    </view>
+    <view class='pic_introduce'>
+    </view>
+  </view>
+  <view class='good_bottom'>
+    <view class='shop_type'>
+      <view class='zan-icon zan-icon-certificate type_item'>
+        <span class='word'>商品评价</span>
       </view>
+    </view>
+<!-- 商品评价 -->
+    <view class='suggest_view' wx:for='{{goodSuggest}}' wx:key='item'>
+      <image class='suggest_image' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp'></image>
+      <label class='suggest_name'>赵日天</label>
+      <label class='suggest_date'>{{item.createDate}}</label>
+      <view class='suggest_content'>{{item.message}}</view>
+       <image wx:for='{{[1,2,3]}}' class='suggest_goodImg' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp'></image> 
+    </view>
+<!-- 测试数据 -->
+      <view class='suggest_view'> 
+      <image class='suggest_image' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp'></image>
+      <label class='suggest_name'>开化一霸</label>
+      <label class='suggest_date'>2017-10-12 10:32:33</label>
+      <view class='suggest_content'>安徽代理费;家里的;加;大家发了;卡剑荡四方;垃圾毒素付了款;案件的法律;卡将对方立刻;案件的法律;案件是否</view>
+       <image wx:for='{{[1,2]}}' class='suggest_goodImg' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp'></image> 
+    </view> 
+
     <view class='pic_introduce'>
     </view>
   </view>
@@ -53,7 +81,7 @@
         <view class='good_category'>
           <view class='category_list'>
             <view class='item_tit'>尺寸:</view>
-            <view class='item_list' wx:for='{{specs}}' wx:for-item="item">
+            <view class='item_list' wx:for='{{specs}}' wx:key="item">
               <button wx:if="{{item.showSelect==false}}" class="zan-btn zan-btn--mini" bindtap='chickAction' id='{{item.id}}'>{{item.name}}cm</button>
               <button wx:else class="zan-btnSelect zan-btn--mini" bindtap='chickAction' id='{{item.id}}'>{{item.name}}cm</button>
             </view>
@@ -77,9 +105,9 @@
 <view class='order_btn'>
   <view class='back'>
     <navigator url="/pages/index/index" open-type="reLaunch" hover-class="navigator-hover">
-      <view  style='height:100rpx;background:#f9f9f9'>
+      <view style='height:100rpx;background:#f9f9f9'>
         <view class="zan-icon zan-icon-home" style="font-size: 38rpx; color: #ff4343;"></view>
-        <view  style="font-size:24rpx;color: #ff4343;margin-bottom:10rpx">首页</view>
+        <view style="font-size:24rpx;color: #ff4343;margin-bottom:10rpx">首页</view>
       </view>
     </navigator>
   </view>

@@ -6,6 +6,7 @@ Page(Object.assign({}, Zan.CheckLabel, {
    * 页面的初始数据
    */
   data: {
+    url:'mall/wx/member/suggest',
     items: [
       {
         padding: 0,
@@ -42,6 +43,30 @@ Page(Object.assign({}, Zan.CheckLabel, {
         inputValue: e.detail.value
       })
       console.log("输入的建议为:"+this.data.inputValue)
+  },
+  /**
+   * 提交建议
+   */
+  btnAction(){
+    let that = this
+    wx.login({
+      success:res=>{
+        var params = {}
+        params.type = '1'
+        params.content = '啦啦啦啦啦啦啊鼎折覆餗'
+        params.wxCode = res.code
+        if(res.code){
+          wx.request({
+            url: getApp().globalData.baseUrl + that.data.url,
+            data:params,
+            method:'POST',
+            success:res=>{
+              console.log('data='+JSON.stringify(res.data))
+            }
+          })
+        }
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面加载

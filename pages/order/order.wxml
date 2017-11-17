@@ -4,7 +4,7 @@
     <template is="zan-tab" data="{{tab: tab, componentId: 'tab'}}"></template>
   </view>
   <scroll-view scroll-y="true" style='width:100%;background:#f9f9f9f9'>
-    <view class="zan-panel" wx:for="{{goods}}" wx:for-item="item" style='background:white'>
+    <view class="zan-panel" wx:for="{{goods}}" wx:key="item" style='background:white'>
       <view class='zan-card'>
         <view class='zan-card__detail-row zan-c-gray-darker'>
           <view class="zan-card__right-col zan-c-red" wx:if='{{item.orderStatus==1}}'>待付款</view>

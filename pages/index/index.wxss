@@ -7,11 +7,13 @@
 
 /*优选列表*/
  .pick_list{
-  background: #f9f9f9;
+  background: white;
+  padding: 10rpx;
   float: left; 
   width: 50%;
   box-sizing: border-box;
   overflow: hidden;
+  border: 1rpx solid #e5e5e5;
 }
 
 .item_image{
@@ -21,6 +23,8 @@
   margin-top:5rpx;
   margin-right: 5prx;
   background:white ;
+    /* border-bottom: 1rpx solid #e5e5e5; */
+
 }
 
 .label_style1{
@@ -31,6 +35,7 @@
   width: 100%-7.5rpx;
   font-size: 12px;
   overflow: hidden;
+   /* border-bottom: 1rpx solid #e5e5e5; */
 }
 .label_style2{
   color: red;

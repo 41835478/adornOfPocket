@@ -21,6 +21,9 @@ Page(Object.assign({}, Zan, {
       }, {
         id: 'sign',
         title: '已完成',
+      }, {
+        id: 'close',
+        title: '已关闭',
       }],
       selectedId: 'all',
       scroll: false,
@@ -175,6 +178,9 @@ Page(Object.assign({}, Zan, {
     if (selectedId == 'sign') {
       status = 4
     }//+that.data.wxCode
+    if(selectedId == 'close'){
+      status = 6
+    }
     wx.setStorageSync('selectedId', selectedId)
 
     wx.login({

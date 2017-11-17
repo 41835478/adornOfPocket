@@ -8,10 +8,24 @@ Page(Object.assign({}, quantity,wxParse, {
    */
   data: {
     goodInfo: {},
+    goodSuggest:[],
     url: 'mall/wx/good/findByGoodId?goodId=',
+    suggestUrl:'mall/wx/good/findEstimate',
     showDialog: false,//dialog开关
     quantity: 1,//件数
-    specs: [],
+    specs: [{
+      id: 0,
+      name: "100",
+      showSelect: false
+    }, {
+      id: 1,
+      name: "200",
+      showSelect: false
+    }, {
+      id: 2,
+      name: "300",
+      showSelect: false
+    },],
     selectId: 0
   },
   /**
@@ -66,28 +80,14 @@ Page(Object.assign({}, quantity,wxParse, {
   onLoad: function (options) {
 
     this.setData({
-      specs: [{
-        id: 0,
-        name: "100",
-        showSelect: false
-      }, {
-        id: 1,
-        name: "200",
-        showSelect: false
-      }, {
-        id: 2,
-        name: "300",
-        showSelect: false
-      },]
-    })
-
-    this.setData({
       goodInfo: {
         id: options.goodId,
         quantity: quantity
-
       }
     })
+    //商品评价
+    this.getGoodSuggest(options.goodId)
+
     wx.request({
       url: getApp().globalData.baseUrl + this.data.url + options.goodId,
       method: 'GET',
@@ -97,11 +97,33 @@ Page(Object.assign({}, quantity,wxParse, {
         })
         console.log(res.data.data)
         var article = res.data.data.richContent
-        console.log("富文本:" + article)
+        // console.log("富文本:" + article)
         var that = this
         wxParse.wxParse('article', 'html', article, that, 0)
       }
     })
+  },
+  /**
+   * 获取商品评价
+   */
+  getGoodSuggest(goodId){
+    let that = this
+      wx.login({
+        success:res=>{
+          if(res.code){
+            let url = getApp().globalData.baseUrl + that.data.suggestUrl +'?wxCode='+res.code +'&goodId='+goodId +'&pageNo=1&pageSize=5'
+            wx.request({
+              url: url,
+              success:res=>{
+                that.setData({
+                  goodSuggest: res.data.data
+                })           
+                console.log("商品评价:" + JSON.stringify(res))   
+              }
+            })
+          }
+        }
+      })
   },
 
   /**
