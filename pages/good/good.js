@@ -1,16 +1,17 @@
 // pages/good/good.js
 var wxParse = require("../../common/template/wxParse/wxParse.js")
 let quantity = require("../../component/zanui-weapp/dist/quantity/index.js")
-Page(Object.assign({}, quantity,wxParse, {
+Page(Object.assign({}, quantity, wxParse, {
 
   /**
    * 页面的初始数据
    */
   data: {
     goodInfo: {},
-    goodSuggest:[],
+    goodSuggest: [],
+    id:'', //商品ID
     url: 'mall/wx/good/findByGoodId?goodId=',
-    suggestUrl:'mall/wx/good/findEstimate',
+    suggestUrl: 'mall/wx/good/findEstimate',
     showDialog: false,//dialog开关
     quantity: 1,//件数
     specs: [{
@@ -34,6 +35,9 @@ Page(Object.assign({}, quantity,wxParse, {
   skipToPay(e) {
     console.log(e)
     var goodId = e.currentTarget.id
+    this.setData({
+      goodId : goodId
+    })
     var quantityCount = e.currentTarget.dataset.count
     wx.navigateTo({
       url: '/pages/pay/pay?goodId=' + goodId + '&quantity=' + quantityCount,
@@ -80,10 +84,8 @@ Page(Object.assign({}, quantity,wxParse, {
   onLoad: function (options) {
 
     this.setData({
-      goodInfo: {
         id: options.goodId,
         quantity: quantity
-      }
     })
     //商品评价
     this.getGoodSuggest(options.goodId)
@@ -106,25 +108,19 @@ Page(Object.assign({}, quantity,wxParse, {
   /**
    * 获取商品评价
    */
-  getGoodSuggest(goodId){
+  getGoodSuggest(goodId) {
     let that = this
-      wx.login({
-        success:res=>{
-          if(res.code){
-            let url = getApp().globalData.baseUrl + that.data.suggestUrl +'?wxCode='+res.code +'&goodId='+goodId +'&pageNo=1&pageSize=5'
-            wx.request({
-              url: url,
-              success:res=>{
-                that.setData({
-                  goodSuggest: res.data.data
-                })           
-                console.log("商品评价:" + JSON.stringify(res))   
-              }
-            })
-          }
-        }
-      })
-  },
+    let url = getApp().globalData.baseUrl + that.data.suggestUrl + '?goodId=' + goodId + '&pageNo=1&pageSize=5'
+    wx.request({
+      url: url,
+      success: res => {
+        that.setData({
+          goodSuggest: res.data.data
+        })
+        console.log("商品评价:" + JSON.stringify(res))
+      }
+    })
+},
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -172,6 +168,9 @@ Page(Object.assign({}, quantity,wxParse, {
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-
+    return {
+      title: '爱美的人都爱妆口袋',
+      path: '/pages/good/good?goodId='+this.data.id
+    }
   }
 }))
