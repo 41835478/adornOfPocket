@@ -1,5 +1,5 @@
 <view class="ticket_container">
-  <view class='ticket_item' wx:for="{{ticketList}}">
+  <view class='ticket_item' wx:for="{{ticketList}}" bindtap='selectAction' id='{{item.id}}'>
     <view class='ticket_content'>
       <view class='content_lf'>
         ¥

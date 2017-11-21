@@ -41,8 +41,9 @@ App({
   },
   globalData: {
     userInfo: null,
-    baseUrl: 'http://ka82zd.natappfree.cc/',
-    // baseUrl:'http://192.168.0.121:8088/',
-    baseImgUrl: 'http://ka82zd.natappfree.cc'
+    // http://4mnkwf.natappfree.cc
+    // baseUrl: 'http://4mnkwf.natappfree.cc/',
+    baseUrl:'http://192.168.0.114:8088/',
+    baseImgUrl: 'http://4mnkwf.natappfree.cc'
   }
 })

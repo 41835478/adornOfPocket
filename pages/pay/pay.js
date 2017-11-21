@@ -7,16 +7,20 @@ Page({
   data: {
     url: 'mall/wx/good/findByGoodId',
     payUrl: 'mall/wx/jsapi/order/preOrder',
+    tickUrl: 'mall/wx/ticket/findAll',
     goodInfo: {},
     payInfo: {},
+    ticketInfo: {},
+    selectTicketId:'',
+    selectTicketPrice:'',
     totalPrice: 0,
     word: '',
-    goodImageUrl:'',
+    goodImageUrl: '',
     customerOpt: {
       isMessage: true,
       word: ''
     },
-    quantity:1,
+    quantity: 1,
     btnTitle: "提交订单",
     showTokenDialog: false,//token优惠券Dialog开关
     deliveryFlag: true,
@@ -50,8 +54,37 @@ Page({
    * 打开token列表
    */
   toggleDialog() {
-    this.setData({
-      showTokenDialog: !this.data.showTokenDialog
+
+    let that = this
+
+    wx.login({
+      success: res => {
+        if (res.code) {
+          wx.request({
+            url: getApp().globalData.baseUrl + that.data.tickUrl + '?pageNo=1&pageSize=10' + '&wxCode=' + res.code,
+            success: res => {
+              console.log('data=====' + JSON.stringify(res.data.list))
+              that.setData({
+                ticketInfo: res.data.list,
+                showTokenDialog: !that.data.showTokenDialog
+              })
+            }
+          })
+        }
+      }
+    })
+  },
+  /**
+   * 选择优惠券
+   */
+  selectAction(e) {
+    let that = this
+    let ticketId = e.currentTarget.id
+    let price = e.currentTarget.dataset.ticket.money
+    that.setData({
+      selectTicketId:ticketId,
+      selectTicketPrice:price,
+      showTokenDialog: !that.data.showTokenDialog
     })
   },
   /**
@@ -70,9 +103,9 @@ Page({
   gotoPay() {
 
     if (this.data.againPay) {
-        //去完成已下单的付款
+      //去完成已下单的付款
 
-        this.againToPay()
+      this.againToPay()
 
     } else {
       //第一次下单
@@ -92,12 +125,12 @@ Page({
       order.orderFee = that.data.quantity * that.data.goodInfo.price
       order.count = that.data.quantity
       order.message = that.data.word
-      order.ticket = "1"
+      order.ticket = that.data.selectTicketId
       order.point = 22
       order.paymentFee = 1    //实付金额
-      order.reduceFee = 0       //优惠金额
+      order.reduceFee = that.data.selectTicketPrice       //优惠金额
       order.freightFee = 0       //运费金额
-      order.goodFee =  that.data.goodInfo.price //商品金额
+      order.goodFee = that.data.goodInfo.price //商品金额
       console.log("第一次下单order = " + JSON.stringify(order))
       wx.login({
         success: res => {
@@ -141,12 +174,12 @@ Page({
       package: 'prepay_id=' + this.data.payInfo.prepay_id,
       signType: 'MD5',
       paySign: this.data.payInfo.paySign,
-      'success': function (res) { 
+      'success': function (res) {
         console.log(res)
         wx.navigateBack({
-          delta:1
+          delta: 1
         })
-         },
+      },
       'fail': function (res) { },
       'complete': function (res) { }
     })
@@ -155,7 +188,7 @@ Page({
    * 订单页面重新付款
    */
   againToPay() {
-    
+
     wx.login({
       success: res => {
         wx.showLoading({
@@ -218,7 +251,7 @@ Page({
       this.setData({
         btnTitle: "去支付",
         orderId: options.id,
-        againPay:true
+        againPay: true
       })
     }
     //获取商品信息

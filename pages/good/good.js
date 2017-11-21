@@ -10,6 +10,7 @@ Page(Object.assign({}, quantity, wxParse, {
     goodInfo: {},
     goodSuggest: [],
     id:'', //商品ID
+    imageUrl: getApp().globalData.baseImgUrl,
     url: 'mall/wx/good/findByGoodId?goodId=',
     suggestUrl: 'mall/wx/good/findEstimate',
     showDialog: false,//dialog开关
@@ -85,10 +86,11 @@ Page(Object.assign({}, quantity, wxParse, {
 
     this.setData({
         id: options.goodId,
-        quantity: quantity
     })
     //商品评价
     this.getGoodSuggest(options.goodId)
+
+    console.log("goodis = "+ JSON.stringify(options))
 
     wx.request({
       url: getApp().globalData.baseUrl + this.data.url + options.goodId,

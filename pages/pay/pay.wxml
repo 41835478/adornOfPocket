@@ -83,45 +83,64 @@
     <view class='zan-cell cost_info'>
       <view class='zan-cell__bd'>优惠券</view>
       <view class='zan-cell__ft'>
-        暂无优惠劵可用
+        - ¥ {{selectTicketPrice}}
       </view>
     </view>
     <view class='zan-cell'>
       <view class='zan-cell__bd'>积分抵扣(100积分=1元)</view>
       <view class='zan-cell__ft'>
-        ¥ -10
+        ¥ 0
       </view>
     </view>
     <view class='zan-cell'>
       <view class='zan-cell__bd'>运费</view>
       <view class='zan-cell__ft'>
-        ¥ 待定
+        免运费
       </view>
     </view>
   </view>
 </view>
+
 <view class="zan-dialog {{ showTokenDialog ? 'zan-dialog--show' : '' }}">
   <view class="zan-dialog__mask" bindtap="toggleDialog" />
-  <view class="zan-dialog__container">
+  <view class="zan-dialog__container" style='max-height: 70%;'>
     <view class='toke_list_tit'>选择优惠</view>
-    <view class='token_list'>
-      <view class='not_find' hidden='true'>
-        暂无可用优惠券
+    <!-- <view class='not_find' hidden='true'>
+      暂无可用优惠券
+    </view> -->
+    <scroll-view scroll-y="true" class='ticket_scroll'>
+      <view class='ticket_item' wx:for='{{ticketInfo}}' wx:key='item' bindtap='selectAction' id='{{item.id}}' data-ticket='{{item}}'>
+        <view class='token_content'>
+          <view class='content_lf'>
+            ¥
+            <span class='money'>{{item.money}}</span>
+          </view>
+          <view class='content_rg'>
+            <view class='least_money'>{{item.content}}</view>
+            <view class='use_range'>{{item.expire}}</view>
+          </view>
+        </view>
+        <view class='token_footer'>
+          <span class='footer_lf'>
+            <label wx:if='{{item.type==1}}'>全平台</label>
+          </span>
+          <span class='footer_rg'>
+            有效期:{{item.startDate}} 至 {{item.endDate}}
+          </span>
+        </view>
       </view>
-      <view class='token_item'>
-        <view class='token_content'></view>
-        <view class='token_footer'></view>
-      </view>
-      <view class='token_btn'>
-        <view>取消</view>
-        <view class='token_btn_lf'>确认</view>
-      </view>
-    </view>
+    </scroll-view>
+    <!-- <view class='token_btn'>
+      <view>取消</view>
+      <view class='token_btn_lf' bindtap='selectAction'>确认</view>
+    </view> -->
   </view>
 </view>
+
+
 <view class='pay_footer'>
   <view class='pay_footer_lf'>合计:
-    <span class='price_color'>¥ {{totalPrice/100}}</span>
+    <span class='price_color'>¥ {{totalPrice/100-selectTicketPrice}}</span>
   </view>
   <button class='zan-btn zan-btn--danger pay_footer_rg' bindtap='gotoPay'>{{btnTitle}}</button>
 </view>

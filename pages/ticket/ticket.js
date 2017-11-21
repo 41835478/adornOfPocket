@@ -29,7 +29,7 @@ Page({
       success: res => {
         if (res.code) {
           wx.request({
-            url: getApp().globalData.baseUrl + "mall/wx/ticket/findByUserId?wxCode=" + res.code + "&pageNo=1&pageSize=5",
+            url: getApp().globalData.baseUrl + "mall/wx/ticket/findAll?" +"pageNo=1&pageSize=10",
             success: res => {
               console.log("优惠券结果:" + JSON.stringify(res.data))
               var arr = res.data.list
@@ -46,12 +46,40 @@ Page({
         }
       }
     })
-
+  },
+  /**
+   * 领取优惠券 
+   */
+  selectAction(e){
+    let that = this
+    let ticketId = e.currentTarget.id
+    wx.login({
+      success: res => {
+        if (res.code) {
+          wx.request({
+            url: getApp().globalData.baseUrl + "mall/wx/ticket/getTicket?" + "ticketId=" + ticketId + "&wxCode="+res.code,
+            success: res => {
+              console.log("优惠券结果:" + JSON.stringify(res.data))
+              var arr = res.data.list
+              var timestamp3 = 1503058804;
+              var newDate = new Date();
+              newDate.setTime(timestamp3 * 1000);
+              // 2014/6/18
+              console.log(newDate.toLocaleDateString());
+              that.setData({
+                ticketList: arr
+              })
+            }
+          })
+        }
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
+
 
   },
 
