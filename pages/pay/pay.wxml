@@ -62,7 +62,7 @@
   <view class='zan-panel token_pay'>
     <view class='zan-cell zan-cell--access' bindtap='toggleDialog'>
       <view class='zan-cell__bd'>优惠</view>
-      <view class='zan-cell__ft' style='font-size:26rpx;'>使用优惠</view>
+      <view class='zan-cell__ft' style='font-size:26rpx;'>{{selectTicketId?"已选择":"使用优惠"}}</view>
     </view>
   </view>
   <view class='zan-panel message_pay'>

@@ -11,7 +11,7 @@ Page({
     goodInfo: {},
     payInfo: {},
     ticketInfo: {},
-    selectTicketId:'',
+    selectTicketId:null,
     selectTicketPrice:'',
     totalPrice: 0,
     word: '',
