@@ -206,7 +206,7 @@ Page(Object.assign({}, Zan, {
     }
     if (selectedId == 'sign') {
       status = 4
-    }//+that.data.wxCode
+    }
     if(selectedId == 'close'){
       status = 6
     }
@@ -322,10 +322,11 @@ Page(Object.assign({}, Zan, {
       success: function (res) {
         if (res) {
           that.getDataFromNet(1, res.data)
-        } else {
-          that.getDataFromNet(1,"all")
         }
       },
+      fail:function(err){
+        that.getDataFromNet(1, "all")
+      }
     })
   },
 

@@ -1,14 +1,18 @@
 <!--pages/order/evaluate/evaluate.wxml-->
 <text>pages/order/evaluate/evaluate.wxml</text>
 <view class='evaluate_item'>
-   <view>
-   <image class='evaluate_item_image' src=''></image>
-   <view class='evaluate_item_name'>商品名字</view>
-   </view>
-   <view>
-   <textarea class='evaluate_item_input'>
-   </textarea>
-   </view>
-   <view>
-   </view>
+  <view style='display:inline-flex'>
+    <view>
+      <image class='evaluate_item_image' src='https://img11.360buyimg.com/n4/s260x260_jfs/t3619/81/72301080/274437/ff3193c1/57fdea57Ncf05fa2c.jpg' mode='asepctFit'></image>
+    </view>
+    <view>
+      <label class='evaluate_item_name'>商品名字</label>
+    </view>
+  </view>
+  <view>
+    <textarea class='evaluate_item_input'>
+    </textarea>
+  </view>
+  <view>
+  </view>
 </view>
