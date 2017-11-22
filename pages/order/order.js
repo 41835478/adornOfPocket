@@ -173,6 +173,9 @@ Page(Object.assign({}, Zan, {
     })
     let pageNo
     if (e == 0) {
+      that.setData({
+        pageNo: 1
+      })
       pageNo = 1
     } else
       if (e == 1) {
@@ -272,13 +275,17 @@ Page(Object.assign({}, Zan, {
     let that = this
     wx.getStorage({
       key: 'selectedId',
+      //重载
       success: function (res) {
         if (res) {
-          // console.log("onshow and selectedId=" + res.data)
+          console.log("onshow and selectedId=" + res.data)
           that.getDataFromNet(0, res.data)
-        } else {
-          that.getDataFromNet(0, 'all')
-        }
+        } 
+      },
+      //初始化
+      fail:function(err){
+        console.log("onshow and selectedId=all")
+        that.getDataFromNet(0, 'all')
       },
     })
   },
@@ -316,6 +323,7 @@ Page(Object.assign({}, Zan, {
         if (res) {
           that.getDataFromNet(1, res.data)
         } else {
+          that.getDataFromNet(1,"all")
         }
       },
     })
