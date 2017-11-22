@@ -1,16 +1,16 @@
 <import src="../../../component/zanui-weapp/dist/form/check_label.wxml" />
 <view class='adive_body'>
   <view class="zan-panel" style='background:white'>
-  <label style='font-size:12px;margin-left:30rpx;'>请勾选以下建议</label>
+    <label style='font-size:12px;margin-left:30rpx;'>请勾选以下建议</label>
   </view>
   <view class="zan-panel">
-        <template is="zan-check-label" data="{{items, checkedValue}}" />
+    <template is="zan-check-label" data="{{items, checkedValue}}" />
   </view>
-<textarea placeholder='请留下您宝贵的建议...' class='zan-label advice_label' bindinput='inputDataAction' style='padding-top:10px'>
-</textarea>
+  <textarea placeholder='请留下您宝贵的建议...' class='zan-label advice_label' bindinput='inputDataAction'>
+  </textarea>
   <!-- <input placeholder='请留下您宝贵的建议...' class='zan-label advice_label' bindinput='inputDataAction'></input> -->
-<view class='zan-panel'>
-   <button type="primary" class='advice_button' bindtap='btnAction'> 提交建议</button> 
+  <view class='zan-panel'>
+    <button type="primary" class='advice_button' bindtap='btnAction'> 提交建议</button>
 
-</view>
+  </view>
 </view>

@@ -7,47 +7,48 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   data: {
     userInfo: {},
     goodList: [],
-    baseUrl:getApp().globalData.baseImgUrl,
+    baseUrl: getApp().globalData.baseImgUrl,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    page: {
-      pageSize: 5,
-      pageNo: 1
-    },
+
+    pageNo: 1,
+
     activityShow: false,//红包活动显示标识
     hasUserInfo: false,
     lastPage: false,
-    pageComplete: true,
+    // pageComplete: true,
     animationData: {},
   },
   onShow() {
     wx.request({
-      url: getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=1&pageSize=5',
+      url: getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=1&pageSize=3',
       method: 'GET',
       success: res => {
         console.log(res);
         this.setData({
-          goodList: res.data.list
+          goodList: res.data.list,
+          lastPage: false,
+          pageNo:1,
         })
       }
     })
   },
   // 上拉加载
   pullUp: function () {
-    console.log(this.data.lastPage)
+    console.log('是否最后一页:' + this.data.lastPage)
     //最后一页，不再进行请求
-    if (this.data.lastPage || !this.data.pageComplete) {
+    if (this.data.lastPage) {
       return;
     }
     // 防止过度频繁请求
-    this.setData({
-      pageComplete: false
-    })
+    // this.setData({
+    //   pageComplete: false
+    // })
     wx.showLoading({
       title: '加载中'
     });
-    let pageNo = this.data.page.pageNo + 1;
+    let pageNo = this.data.pageNo + 1;
     console.log(pageNo);
-    let url = getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=' + pageNo + '&pageSize=5';
+    let url = getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=' + pageNo + '&pageSize=3';
     wx.request({
       url: url,
       method: "GET",
@@ -55,14 +56,12 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
         if (res.statusCode == 200) {
           let arr = this.data.goodList.concat(res.data.list);
           console.log(arr);
-          if (res.data.list.length>0){
+          if (res.data.list.length > 0) {
             this.setData({
               goodList: arr,
               lastPage: res.data.lastPage,
-              page: {
-                pageNo: pageNo
-              },
-              pageComplete: true
+              pageNo: pageNo,
+              // pageComplete: true
             });
           }
           wx.hideLoading();
@@ -72,7 +71,7 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
         console.log(error)
         wx.hideLoading();
         this.setData({
-          pageComplete: true
+          // pageComplete: true
         })
       }
     })
@@ -92,14 +91,31 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   /**
    * 点击查看商品详情
    */
-  goTogoodInfo(e){
-    console.log("点击的数据="+e)
+  goTogoodInfo(e) {
+    console.log("点击的数据=" + e)
     var goodID = e.currentTarget.id
     wx.navigateTo({
-      url: '/pages/good/good?goodId='+goodID,
+      url: '/pages/good/good?goodId=' + goodID,
     })
   },
-  
+
+  /**
+   * 搜索商品
+   */
+  searchGoodAction(e) {
+    let that = this
+    console.log("搜索的内容为:" + JSON.stringify(e.detail.value))
+    wx.request({
+      url: getApp().globalData.baseUrl + "mall/wx/good/findBySearchKey" + "?searchKey=" + e.detail.value + "&pageNo=1&pageSize=10",
+      success: function (res) {
+        console.log(JSON.stringify(res.data.list))
+        that.setData({
+          goodList: res.data.list
+        })
+      }
+    })
+  },
+
   onLoad: function () {
     //判断本地是否有缓存
     wx.getStorage({
@@ -156,7 +172,8 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   },
   // 下拉刷新事件
   onPullDownRefresh() {
-    wx.stopPullDownRefresh();
+    this.pullUp()
+    // wx.stopPullDownRefresh();
   },
   getUserInfo: function (e) {
     console.log(e)

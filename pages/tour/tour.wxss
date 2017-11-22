@@ -1,0 +1,11 @@
+/* pages/tour/tour.wxss */
+.tour_item{
+  /* border-bottom:1rpx solid #e5e5e5; */
+  background: white;
+  margin-top:10px;
+  padding-bottom: 10px;
+}
+.tour_item_label{
+  margin-left: 10px;
+  margin-right: 10px;
+}

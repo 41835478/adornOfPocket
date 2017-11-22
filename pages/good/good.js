@@ -99,7 +99,7 @@ Page(Object.assign({}, quantity, wxParse, {
         this.setData({
           goodInfo: res.data.data
         })
-        console.log(res.data.data)
+        console.log('商品详情:' + JSON.stringify(res.data.data))
         var article = res.data.data.richContent
         // console.log("富文本:" + article)
         var that = this

@@ -1,0 +1,12 @@
+<!--pages/tour/tour.wxml-->
+<view style='background:#f9f9f9'>
+  <view class='tour_item' wx:for='{{tourGoodInfo}}' wx:key='item'>
+    <image style='width:100%;height:150px' src='{{imgUrl+item.mainImgUrl}}' mode='aspectFit'></image>
+    <view class='zan-font-16 zan-c-black tour_item_label'>{{item.goodName}}</view>
+    <view class='tour_item_label'>
+      <label class='zan-c-red'>¥ {{item.price/100}}</label>
+      <label style='margin-left:20rpx' class=' zan-c-gray-dark zan-font-12'>已团购{{item.saleVolume}}件</label>
+      <button class='zan-btn zan-btn--small zan-btn--primary' style='float:right;margin-right:20rpx' bindtap='buyAction' id='{{item.goodId}}'>去团购</button>
+    </view>
+  </view>
+</view>

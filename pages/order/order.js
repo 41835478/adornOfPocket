@@ -91,6 +91,16 @@ Page(Object.assign({}, Zan, {
       success: res => {
         wx.hideLoading()
         console.log(res.data)
+        wx.showModal({
+          title: '提示',
+          content: res.data.data,
+          showCancel:false,
+          success:function(res){
+            if(res.confirm){
+              that.getDataFromNet(0, that.data.selectedId)
+            }
+          }
+        })
       },
       fail: err => {
         wx.hideLoading()
@@ -125,8 +135,15 @@ Page(Object.assign({}, Zan, {
             success: res => {
               var result = res.data.result
               if (result == 1) {
-                wx.showToast({
-                  title: '操作成功!',
+                wx.showModal({
+                  title: '提示',
+                  content: res.data.data,
+                  showCancel:false,
+                  success: function (res) {
+                    if (res.confirm) {
+                      that.getDataFromNet(0, that.data.selectedId)
+                    }
+                  }
                 })
               }
               console.log("返回数据=" + JSON.stringify(res.data))
@@ -135,6 +152,15 @@ Page(Object.assign({}, Zan, {
         }
       }
     })
+  },
+  /**
+   * 商品评论
+   */
+  goodsSuggestAction(e){
+      console.log("评价商品!")
+      wx.navigateTo({
+        url: '/pages/order/evaluate/evaluate',
+      })
   },
   /**
    * 获取当前列订单信息 e:0 导航栏点击 1:上拉刷新
@@ -290,7 +316,6 @@ Page(Object.assign({}, Zan, {
         if (res) {
           that.getDataFromNet(1, res.data)
         } else {
-
         }
       },
     })

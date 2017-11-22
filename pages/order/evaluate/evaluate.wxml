@@ -1,0 +1,14 @@
+<!--pages/order/evaluate/evaluate.wxml-->
+<text>pages/order/evaluate/evaluate.wxml</text>
+<view class='evaluate_item'>
+   <view>
+   <image class='evaluate_item_image' src=''></image>
+   <view class='evaluate_item_name'>商品名字</view>
+   </view>
+   <view>
+   <textarea class='evaluate_item_input'>
+   </textarea>
+   </view>
+   <view>
+   </view>
+</view>
