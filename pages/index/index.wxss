@@ -32,6 +32,7 @@
   color: black;
   float: left;
   margin-left: 5rpx;
+  height: 79rpx;
   width: 100%-7.5rpx;
   font-size: 12px;
   overflow: hidden;

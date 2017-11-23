@@ -38,7 +38,6 @@
           <view class="zan-card__detail-row zan-c-gray-darker">
             <view class="zan-card__right-col">x{{item.count}}</view>
             <view class="zan-card__left-col">
-              <!-- 3000克 50% -->
             </view>
           </view>
         </view>

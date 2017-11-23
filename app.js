@@ -43,7 +43,7 @@ App({
     userInfo: null,
     // baseUrl: 'http://4mnkwf.natappfree.cc/',
     // baseUrl: 'http://192.168.0.123:8088/',
-    // baseUrl: 'http://192.168.0.115:8088/',
+    // baseUrl: 'http://192.168.0.123:8088/',
     baseUrl:'https://zjhkhl.com/',
     baseImgUrl: 'https://zjhkhl.com',
   }

@@ -9,11 +9,11 @@
     </view>
     <view class='info_delivery_pay zan-cell--access' hidden="{{!deliveryFlag}}" bindtap='skipToPage' data-url='/pages/delivery/deliveryDetail/deliveryDetail?flag=0'>
       <image class='location_img' src='../../images/location.png'></image>
-      <view class='person'>收货人: 鲜牛奶冰
-        <view class='phone'>1586123213</view>
+      <view class='person'>收货人: {{}}
+        <view class='phone'>{{}}</view>
       </view>
       <view class='address_pay'>
-        收获地址: 澳门特别行政区阿萨德爱上阿萨德爱谁谁多ad阿萨德撒的爱上ad的ad阿萨德爱上打算
+        收获地址: {{}}
       </view>
       <view class='zan-cell__ft'></view>
     </view>

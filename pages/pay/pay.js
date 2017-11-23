@@ -11,8 +11,8 @@ Page({
     goodInfo: {},
     payInfo: {},
     ticketInfo: {},
-    selectTicketId:null,
-    selectTicketPrice:'',
+    selectTicketId: null,
+    selectTicketPrice: '',
     totalPrice: 0,
     word: '',
     goodImageUrl: '',
@@ -82,8 +82,8 @@ Page({
     let ticketId = e.currentTarget.id
     let price = e.currentTarget.dataset.ticket.money
     that.setData({
-      selectTicketId:ticketId,
-      selectTicketPrice:price,
+      selectTicketId: ticketId,
+      selectTicketPrice: price,
       showTokenDialog: !that.data.showTokenDialog
     })
   },
@@ -102,9 +102,22 @@ Page({
    */
   gotoPay() {
 
+    wx.showModal({
+      title: '提示',
+      content: '目前版本还在测试阶段,下单功能暂不提供,敬请谅解!',
+      showCancel: false,
+      success: res => {
+        if (res.confirm) {
+          wx.navigateBack({
+
+          })
+        }
+      }
+    })
+    return
+
     if (this.data.againPay) {
       //去完成已下单的付款
-
       this.againToPay()
 
     } else {
@@ -195,12 +208,13 @@ Page({
           title: '加载中',
         })
         if (res.code) {
-          let url = getApp().globalData.baseUrl + 'wx/jsapi/order/pay?orderId=' + options.id + '&wxCode=' + res.code
+          let url = getApp().globalData.baseUrl + 'mall/wx/jsapi/order/pay?orderId=' + this.data.orderId + '&wxCode=' + res.code
+          console.log("再次支付:" + url)
           wx.request({
             url: url,
             success: res => {
               wx.hideLoading()
-              console.log("重新申请 =" + res.data)
+              console.log("重新申请 =" + JSON.stringify(res.data))
               wx.requestPayment({
                 timeStamp: res.data.data.timeStamp,
                 nonceStr: res.data.data.nonceStr,
@@ -211,6 +225,9 @@ Page({
                 'fail': function (res) { },
                 'complete': function (res) { }
               })
+            },
+            fail: err => {
+
             }
           })
         }

@@ -4,8 +4,8 @@
 <view class="good_container">
   <view class='good_north '>
     <swiper class='good_scroll border_north' indicator-dots='true' autoplay='true' circular='true'>
-      <swiper-item wx:for='{{goodInfo.imgList}}' wx:key='items'>
-        <image src='{{imageUrl+items.url}}' mode='aspectFit'></image>
+      <swiper-item wx:for='{{goodInfo.imgList}}' wx:key='item'>
+        <image src='{{imageUrl+item.url}}' mode='aspectFit'></image>
       </swiper-item>
     </swiper>
     <view class='good_price border_north'>
