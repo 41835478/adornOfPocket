@@ -30,29 +30,29 @@ Page(Object.assign({},Zan.Toast,{
  * test 接口
  */
   anctions(){
-    wx.showLoading({
-      title: '加载中',
-    })
-     wx.login({
-       success:res=>{
-         if(res.code){
-           wx.request({
-             url: getApp().globalData.baseUrl +'mall/wx/ticket/getTicket?ticketId=6'+'&wxCode='+res.code,
-             success:res=>{
-               wx.hideLoading()
-               if(res.data.result == 1){
-                 console.log('backData=' + JSON.stringify(res.data.data))
-               }else{
-                 console.log('backData=' + JSON.stringify(res.data))
-               }
-             },
-             fail: err =>{
-               wx.hideLoading()
-             }
-           })
-         }
-       }
-     })
+    // wx.showLoading({
+    //   title: '加载中',
+    // })
+    //  wx.login({
+    //    success:res=>{
+    //      if(res.code){
+    //        wx.request({
+    //          url: getApp().globalData.baseUrl +'mall/wx/ticket/getTicket?ticketId=6'+'&wxCode='+res.code,
+    //          success:res=>{
+    //            wx.hideLoading()
+    //            if(res.data.result == 1){
+    //              console.log('backData=' + JSON.stringify(res.data.data))
+    //            }else{
+    //              console.log('backData=' + JSON.stringify(res.data))
+    //            }
+    //          },
+    //          fail: err =>{
+    //            wx.hideLoading()
+    //          }
+    //        })
+    //      }
+    //    }
+    //  })
   },
 
 /**

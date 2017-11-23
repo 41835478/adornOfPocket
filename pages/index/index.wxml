@@ -17,20 +17,19 @@
         <image src='../../images/拼图.png' style="width:50rpx;height:50rpx;padding:30rpx 66rpx;"></image>
       </view>
     </navigator>
-    <navigator url='' hover-class='navigator-hover'>
+    <navigator url='/pages/trial/trial' hover-class='navigator-hover'>
       <view style='width:25%;height:84rpx;float:left;'>
         <image src='../../images/order-red.png' style="width:48rpx;height:48rpx;padding:30rpx 66rpx;"></image>
       </view>
     </navigator>
-
-
+    
     <view style='width:25%;height:84rpx;float:left;'>
       <image src='../../images/分类.png' style="width:48rpx;height:48rpx;padding:30rpx 66rpx;"></image>
     </view>
   </view>
   <view style='width:100%;background:#fff;height:60rpx;'>
     <view style="width:25%;height:20rpx;float:left;text-align:center;color:#666">
-      抢购
+      秒杀
     </view>
     <view style="width:25%;height:20rpx;float:left;text-align:center;color:#666">
       拼团
@@ -53,7 +52,6 @@
           <label class='label_style2'>¥ {{item.price/100.00}}</label>
           <label class='label_style3'>已售出 {{item.saleVolume}}件</label>
         </view>
-
       </view>
     </view>
   </scroll-view>

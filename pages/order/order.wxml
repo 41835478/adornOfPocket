@@ -67,8 +67,6 @@
               <button bindtap='confirmGood' class=' zan-btn zan-btn--small zan-btn--plain' wx:if="{{item.orderStatus==1}}" id='{{item.id}}' data-good='{{item}}'>取消订单</button>  
             <button  wx:if="{{item.orderStatus==2}}" class=' zan-btn zan-btn--small zan-btn--plain'>发货中</button>
             <button class=' zan-btn zan-btn--small zan-btn--danger' bindtap='confirmGood' id='{{item.id}}'  wx:if="{{item.orderStatus==3}}" id='{{item.id}}' data-good='{{item}}'>确认收货</button>
-            
-
           </view>
         </view>
       </view>
