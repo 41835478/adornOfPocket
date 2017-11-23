@@ -18,17 +18,27 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
     // pageComplete: true,
     animationData: {},
   },
+/**
+ * 每次进入加载页面请求数据
+ */
   onShow() {
+    wx.showLoading({
+      title: '加载中',
+    })
     wx.request({
-      url: getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=1&pageSize=3',
+      url: getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=1&pageSize=10',
       method: 'GET',
       success: res => {
+        wx.hideLoading()
         console.log(res);
         this.setData({
           goodList: res.data.list,
-          lastPage: false,
+          lastPage: res.data.lastPage,
           pageNo:1,
         })
+      },
+      fail:err=>{
+        wx.hideLoading()
       }
     })
   },
@@ -48,14 +58,14 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
     });
     let pageNo = this.data.pageNo + 1;
     console.log(pageNo);
-    let url = getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=' + pageNo + '&pageSize=3';
+    let url = getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=' + pageNo + '&pageSize=10';
     wx.request({
       url: url,
       method: "GET",
       success: res => {
         if (res.statusCode == 200) {
           let arr = this.data.goodList.concat(res.data.list);
-          console.log(arr);
+          console.log(res.data);
           if (res.data.list.length > 0) {
             this.setData({
               goodList: arr,
@@ -63,7 +73,13 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
               pageNo: pageNo,
               // pageComplete: true
             });
+          }else{
+            console.log("没有更多了")
+            this.setData({
+              lastPage:true
+            })
           }
+          console.log("lastPage="+this.data.lastPage)
           wx.hideLoading();
         }
       },
@@ -106,9 +122,9 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
     let that = this
     console.log("搜索的内容为:" + JSON.stringify(e.detail.value))
     wx.request({
-      url: getApp().globalData.baseUrl + "mall/wx/good/findBySearchKey" + "?searchKey=" + e.detail.value + "&pageNo=1&pageSize=10",
+      url: getApp().globalData.baseUrl + "mall/wx/good/findBySearchKey" + "?searchKey=" + e.detail.value + "&pageNo=1&pageSize=20",
       success: function (res) {
-        console.log(JSON.stringify(res.data.list))
+        console.log(JSON.stringify(res.data))
         that.setData({
           goodList: res.data.list
         })

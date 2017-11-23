@@ -1,18 +1,18 @@
-<!--pages/order/evaluate/evaluate.wxml-->
-<text>pages/order/evaluate/evaluate.wxml</text>
+
 <view class='evaluate_item'>
   <view style='display:inline-flex'>
     <view>
-      <image class='evaluate_item_image' src='https://img11.360buyimg.com/n4/s260x260_jfs/t3619/81/72301080/274437/ff3193c1/57fdea57Ncf05fa2c.jpg' mode='asepctFit'></image>
+      <image class='evaluate_item_image' src='{{baseImgUrl+goodUrl}}' mode='asepctFit'></image>
     </view>
-    <view>
-      <label class='evaluate_item_name'>商品名字</label>
+    <view class='evaluate_item_name'>
+      <label class='zan-font-16'>{{goodName}}</label>
     </view>
   </view>
-  <view>
-    <textarea class='evaluate_item_input'>
+  <view class='evaluate_item_input '>
+    <textarea class='evaluate_item_textarea zan-font-14' placeholder='您的评价是我们最大的帮助!' bindinput='inputSuggestAction' maxlength='500' placeholder-class='zan-font-14'>
     </textarea>
   </view>
-  <view>
+  <view style='width:100%;'>
+  <button bindtap='sendSuggestAction' class='zan-btn zan-btn--primary'>提交评价</button>
   </view>
 </view>

@@ -157,9 +157,13 @@ Page(Object.assign({}, Zan, {
    * 商品评论
    */
   goodsSuggestAction(e){
-      console.log("评价商品!")
+      console.log("评价商品!"+JSON.stringify(e.currentTarget.dataset))
+      let goodItem = e.currentTarget.dataset.good
+      let goodId = e.currentTarget.id
+      let goodName = goodItem.goodName
+      let goodUrl = goodItem.goodMainImage
       wx.navigateTo({
-        url: '/pages/order/evaluate/evaluate',
+        url: '/pages/order/evaluate/evaluate?goodId='+goodId+"&goodName="+goodName+"&goodUrl="+goodUrl,
       })
   },
   /**

@@ -1,20 +1,27 @@
 /* pages/order/evaluate/evaluate.wxss */
-.evaluate_item
-{
-   background: white;
-}
-.evaluate_item_image{
 
+.evaluate_item {
+  background: white;
+}
+
+.evaluate_item_image {
+  margin: 10px;
   width: 80px;
   height: 80px;
-
 }
-.evaluate_item_name{
-  width: 50px;
+
+.evaluate_item_name {
+  margin-top: 30px;
+  margin-right: 10px;
   height: 60px;
 }
-.evaluate_item_input{
-  width: 100%;
-  height: 100px;
 
+.evaluate_item_input {
+  padding: 10px;
+  width: 100%;
+}
+.evaluate_item_textarea{
+    width: 90%; 
+   background: #f9f9f9;
+   padding: 10px;
 }
