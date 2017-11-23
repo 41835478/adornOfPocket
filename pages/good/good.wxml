@@ -3,11 +3,11 @@
 <import src='../../common/template/wxParse/wxParse.wxml' />
 <view class="good_container">
   <view class='good_north '>
-     <swiper class='good_scroll border_north' indicator-dots='true' autoplay='true' circular='true' >
+    <swiper class='good_scroll border_north' indicator-dots='true' autoplay='true' circular='true'>
       <swiper-item wx:for='{{goodInfo.imgList}}' wx:key='items'>
         <image src='{{imageUrl+items.url}}' mode='aspectFit'></image>
       </swiper-item>
-    </swiper> 
+    </swiper>
     <view class='good_price border_north'>
       {{goodInfo.goodName}}
       <view class='single_price'>
@@ -41,16 +41,17 @@
         <span class='word'>商品评价</span>
       </view>
     </view>
-<!-- 商品评价 -->
+    <!-- 商品评价 -->
+    <view class='suggest_content' style='margin-bottom:20px' wx:if='{{goodSuggest.length<1}}'>暂无商品评价</view>
     <view class='suggest_view' wx:for='{{goodSuggest}}' wx:key='item'>
       <image class='suggest_image' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp' mode='aspectFill'></image>
-      <label class='suggest_name'>赵日天</label>
+      <label class='suggest_name'>{{item.id}}</label>
       <label class='suggest_date'>{{item.createDate}}</label>
       <view class='suggest_content'>{{item.message}}</view>
-       <image wx:for='{{[1,2,3]}}' wx:key='item'  class='suggest_goodImg' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp' mode='aspectFill'></image> 
+      <!-- <image wx:for='{{[1,2,3]}}' wx:key='item'  class='suggest_goodImg' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp' mode='aspectFill'></image>  -->
     </view>
-<!-- 测试数据 -->
-      <!-- <view class='suggest_view'> 
+    <!-- 测试数据 -->
+    <!-- <view class='suggest_view'> 
       <image class='suggest_image' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp'></image>
       <label class='suggest_name'>开化一霸</label>
       <label class='suggest_date'>2017-10-12 10:32:33</label>

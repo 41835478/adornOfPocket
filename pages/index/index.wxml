@@ -3,7 +3,7 @@
     <image src='../../images/3.png' style="height:180rpx;width:300rpx;"></image>
   </view>
   <view style='background:#fff;height:80rpx;border-radius:80rpx;margin-bottom:30rpx;width:90%;'>
-    <input style="padding:0 30rpx;text-align:center;margin-top:14rpx;color:#666;" type="text" readonly="readonly" placeholder="妆口袋 开启美一天" confirm-type='search' bindconfirm='searchGoodAction'/>
+    <input style="padding:0 30rpx;text-align:center;margin-top:14rpx;color:#666;" type="text" readonly="readonly" placeholder="妆口袋 开启美一天" confirm-type='search' bindconfirm='searchGoodAction' />
   </view>
 
   <view style='width:100%;background:#fff;'>
@@ -17,9 +17,13 @@
         <image src='../../images/拼图.png' style="width:50rpx;height:50rpx;padding:30rpx 66rpx;"></image>
       </view>
     </navigator>
-    <view style='width:25%;height:84rpx;float:left;'>
-      <image src='../../images/order-red.png' style="width:48rpx;height:48rpx;padding:30rpx 66rpx;"></image>
-    </view>
+    <navigator url='' hover-class='navigator-hover'>
+      <view style='width:25%;height:84rpx;float:left;'>
+        <image src='../../images/order-red.png' style="width:48rpx;height:48rpx;padding:30rpx 66rpx;"></image>
+      </view>
+    </navigator>
+
+
     <view style='width:25%;height:84rpx;float:left;'>
       <image src='../../images/分类.png' style="width:48rpx;height:48rpx;padding:30rpx 66rpx;"></image>
     </view>
@@ -32,7 +36,7 @@
       拼团
     </view>
     <view style="width:25%;height:20rpx;float:left;text-align:center;color:#666">
-      订单
+      试用
     </view>
     <view style="width:25%;height:20rpx;float:left;text-align:center;color:#666">
       分类
