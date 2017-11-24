@@ -48,7 +48,8 @@
 }
 
 .delivery_pay .phone {
-  float: right;
+  float: right; 
+   /* margin-right: 40px;   */
 }
 
 .address_pay {
@@ -232,7 +233,8 @@
 }
 
 .content_lf .money {
-  font-size: 72rpx;
+  /* font-size: 72rpx; */
+  font-size-adjust: 30px;
 }
 
 .content_rg {

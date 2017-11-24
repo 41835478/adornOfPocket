@@ -10,9 +10,9 @@
     </swiper>
     <view class='good_price border_north'>
       {{goodInfo.goodName}}
-      <view class='single_price'>
-        ¥ {{goodInfo.promotion/100}}
-        <span style="text-decoration:line-through;margin-right:20rpx;color:gray;font-size: 12px;">¥ {{goodInfo.price/100}}</span>
+      <view  class='single_price'>
+        ¥ {{goodInfo.promotion*goodInfo.discount/10000}}
+        <span wx:if='{{goodInfo.discount!=100}}' style="text-decoration:line-through;margin-right:20rpx;color:gray;font-size: 12px;">¥ {{goodInfo.price/100}}</span>
       </view>
     </view>
     <view class='good_selled'>
@@ -69,7 +69,7 @@
     <view>
       <view class='confirm_content'>
         <view class='confirm_good_info'>
-          <image class='confirm_pic' src="https://haitao.nos.netease.com/f9ddc412985540479e8d1a58e683ef0215083243862041.jpg?imageView&quality=98&crop=0_0_750_500&imageView&thumbnail=710x0&quality=85"></image>
+          <image class='confirm_pic' src="{{imageUrl+goodInfo.mainImgUrl}}" mode='aspectFill'></image>
           <view class='confirm_good_introduce'>
             <view>{{goodInfo.goodName}}</view>
             <view class='confirm_single_price'> ¥ {{goodInfo.promotion/100}}</view>
@@ -109,5 +109,7 @@
       </view>
     </navigator>
   </view>
-  <button class="zan-btn zan-btn--large zan-btn--danger" bindtap='toggleDialog'>立即下单</button>
+  <button wx:if='{{goodInfo.stock>0}}' class="zan-btn zan-btn--large zan-btn--danger" bindtap='toggleDialog'>立即下单</button>
+  <button wx:else class="zan-btn zan-btn--large zan-btn--warn" >货源不足</button>
+
 </view>

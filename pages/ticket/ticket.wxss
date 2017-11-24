@@ -31,7 +31,8 @@
 }
 
 .content_lf .money {
-  font-size: 72rpx;
+  /* font-size: 72rpx; */
+  font-size-adjust: 30px;
 }
 
 .content_rg {
@@ -41,9 +42,10 @@
 }
 
 .content_rg .least_money {
-  font-size: 36rpx;
-  margin-top: 20rpx;
-  margin-bottom: 12rpx;
+  /* font-size: 40rpx; */
+  font-size-adjust: 20px;
+  margin: 20rpx;
+  /* margin-bottom: 12rpx; */
 }
 
 .content_rg .use_range {

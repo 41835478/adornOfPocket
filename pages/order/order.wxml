@@ -59,11 +59,12 @@
       <view class='zan-card'>
         <view class="zan-card__detail-row">
           <view class="zan-card__right-col">
+          <button bindtap='confirmGood' class=' zan-btn zan-btn--small zan-btn--plain' wx:if="{{item.orderStatus==1}}" id='{{item.id}}' data-good='{{item}}'>取消订单</button> 
             <button bindtap='goodsBuyAction' id='{{item.goodId}}' type='primary' class=' zan-btn zan-btn--small zan-btn--primary'>再次购买</button>
             <button class=' zan-btn zan-btn--small zan-btn--danger' bindtap='goodsBackAction' wx:if="{{item.orderStatus==2||item.orderStatus==3||item.orderStatus==4}}" id='{{item.id}}' data-good='{{item}}'>申请退款</button>
             <button class=' zan-btn zan-btn--small zan-btn--primary' bindtap='goodsSuggestAction' wx:if="{{item.orderStatus==4}}" id='{{item.id}}' data-good='{{item}}'>发表评论</button>
             <button class=' zan-btn zan-btn--small zan-btn--danger' bindtap='goodsPayAction' wx:if="{{item.orderStatus==1}}" id='{{item.id}}' data-good='{{item}}'>去付款</button>
-              <button bindtap='confirmGood' class=' zan-btn zan-btn--small zan-btn--plain' wx:if="{{item.orderStatus==1}}" id='{{item.id}}' data-good='{{item}}'>取消订单</button>  
+               
             <button  wx:if="{{item.orderStatus==2}}" class=' zan-btn zan-btn--small zan-btn--plain'>发货中</button>
             <button class=' zan-btn zan-btn--small zan-btn--danger' bindtap='confirmGood' id='{{item.id}}'  wx:if="{{item.orderStatus==3}}" id='{{item.id}}' data-good='{{item}}'>确认收货</button>
           </view>

@@ -7,13 +7,15 @@ Page({
   data: {
     url: 'mall/wx/good/findByGoodId',
     payUrl: 'mall/wx/jsapi/order/preOrder',
-    tickUrl: 'mall/wx/ticket/findAll',
+    tickUrl: 'mall/wx/ticket/findByUserId',
     goodInfo: {},
     payInfo: {},
     ticketInfo: {},
     selectTicketId: null,
-    selectTicketPrice: '',
+    selectTicketPrice: 0,
+    ticketName: '',
     totalPrice: 0,
+    userPoint: 0,
     word: '',
     goodImageUrl: '',
     customerOpt: {
@@ -21,9 +23,11 @@ Page({
       word: ''
     },
     quantity: 1,
+    deliveryId: null,
+    addressInfo: {},
     btnTitle: "提交订单",
     showTokenDialog: false,//token优惠券Dialog开关
-    deliveryFlag: true,
+    deliveryFlag: false,
     orderId: '', //订单ID
     againPay: false //订单页过来
   },
@@ -56,7 +60,6 @@ Page({
   toggleDialog() {
 
     let that = this
-
     wx.login({
       success: res => {
         if (res.code) {
@@ -80,10 +83,11 @@ Page({
   selectAction(e) {
     let that = this
     let ticketId = e.currentTarget.id
-    let price = e.currentTarget.dataset.ticket.money
+    let price = e.currentTarget.dataset.ticket.reduceMoney
     that.setData({
       selectTicketId: ticketId,
       selectTicketPrice: price,
+      ticketName: e.currentTarget.dataset.ticket.ticketName,
       showTokenDialog: !that.data.showTokenDialog
     })
   },
@@ -102,19 +106,19 @@ Page({
    */
   gotoPay() {
 
-    wx.showModal({
-      title: '提示',
-      content: '目前版本还在测试阶段,下单功能暂不提供,敬请谅解!',
-      showCancel: false,
-      success: res => {
-        if (res.confirm) {
-          wx.navigateBack({
+    // wx.showModal({
+    //   title: '提示',
+    //   content: '目前版本还在测试阶段,下单功能暂不提供,敬请谅解!',
+    //   showCancel: false,
+    //   success: res => {
+    //     if (res.confirm) {
+    //       wx.navigateBack({
 
-          })
-        }
-      }
-    })
-    return
+    //       })
+    //     }
+    //   }
+    // })
+    // return
 
     if (this.data.againPay) {
       //去完成已下单的付款
@@ -130,17 +134,24 @@ Page({
       })
       let that = this
       var wxcode
-
-      console.log("count = " + that.data.quantity)
+      let payMoney = that.data.quantity * that.data.goodInfo.price - that.data.selectTicketPrice - that.data.userPoint     //实付金额
+      console.log("count = " + that.data.quantity + ";  paymoney=" + payMoney)
       let order = {}
       order.goodId = that.data.goodInfo.id
-      order.deliveryId = "10"
+      order.deliveryId = that.data.deliveryId
       order.orderFee = that.data.quantity * that.data.goodInfo.price
       order.count = that.data.quantity
       order.message = that.data.word
+      order.orderType = 2 //手机下单
+      if (that.data.selectTicketId) {
+        order.useTicket = 1
+      } else {
+        order.useTicket = 0
+      }
       order.ticket = that.data.selectTicketId
-      order.point = 22
-      order.paymentFee = 1    //实付金额
+      order.point = that.data.userPoint  //消耗积分
+      // order.paymentFee = payMoney
+      order.paymentFee = 1
       order.reduceFee = that.data.selectTicketPrice       //优惠金额
       order.freightFee = 0       //运费金额
       order.goodFee = that.data.goodInfo.price //商品金额
@@ -155,14 +166,29 @@ Page({
               url: url,
               method: 'GET',
               success: res => {
-                console.log(res);
                 wx.hideLoading()
                 console.log("payInfo=" + JSON.stringify(res))
-                if (res.data.result == 1) {
-                  that.setData({
-                    payInfo: res.data.data
+
+                if (res.data.error) {
+                  wx.showModal({
+                    title: '提示',
+                    content: res.data.error.message,
+                    showCancel: false,
+                    success: res => {
+                      if (res.confirm) {
+                        wx.navigateBack({
+
+                        })
+                      }
+                    }
                   })
-                  that.readyToPay()
+                } else {
+                  if (res.data.result == 1) {
+                    that.setData({
+                      payInfo: res.data.data
+                    })
+                    that.readyToPay()
+                  }
                 }
               },
               fail: function (err) {
@@ -215,19 +241,38 @@ Page({
             success: res => {
               wx.hideLoading()
               console.log("重新申请 =" + JSON.stringify(res.data))
-              wx.requestPayment({
-                timeStamp: res.data.data.timeStamp,
-                nonceStr: res.data.data.nonceStr,
-                package: res.data.data.package,
-                signType: 'MD5',
-                paySign: res.data.data.paySign,
-                'success': function (res) { console.log(res) },
-                'fail': function (res) { },
-                'complete': function (res) { }
-              })
+              //支付错误情况
+              if (res.data.error) {
+                wx.showModal({
+                  title: '提示',
+                  content: res.data.error.message,
+                  showCancel: false,
+                  success: res => {
+                    if (res.confirm) {
+                      wx.navigateBack({
+
+                      })
+                    }
+                  }
+                })
+              } else {
+                wx.requestPayment({
+                  timeStamp: res.data.data.timeStamp,
+                  nonceStr: res.data.data.nonceStr,
+                  package: res.data.data.package,
+                  signType: 'MD5',
+                  paySign: res.data.data.paySign,
+                  'success': function (res) {
+                    console.log(res)
+                    wx.navigateBack({
+                    })
+                  },
+                  'fail': function (res) { },
+                  'complete': function (res) { }
+                })
+              }
             },
             fail: err => {
-
             }
           })
         }
@@ -260,6 +305,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let that = this
     let goodId = options.goodId
     let quantity = options.quantity
     console.log("订单id=" + JSON.stringify(options));
@@ -271,6 +317,23 @@ Page({
         againPay: true
       })
     }
+    wx.login({
+      success: res => {
+        if (res.code) {
+          wx.request({
+            url: getApp().globalData.baseUrl + 'mall/wx/delivery/findByWxCode?wxCode=' + res.code + '&pageNo=1&pageSize=10',
+            success: res => {
+              console.log('返回的地址数据' + JSON.stringify(res.data.list[0]))
+              that.setData({
+                deliveryId: res.data.list[0].id,
+                addressInfo: res.data.list[0],
+                deliveryFlag: true
+              })
+            }
+          })
+        }
+      }
+    })
     //获取商品信息
     this.getGoodInfo(goodId, quantity)
   },

@@ -20,6 +20,27 @@ Page({
   onLoad: function (options) {
     this.getDataFromNet()
   },
+
+  myTicketAction(){
+    let that = this
+    wx.login({
+      success: res => {
+        if (res.code) {
+          wx.request({
+            url: getApp().globalData.baseUrl + "mall/wx/ticket/findByUserId?pageNo=1&pageSize=100"+"&wxCode="+res.code,
+            success: res => {
+              console.log("优惠券结果:" + JSON.stringify(res.data))
+              var arr = res.data.list
+              that.setData({
+                ticketList: arr
+              })
+            }
+          })
+        }
+      }
+    })
+  },
+
   /**
    * 获取优惠券信息
    */
@@ -29,15 +50,10 @@ Page({
       success: res => {
         if (res.code) {
           wx.request({
-            url: getApp().globalData.baseUrl + "mall/wx/ticket/findAll?" +"pageNo=1&pageSize=10",
+            url: getApp().globalData.baseUrl + "mall/wx/ticket/findAll?" +"pageNo=1&pageSize=100",
             success: res => {
               console.log("优惠券结果:" + JSON.stringify(res.data))
               var arr = res.data.list
-              var timestamp3 = 1503058804;
-              var newDate = new Date();
-              newDate.setTime(timestamp3 * 1000);
-              // 2014/6/18
-              console.log(newDate.toLocaleDateString());
               that.setData({
                 ticketList: arr
               })
@@ -60,14 +76,21 @@ Page({
             url: getApp().globalData.baseUrl + "mall/wx/ticket/getTicket?" + "ticketId=" + ticketId + "&wxCode="+res.code,
             success: res => {
               console.log("优惠券结果:" + JSON.stringify(res.data))
-              var arr = res.data.list
-              var timestamp3 = 1503058804;
-              var newDate = new Date();
-              newDate.setTime(timestamp3 * 1000);
-              // 2014/6/18
-              console.log(newDate.toLocaleDateString());
+              if(res.data.result==1){
+                  wx.showModal({
+                    title: '提示',
+                    content: '领取成功',
+                    showCancel:false,
+                  })
+              }else{
+                wx.showModal({
+                  title: '提示',
+                  content: res.data.error.message,
+                  showCancel: false,
+                })
+              }
               that.setData({
-                ticketList: arr
+                // ticketList: arr
               })
             }
           })

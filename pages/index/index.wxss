@@ -33,9 +33,9 @@
   float: left;
   margin-left: 5rpx;
   height: 79rpx;
-  width: 100%-7.5rpx;
   font-size: 12px;
-  overflow: hidden;
+  overflow: hidden; 
+  text-overflow:ellipsis;
    /* border-bottom: 1rpx solid #e5e5e5; */
 }
 .label_style2{

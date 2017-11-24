@@ -115,12 +115,13 @@
   height: 140rpx;
   position: relative;
   border-bottom: 1px solid #f1f1f1;
+  overflow: visible;
 }
 
 .confirm_pic {
   width: 180rpx;
   height: 180rpx;
-  object-fit: cover;
+  object-fit: fill;
   position: relative;
   top: -54rpx;
   border-radius: 13rpx;
