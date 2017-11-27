@@ -96,12 +96,12 @@ Page(Object.assign({}, quantity, wxParse, {
       url: getApp().globalData.baseUrl + this.data.url + options.goodId,
       method: 'GET',
       success: res => {
-        console.log('商品详情:' + JSON.stringify(res.data))
+        console.log(res.data)
         if(res.data.data){
           this.setData({
             goodInfo: res.data.data,
           })
-          var article = res.data.data.richContent
+          var article = res.data.data.rich_content
           var that = this
           wxParse.wxParse('article', 'html', article, that, 0)
         }else{
@@ -120,7 +120,7 @@ Page(Object.assign({}, quantity, wxParse, {
         }
       },
       fail:err=>{
-        console.log("error="+JSON.stringify(err))
+        console.log(err)
       }
     })
   },
@@ -136,7 +136,7 @@ Page(Object.assign({}, quantity, wxParse, {
         that.setData({
           goodSuggest: res.data.data
         })
-        console.log("商品评价:" + JSON.stringify(res))
+        console.log("backdata="+ JSON.stringify(res))
       }
     })
 },

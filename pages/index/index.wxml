@@ -46,11 +46,11 @@
     <view wx:for="{{goodList}}" wx:key="item">
       <view class='pick_list' bindtap='goTogoodInfo' id='{{item.id}}'>
 
-        <image class='item_image' src="{{baseUrl+item.mainImgUrl}}" mode='aspectFit'></image>
-        <label class='label_style1'>{{item.goodName}}</label>
+        <image class='item_image' src="{{baseUrl+item.main_image_url}}" mode='aspectFit'></image>
+        <label class='label_style1'>{{item.good_name}}</label>
         <view>
           <label class='label_style2'>¥ {{item.price/100.00}}</label>
-          <label class='label_style3'>已售出 {{item.saleVolume}}件</label>
+          <label class='label_style3'>已售出 {{item.sale_volume}}件</label>
         </view>
       </view>
     </view>

@@ -108,7 +108,7 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
    * 点击查看商品详情
    */
   goTogoodInfo(e) {
-    console.log("点击的数据=" + e)
+    console.log(e)
     var goodID = e.currentTarget.id
     wx.navigateTo({
       url: '/pages/good/good?goodId=' + goodID,

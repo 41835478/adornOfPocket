@@ -9,7 +9,7 @@
       </swiper-item>
     </swiper>
     <view class='good_price border_north'>
-      {{goodInfo.goodName}}
+      {{goodInfo.good_name}}
       <view  class='single_price'>
         ¥ {{goodInfo.promotion*goodInfo.discount/10000}}
         <span wx:if='{{goodInfo.discount!=100}}' style="text-decoration:line-through;margin-right:20rpx;color:gray;font-size: 12px;">¥ {{goodInfo.price/100}}</span>
@@ -18,7 +18,7 @@
     <view class='good_selled'>
       <span class='sell_item'>运费:免运费 </span>
       <span class='sell_item'>剩余:{{goodInfo.stock}} </span>
-      <span class='sell_item'>销售:{{goodInfo.saleVolume}} </span>
+      <span class='sell_item'>销售:{{goodInfo.sale_volume}} </span>
     </view>
   </view>
   <view class='good_south'>

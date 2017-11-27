@@ -46,13 +46,13 @@ Page(Object.assign({}, Zan.Toast, {
     //    success:res=>{
     //      if(res.code){
     //        wx.request({
-    //          url: getApp().globalData.baseUrl +'mall/wx/ticket/getTicket?ticketId=6'+'&wxCode='+res.code,
+    //          url: getApp().globalData.baseUrl +'mall/wx/delivery/findById?id=10',
     //          success:res=>{
     //            wx.hideLoading()
     //            if(res.data.result == 1){
-    //              console.log('backData=' + JSON.stringify(res.data.data))
+    //              console.log( res.data.data)
     //            }else{
-    //              console.log('backData=' + JSON.stringify(res.data))
+    //              console.log(res.data)
     //            }
     //          },
     //          fail: err =>{
@@ -78,7 +78,7 @@ Page(Object.assign({}, Zan.Toast, {
           wx.request({
             url: url,
             success: res => {
-
+  console.log("data="+res.data)
               let result = res.data.result
               if (result == 1) {
                 that.setData({

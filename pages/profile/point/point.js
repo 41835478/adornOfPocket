@@ -6,7 +6,7 @@ Page({
    */
   data: {
     url: 'mall/wx/point/pointLog',
-    pointInfo:[],
+    pointInfo: [],
   },
 
   /**
@@ -20,10 +20,10 @@ Page({
           wx.request({
             url: getApp().globalData.baseUrl + this.data.url + "?wxCode=" + res.code + "&pageNo=1&pageSize=10",
             success: res => {
-              console.log(JSON.stringify("data=" +JSON.stringify(res.data)))
-that.setData({
-  pointInfo:res.data.list
-})
+              console.log(res.data.list)
+              that.setData({
+                pointInfo: res.data.list
+              })
             },
             fail: err => {
               console.log(JSON.stringify(err))

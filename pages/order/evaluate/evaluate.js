@@ -75,7 +75,7 @@ Page({
       goodUrl: options.goodUrl,
       goodId: options.goodId
     })
-    console.log(this.data.goodId)
+    console.log(options)
   },
 
   /**

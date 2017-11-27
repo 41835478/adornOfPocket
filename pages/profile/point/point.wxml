@@ -1,6 +1,6 @@
 <!--pages/profile/point/point.wxml-->
 <view>
-  <view style='margin:10px;background:white;height:40px;padding:10px' wx:for='{{pointInfo}}' wx:key>
-    <label style='margin-top:10px'>积分使用: - 30 2017-11-3 10:30:08</label>
+  <view style='margin:10px;background:white;height:40px;padding:10px' wx:for='{{pointInfo}}' wx:key='item'>
+     <label style='margin-top:10px'>{{item.action==0?"积分扣减":"积分返还"}}: {{item.currentPoint}}  {{item.create_date}}</label> 
   </view>
 </view>

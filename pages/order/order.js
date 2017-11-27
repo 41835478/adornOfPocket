@@ -120,7 +120,7 @@ Page(Object.assign({}, Zan, {
   confirmGood(e) {
     let url 
     let that = this
-    let status = e.currentTarget.dataset.good.orderStatus
+    let status = e.currentTarget.dataset.good.order_status
     console.log("status="+status)
     if (status == 3) {
       console.log("确认收货!")
@@ -166,8 +166,8 @@ Page(Object.assign({}, Zan, {
       console.log("评价商品!"+JSON.stringify(e.currentTarget.dataset))
       let goodItem = e.currentTarget.dataset.good
       let goodId = e.currentTarget.id
-      let goodName = goodItem.goodName
-      let goodUrl = goodItem.goodMainImage
+      let goodName = goodItem.good_name
+      let goodUrl = goodItem.good_main_image
       wx.navigateTo({
         url: '/pages/order/evaluate/evaluate?goodId='+goodId+"&goodName="+goodName+"&goodUrl="+goodUrl,
       })
