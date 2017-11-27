@@ -8,7 +8,6 @@ Page({
     tourGoodInfo:[],
     imgUrl:getApp().globalData.baseImgUrl,
     url:'mall/wx/activity/findByGroup',
-    useUrl:'mall/wx/free/findAll',
     lastPage:false,
 
   },
@@ -19,7 +18,7 @@ Page({
   onLoad: function (options) {
     let that = this
     wx.request({
-      url: getApp().globalData.baseUrl + this.data.useUrl + "?pageNo=1&pageSize=10",
+      url: getApp().globalData.baseUrl + this.data.url + "?pageNo=1&pageSize=10",
       success:res=>{
         console.log("backdata="+JSON.stringify(res))
         let arr = res.data.list

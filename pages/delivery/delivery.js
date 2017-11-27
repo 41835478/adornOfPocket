@@ -1,16 +1,18 @@
 // pages/address/address.js
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
     url: 'mall/wx/delivery/findByWxCode',
     deliveryList: [],
-    selectId: 0,
+    showList: [],
+    showSelected: false,
     pageNo: 1,
     lastPage: false,
-    completData:false
+    completData: false,
+    defaultSelect: 0,
+    flag: '',
   },
   /**
    * input输入
@@ -22,12 +24,62 @@ Page({
     this.setData(obj);
   },
   /**
-   * 
+   * 现在默认地址
    */
   select(val) {
-    this.setData({
-      selectId: val.currentTarget.dataset.index
-    })
+
+    let flag = this.data.flag
+    if (flag == 1) {
+      let item = val.currentTarget.dataset.index
+      var pages = getCurrentPages()
+      var prevPage = pages[pages.length - 2]
+      prevPage.setData({
+        addressInfo: item,
+        deliveryId: item.id
+      })
+      wx.navigateBack({
+        
+      })
+    } else {
+      wx.showLoading({
+        title: '加载中',
+      })
+      let that = this
+      let index = val.currentTarget.id
+      let item = val.currentTarget.dataset.index
+      // console.log("default address=" + JSON.stringify(index))
+      wx.login({
+        success: res => {
+          if (res.code) {
+            wx.request({
+              url: getApp().globalData.baseUrl + 'mall/wx/delivery/defaultAddress' + '?wxCode=' + res.code + '&id=' + item.id,
+              success: res => {
+                wx.hideLoading()
+                console.log("backdata=" + JSON.stringify(res.data))
+                // 刷新页面数据
+                let newArr = that.data.showList
+                for (let i = 0; i < newArr.length; i++) {
+                  if (i == index) {
+                    newArr[i] = 1
+                  } else {
+                    newArr[i] = 0
+                  }
+                }
+                that.setData({
+                  showList: newArr
+                })
+                wx.showToast({
+                  title: '设置默认地址成功',
+                })
+              },
+              fail: err => {
+                wx.hideLoading()
+              }
+            })
+          }
+        }
+      })
+    }
   },
   /**
    * 跳转
@@ -57,23 +109,12 @@ Page({
       title: '加载中',
     })
     let that = this
-    console.log("是否最后一页:",that.data.lastPage)
-    if (that.data.lastPage) {
-      wx.hideLoading()
-      return
-    }
-    
-    let pageNo
-    if (that.data.completData) {
-      pageNo = that.data.pageNo + 1;
-    } else {
-      pageNo = 1
-    }
+    let pageNo = 1
     wx.login({
       success: res => {
         console.log(res);
         if (res.code) {
-          let url = getApp().globalData.baseUrl + that.data.url + "?wxCode=" + res.code + "&pageNo=" + pageNo + "&pageSize=5"
+          let url = getApp().globalData.baseUrl + that.data.url + "?wxCode=" + res.code + "&pageNo=" + pageNo + "&pageSize=10"
           console.log("url=" + url)
           if (res.code) {
             wx.request({
@@ -82,11 +123,17 @@ Page({
                 wx.hideLoading()
                 let arr = that.data.deliveryList.concat(res.data.list)
                 console.log(JSON.stringify(res.data))
+                let showArr = []
                 if (res.data.list.length > 0) {
+                  for (let i = 0; i < arr.length; i++) {
+                    let cell = arr[i]
+                    showArr.push(cell.defaultAddress)
+                  }
                   that.setData({
                     deliveryList: res.data.list,
+                    showList: showArr,
                     pageNo: pageNo,
-                    completData:true
+                    completData: true
                   })
                 } else {
                   that.setData({
@@ -110,7 +157,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    if (options.flag) {
+      this.setData({
+        flag: options.flag
+      })
+    }
   },
 
   /**
@@ -132,10 +183,10 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-      this.setData({
-        lastPage:false,
-        completData:false
-      })
+    this.setData({
+      lastPage: false,
+      completData: false
+    })
   },
 
   /**

@@ -78,9 +78,15 @@ Page(Object.assign({}, Zan, {
    * 去退款
    */
   goodsBackAction(e) {
+    let that = this
     wx.showLoading({
       title: '加载中',
     })
+    let selectId = this.data.selectedId
+    if(!selectId){
+      selectId = 'all'
+    }
+    console.log("select=" + selectId)
     var data = {}
     data = e.currentTarget;
     console.log(e.currentTarget)
@@ -97,7 +103,7 @@ Page(Object.assign({}, Zan, {
           showCancel:false,
           success:function(res){
             if(res.confirm){
-              that.getDataFromNet(0, that.data.selectedId)
+              that.getDataFromNet(0, selectId)
             }
           }
         })

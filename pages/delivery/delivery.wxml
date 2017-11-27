@@ -1,11 +1,11 @@
 <view class='delivery_list_content'>
-  <view class='list_item' wx:for="{{deliveryList}}" wx:key='{{index}}'>
-    <view class='left' bindtap='select' data-index='{{index}}'>
-      <view class="dot class='{{index==selectId?'dot_selected':''}}">
+  <view class='list_item' wx:for="{{deliveryList}}" wx:key='item' wx:for-index="idx">
+    <view class='left' bindtap='select' data-index='{{item}}' id='{{idx}}'>
+      <view class="dot class='{{showList[idx]==1?'dot_selected':''}}">
         <image src='../../images/gou.png' class='.gou'></image>
       </view>
     </view>
-    <view class='mid' bindtap='select' data-index='{{index}}'>
+    <view class='mid' bindtap='select' data-index='{{item}}' id='{{idx}}'>
       <view class='info_person'>
         <span style="letter-spacing: 0px;">{{item.recipients}}</span>  {{item.phone}}</view>
       <view class='info_address'>

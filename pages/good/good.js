@@ -118,6 +118,9 @@ Page(Object.assign({}, quantity, wxParse, {
             }
           })
         }
+      },
+      fail:err=>{
+        console.log("error="+JSON.stringify(err))
       }
     })
   },

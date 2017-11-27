@@ -1,13 +1,13 @@
 <view class='pay_content'>
   <view class='zan-panel delivery_pay '>
-    <view class='add_delivery_pay zan-cell--access'  hidden="{{deliveryFlag}}" bindtap='skipToPage' data-url='/pages/delivery/deliveryDetail/deliveryDetail?flag=1'>
+    <view class='add_delivery_pay zan-cell--access'  hidden="{{deliveryFlag}}" bindtap='skipToPage' data-url='/pages/delivery/delivery?flag=1'>
       <view class='zan-cell__body'>
         <image class='add_pay_img' src='../../images/add_pay.png'></image>
         <span class='add_tit'>新增收获地址</span>
       </view>
       <view class='zan-cell__ft'></view>
     </view>
-    <view class='info_delivery_pay zan-cell--access' hidden="{{!deliveryFlag}}" bindtap='skipToPage' data-url='/pages/delivery/delivery'>
+    <view class='info_delivery_pay zan-cell--access' hidden="{{!deliveryFlag}}" bindtap='skipToPage' data-url='/pages/delivery/delivery?flag=1'>
       <image class='location_img' src='../../images/location.png'></image>
       <view class='person'>收货人: {{addressInfo.recipients}}
         <view class='phone'>{{addressInfo.phone}}</view>

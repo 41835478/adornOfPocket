@@ -321,12 +321,12 @@ Page({
       success: res => {
         if (res.code) {
           wx.request({
-            url: getApp().globalData.baseUrl + 'mall/wx/delivery/findByWxCode?wxCode=' + res.code + '&pageNo=1&pageSize=10',
+            url: getApp().globalData.baseUrl + 'mall/wx/delivery/getDefault?wxCode=' + res.code,
             success: res => {
-              console.log('返回的地址数据' + JSON.stringify(res.data.list[0]))
+              console.log('返回的地址数据' + JSON.stringify(res.data))
               that.setData({
-                deliveryId: res.data.list[0].id,
-                addressInfo: res.data.list[0],
+                deliveryId: res.data.data.id,
+                addressInfo: res.data.data,
                 deliveryFlag: true
               })
             }
