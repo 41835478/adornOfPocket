@@ -15,7 +15,7 @@ Page({
     selectTicketPrice: 0,
     ticketName: '',
     totalPrice: 0,
-    userPoint: 0,
+    userPoint: 10,
     word: '',
     goodImageUrl: '',
     customerOpt: {

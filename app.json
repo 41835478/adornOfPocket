@@ -17,7 +17,8 @@
     "pages/wallet/wallet_record/wallet_record",
     "pages/tour/tour",
     "pages/order/evaluate/evaluate",
-    "pages/trial/trial"
+    "pages/trial/trial",
+    "pages/profile/point/point"
   ],
   "window": {
     "navigationBarBackgroundColor": "#ff0066",

@@ -1,0 +1,6 @@
+<!--pages/profile/point/point.wxml-->
+<view>
+  <view style='margin:10px;background:white;height:40px;padding:10px' wx:for='{{pointInfo}}' wx:key>
+    <label style='margin-top:10px'>积分使用: - 30 2017-11-3 10:30:08</label>
+  </view>
+</view>
