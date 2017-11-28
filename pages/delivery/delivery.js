@@ -47,7 +47,8 @@ Page({
       let that = this
       let index = val.currentTarget.id
       let item = val.currentTarget.dataset.index
-      // console.log("default address=" + JSON.stringify(index))
+      console.log("default address=" + JSON.stringify(index) + "item=" + JSON.stringify(item) + "addressArr=" + that.data.showList)
+
       wx.login({
         success: res => {
           if (res.code) {
@@ -60,9 +61,9 @@ Page({
                 let newArr = that.data.showList
                 for (let i = 0; i < newArr.length; i++) {
                   if (i == index) {
-                    newArr[i] = 1
+                    newArr[i] = 'DEFAULT_ADDRESS'
                   } else {
-                    newArr[i] = 0
+                    newArr[i] = 'UN_DEFAULT_ADDRESS'
                   }
                 }
                 that.setData({
@@ -127,7 +128,7 @@ Page({
                 if (res.data.list.length > 0) {
                   for (let i = 0; i < arr.length; i++) {
                     let cell = arr[i]
-                    showArr.push(cell.defaultAddress)
+                    showArr.push(cell.default_address)
                   }
                   that.setData({
                     deliveryList: res.data.list,

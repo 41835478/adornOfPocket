@@ -1,7 +1,7 @@
 <!--good商品详情页-->
 <import src='../../component/zanui-weapp/dist/quantity/index.wxml' />
 <import src='../../common/template/wxParse/wxParse.wxml' />
-<view class="good_container">
+<view>
   <view class='good_north '>
     <swiper class='good_scroll border_north' indicator-dots='true' autoplay='true' circular='true'>
       <swiper-item wx:for='{{goodInfo.imgList}}' wx:key='item'>
@@ -10,7 +10,7 @@
     </swiper>
     <view class='good_price border_north'>
       {{goodInfo.good_name}}
-      <view  class='single_price'>
+      <view class='single_price'>
         ¥ {{goodInfo.promotion*goodInfo.discount/10000}}
         <span wx:if='{{goodInfo.discount!=100}}' style="text-decoration:line-through;margin-right:20rpx;color:gray;font-size: 12px;">¥ {{goodInfo.price/100}}</span>
       </view>
@@ -44,25 +44,27 @@
     <!-- 商品评价 -->
     <view class='suggest_content' style='margin-bottom:20px' wx:if='{{goodSuggest.length<1}}'>暂无商品评价</view>
     <view class='suggest_view' wx:for='{{goodSuggest}}' wx:key='item'>
-      <image class='suggest_image' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp' mode='aspectFill'></image>
+       <image class='suggest_image' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp' mode='aspectFill'></image> 
       <label class='suggest_name'>{{item.id}}</label>
-      <label class='suggest_date'>{{item.createDate}}</label>
+      <label class='suggest_date'>{{item.create_date}}</label>
       <view class='suggest_content'>{{item.message}}</view>
-      <!-- <image wx:for='{{[1,2,3]}}' wx:key='item'  class='suggest_goodImg' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp' mode='aspectFill'></image>  -->
-    </view>
-    <!-- 测试数据 -->
-    <!-- <view class='suggest_view'> 
-      <image class='suggest_image' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp'></image>
-      <label class='suggest_name'>开化一霸</label>
-      <label class='suggest_date'>2017-10-12 10:32:33</label>
-      <view class='suggest_content'>安徽代理费;家里的;加;大家发了;卡剑荡四方;垃圾毒素付了款;案件的法律;卡将对方立刻;案件的法律;案件是否</view>
-       <image wx:for='123' wx:key='item' class='suggest_goodImg' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp'></image> 
-    </view>  -->
-
-    <view class='pic_introduce'>
+      <!-- <image wx:for='{{[1,2,3]}}' wx:key='item'  class='suggest_goodImg' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp' mode='aspectFill'></image>   -->
     </view>
   </view>
+  <view class='order_btn'>
+    <view class='back'>
+      <navigator url="/pages/index/index" open-type="reLaunch" hover-class="navigator-hover">
+        <view style='height:100rpx;background:#f9f9f9'>
+          <view class="zan-icon zan-icon-home" style="font-size: 38rpx; color: #ff4343;"></view>
+          <view style="font-size:24rpx;color: #ff4343;margin-bottom:10rpx">首页</view>
+        </view>
+      </navigator>
+    </view>
+    <button wx:if='{{goodInfo.stock>0}}' class="zan-btn zan-btn--large zan-btn--danger" bindtap='toggleDialog'>立即下单</button>
+    <button wx:else class="zan-btn zan-btn--large zan-btn--warn">货源不足</button>
+  </view>
 </view>
+<!-- 弹出视图 -->
 <view class="zan-dialog {{ showDialog ? 'zan-dialog--show' : '' }}">
   <view class="zan-dialog__mask" bindtap="toggleDialog" />
   <view class="zan-dialog__container">
@@ -71,7 +73,7 @@
         <view class='confirm_good_info'>
           <image class='confirm_pic' src="{{imageUrl+goodInfo.mainImgUrl}}" mode='aspectFill'></image>
           <view class='confirm_good_introduce'>
-            <view>{{goodInfo.goodName}}</view>
+            <view>{{goodInfo.good_name}}</view>
             <view class='confirm_single_price'> ¥ {{goodInfo.promotion/100}}</view>
           </view>
         </view>
@@ -99,17 +101,4 @@
       <button class='zan-btn zan-btn--large zan-btn--danger' style='height:100rpx;' bindtap='skipToPay' id='{{goodInfo.id}}' data-count='{{quantity}}'>下一步</button>
     </view>
   </view>
-</view>
-<view class='order_btn'>
-  <view class='back'>
-    <navigator url="/pages/index/index" open-type="reLaunch" hover-class="navigator-hover">
-      <view style='height:100rpx;background:#f9f9f9'>
-        <view class="zan-icon zan-icon-home" style="font-size: 38rpx; color: #ff4343;"></view>
-        <view style="font-size:24rpx;color: #ff4343;margin-bottom:10rpx">首页</view>
-      </view>
-    </navigator>
-  </view>
-  <button wx:if='{{goodInfo.stock>0}}' class="zan-btn zan-btn--large zan-btn--danger" bindtap='toggleDialog'>立即下单</button>
-  <button wx:else class="zan-btn zan-btn--large zan-btn--warn" >货源不足</button>
-
 </view>

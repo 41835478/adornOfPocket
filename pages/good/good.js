@@ -136,7 +136,7 @@ Page(Object.assign({}, quantity, wxParse, {
         that.setData({
           goodSuggest: res.data.data
         })
-        console.log("backdata="+ JSON.stringify(res))
+        console.log("backdata="+ JSON.stringify(res.data.data))
       }
     })
 },

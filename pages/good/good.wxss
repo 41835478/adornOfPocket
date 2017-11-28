@@ -1,5 +1,8 @@
 @import '../../common/template/wxParse/wxParse.wxss';
 
+.good_container{
+}
+
 .good-btn {
   position: relative;
   color: #333;
@@ -207,11 +210,12 @@
 .good_bottom {
   background: #f9f9f9;
   margin-top: 20rpx;
-  margin-bottom: 50px;
+  height: auto;
+  margin-bottom: 100px;
 }
 
 .suggest_view {
-  float: left;
+  /* float: left; */
   background: white;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -242,8 +246,9 @@
   font-size: 14px;
 }
 .suggest_content {
-  margin-left: 10px;
+  margin-left: 20px;
   margin-top: 5px;
+  /* margin-bottom: 10px; */
   font-size: 14px;
   color: gray;
 }

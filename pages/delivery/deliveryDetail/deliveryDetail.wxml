@@ -28,7 +28,7 @@
     <view class='form_item'>
       <span class='tit'>邮政编码</span>
       <view class='ipt'>
-        <input placeholder='邮政编码（选填）' bindinput='getData' data-name='code' value='{{addressList.postCode}}'>{{code}}</input>
+        <input placeholder='邮政编码（选填）' bindinput='getData' data-name='code' value='{{addressList.post_code}}'>{{code}}</input>
       </view>
     </view>
     <button type="primary" bindtap="primary" class='btn zan-btn--large' bindtap='submit'> 保存 </button>

@@ -6,7 +6,7 @@ Page({
    */
   data: {
 
-    cityUrl : 'http://japi.zto.cn/zto/api_utf8/baseArea?msg_type=GET_AREA&data=',
+    cityUrl: 'http://japi.zto.cn/zto/api_utf8/baseArea?msg_type=GET_AREA&data=',
     addUrl: 'mall/wx/delivery/add',
     delUrl: 'mall/wx/delivery/delete',
     saveUrl: 'mall/wx/delivery/update',
@@ -54,14 +54,14 @@ Page({
       success: res => {
         if (res.code) {
           let params = {};
-          params.wxCode = res.code;
+          params.wx_code = res.code;
           params.recipients = that.data.name;
           params.phone = that.data.phone;
           params.province = that.data.region[0];
           params.city = that.data.region[1];
           params.area = that.data.region[2];
           params.address = that.data.address;
-          params.postCode = that.data.code;
+          params.post_code = that.data.code;
           wx.request({
             url: getApp().globalData.baseUrl + that.data.addUrl,
             method: 'POST',
@@ -84,30 +84,39 @@ Page({
   save() {
     let params = {};
     let that = this
-    params.id = that.data.deliveryId;
-    params.recipients = that.data.name;
-    params.phone = that.data.phone;
-    params.province = that.data.region[0];
-    params.city = that.data.region[1];
-    params.area = that.data.region[2];
-    params.address = that.data.address;
-    params.postCode = that.data.code;
-    console.log(params);
-    wx.request({
-      url: getApp().globalData.baseUrl + that.data.saveUrl,
-      method: 'POST',
-      data: params,
-      success: function (res) {
-        console.log(res);
-        that.setData({
-          // deliveryId: res.data.data.id
-        })
-        wx.navigateBack({ delta: 1 });
-      },
-      fail: function (err) {
-        console.log(err);
+    wx.login({
+      success: res => {
+        if (res.code) {
+          params.id = that.data.deliveryId
+          params.wx_code = res.code
+          params.recipients = that.data.name;
+          params.phone = that.data.phone;
+          params.province = that.data.region[0];
+          params.city = that.data.region[1];
+          params.area = that.data.region[2];
+          params.address = that.data.address;
+          params.post_code = that.data.code;
+          console.log(params);
+          wx.request({
+            url: getApp().globalData.baseUrl + that.data.saveUrl,
+            method: 'POST',
+            data: params,
+            success: function (res) {
+              console.log(res);
+              that.setData({
+                deliveryId: res.data.data.id
+              })
+              wx.navigateBack({ delta: 1 });
+            },
+            fail: function (err) {
+              console.log(err);
+            }
+          })
+        }
       }
     })
+
+
   },
   /**
    * 删除收获地址
@@ -117,9 +126,9 @@ Page({
     wx.showModal({
       content: "确定要删除该地址吗?",
       success: function () {
-        console.log("确定;"+ that.data.deliveryId);
+        console.log("确定;" + that.data.deliveryId);
         wx.request({
-          url: getApp().globalData.baseUrl + that.data.delUrl + "?id=" + that.data.deliveryId ,
+          url: getApp().globalData.baseUrl + that.data.delUrl + "?id=" + that.data.deliveryId,
           method: 'POST',
           success: res => {
             console.log(JSON.stringify(res.data))
@@ -145,13 +154,13 @@ Page({
       })
     } else {
       var data = JSON.parse(options.data)
-      var province = data.province ? data.province:"北京市"
-      var city = data.city?data.city:"北京市"
-      var area = data.area?data.area:"东城区"
+      var province = data.province ? data.province : "北京市"
+      var city = data.city ? data.city : "北京市"
+      var area = data.area ? data.area : "东城区"
       this.setData({
         deliveryId: options.id,
         addressList: data,
-        region: [province,city,area],
+        region: [province, city, area],
         delFlag: true
       })
     }

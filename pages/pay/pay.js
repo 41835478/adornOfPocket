@@ -15,7 +15,7 @@ Page({
     selectTicketPrice: 0,
     ticketName: '',
     totalPrice: 0,
-    userPoint: 10,
+    userPoint: 0,
     word: '',
     goodImageUrl: '',
     customerOpt: {
@@ -137,24 +137,24 @@ Page({
       let payMoney = that.data.quantity * that.data.goodInfo.price - that.data.selectTicketPrice - that.data.userPoint     //实付金额
       console.log("count = " + that.data.quantity + ";  paymoney=" + payMoney)
       let order = {}
-      order.goodId = that.data.goodInfo.id
-      order.deliveryId = that.data.deliveryId
-      order.orderFee = that.data.quantity * that.data.goodInfo.price
+      order.good_id = that.data.goodInfo.id
+      order.delivery_id = that.data.deliveryId
+      order.order_fee = that.data.quantity * that.data.goodInfo.price
       order.count = that.data.quantity
       order.message = that.data.word
-      order.orderType = 2 //手机下单
+      order.order_type = 2 //手机下单
       if (that.data.selectTicketId) {
-        order.useTicket = 1
+        order.use_ticket = 1
       } else {
-        order.useTicket = 0
+        order.use_ticket = 0
       }
       order.ticket = that.data.selectTicketId
       order.point = that.data.userPoint  //消耗积分
       // order.paymentFee = payMoney
-      order.paymentFee = 1
-      order.reduceFee = that.data.selectTicketPrice       //优惠金额
-      order.freightFee = 0       //运费金额
-      order.goodFee = that.data.goodInfo.price //商品金额
+      order.payment_fee = 1
+      order.reduce_fee = that.data.selectTicketPrice       //优惠金额
+      order.freight_fee = 0       //运费金额
+      order.good_fee = that.data.goodInfo.price //商品金额
       console.log("第一次下单order = " + JSON.stringify(order))
       wx.login({
         success: res => {
@@ -324,11 +324,13 @@ Page({
             url: getApp().globalData.baseUrl + 'mall/wx/delivery/getDefault?wxCode=' + res.code,
             success: res => {
               console.log('返回的地址数据' + JSON.stringify(res.data))
-              that.setData({
-                deliveryId: res.data.data.id,
-                addressInfo: res.data.data,
-                deliveryFlag: true
-              })
+              if(res.data.result==1){
+                that.setData({
+                  deliveryId: res.data.data.id,
+                  addressInfo: res.data.data,
+                  deliveryFlag: true
+                })
+              }
             }
           })
         }

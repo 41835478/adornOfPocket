@@ -30,36 +30,37 @@ Page({
       success: res => {
         if (res.code) {
           let url = getApp().globalData.baseUrl + that.data.url
-          let params = {}
-          params.goodId = that.data.goodId
-          params.message = that.data.goodSuggest
-          params.wxCode = res.code
-          console.log("send data=" + JSON.stringify(params))
-          wx.request({
-            url: url,
-            data: params,
-            method: 'POST',
-            success: res => {
-              console.log('back data='+JSON.stringify(res.data))
-              if (res.data.result == 1) {
-                wx.showModal({
-                  title: '提示',
-                  content: res.data.data,
-                  showCancel: false,
-                  success: function (res) {
-                    if (res.confirm) {
-                      wx.navigateBack
-                    }
-                  }
-                })
-              }else{
+          let estimate = {}
+          estimate.good_id = that.data.goodId
+          estimate.message = that.data.goodSuggest
+          estimate.wx_code = res.code
+          estimate.nick_name = getApp().globalData.userInfo
+          console.log("send data=" + JSON.stringify(estimate))
+          // wx.request({
+          //   url: url,
+          //   data: estimate,
+          //   method: 'POST',
+          //   success: res => {
+          //     console.log('back data='+JSON.stringify(res.data))
+          //     if (res.data.result == 1) {
+          //       wx.showModal({
+          //         title: '提示',
+          //         content: res.data.data,
+          //         showCancel: false,
+          //         success: function (res) {
+          //           if (res.confirm) {
+          //             wx.navigateBack
+          //           }
+          //         }
+          //       })
+          //     }else{
                 
-              }
-            },
-            fail: err => {
-              console.log(JSON.stringify(err))
-            }
-          })
+          //     }
+          //   },
+          //   fail: err => {
+          //     console.log(JSON.stringify(err))
+          //   }
+          // })
         }
       }
     })

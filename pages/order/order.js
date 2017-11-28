@@ -7,39 +7,36 @@ Page(Object.assign({}, Zan, {
     cancelUrl: 'mall/wx/order/cancelOrder',
     tab: {
       list: [{
-        id: 'all',
+        id: 'ALL',
         title: '全部',
       }, {
-        id: 'topay',
+        id: 'UN_PAY',
         title: '待付款',
       }, {
-        id: 'tosend',
+        id: 'UN_DELIVERY',
         title: '待发货',
       }, {
-        id: 'send',
+        id: 'UN_RECEIVE',
         title: '待收货',
       }, {
-        id: 'sign',
+        id: 'DONE',
         title: '已完成',
       }, {
-        id: 'close',
+        id: 'CLOSING',
         title: '已关闭',
       }],
-      selectedId: 'all',
-      scroll: false,
-      fixed: true
+      selectedId: 'ALL',
     },
-    wxCode: '', //微信code
     lastPage: false,
     pageComplete: true,
     pageNo: 1,
     goods: [],
-    selectType: '',//当前目录
-    goodsTest: '',
     baseImgUrl: getApp().globalData.baseImgUrl,
   },
+  /**
+   * 点击导航切换数据
+   */
   handleZanTabChange(e) {
-    console.log(e)
     var componentId = e.componentId;
     var selectedId = e.selectedId;
     //控制选中样式
@@ -83,8 +80,8 @@ Page(Object.assign({}, Zan, {
       title: '加载中',
     })
     let selectId = this.data.selectedId
-    if(!selectId){
-      selectId = 'all'
+    if (!selectId) {
+      selectId = 'ALL'
     }
     console.log("select=" + selectId)
     var data = {}
@@ -100,9 +97,9 @@ Page(Object.assign({}, Zan, {
         wx.showModal({
           title: '提示',
           content: res.data.data,
-          showCancel:false,
-          success:function(res){
-            if(res.confirm){
+          showCancel: false,
+          success: function (res) {
+            if (res.confirm) {
               that.getDataFromNet(0, selectId)
             }
           }
@@ -118,10 +115,10 @@ Page(Object.assign({}, Zan, {
    * 确认收货,取消订单
    */
   confirmGood(e) {
-    let url 
+    let url
     let that = this
     let status = e.currentTarget.dataset.good.order_status
-    console.log("status="+status)
+    console.log("status=" + status)
     if (status == 3) {
       console.log("确认收货!")
       url = getApp().globalData.baseUrl + that.data.confirmUrl
@@ -137,14 +134,14 @@ Page(Object.assign({}, Zan, {
           let requestUrl = url + '?id=' + id + '&wxCode=' + res.code
           console.log("url=" + requestUrl)
           wx.request({
-            url:requestUrl,
+            url: requestUrl,
             success: res => {
               var result = res.data.result
               if (result == 1) {
                 wx.showModal({
                   title: '提示',
                   content: res.data.data,
-                  showCancel:false,
+                  showCancel: false,
                   success: function (res) {
                     if (res.confirm) {
                       that.getDataFromNet(0, that.data.selectedId)
@@ -162,15 +159,15 @@ Page(Object.assign({}, Zan, {
   /**
    * 商品评论
    */
-  goodsSuggestAction(e){
-      console.log("评价商品!"+JSON.stringify(e.currentTarget.dataset))
-      let goodItem = e.currentTarget.dataset.good
-      let goodId = e.currentTarget.id
-      let goodName = goodItem.good_name
-      let goodUrl = goodItem.good_main_image
-      wx.navigateTo({
-        url: '/pages/order/evaluate/evaluate?goodId='+goodId+"&goodName="+goodName+"&goodUrl="+goodUrl,
-      })
+  goodsSuggestAction(e) {
+    console.log("评价商品!" + JSON.stringify(e.currentTarget.dataset))
+    let goodItem = e.currentTarget.dataset.good
+    let goodId = e.currentTarget.id
+    let goodName = goodItem.good_name
+    let goodUrl = goodItem.good_main_image
+    wx.navigateTo({
+      url: '/pages/order/evaluate/evaluate?goodId=' + goodId + "&goodName=" + goodName + "&goodUrl=" + goodUrl,
+    })
   },
   /**
    * 获取当前列订单信息 e:0 导航栏点击 1:上拉刷新
@@ -200,26 +197,9 @@ Page(Object.assign({}, Zan, {
         })
       }
     //根据selectId设置请求orderStatus
-    var status = 0
+    var status = ''
     console.log("code=" + selectedId)
-    if (selectedId == 'all') {
-      status = 0
-    }
-    if (selectedId == 'topay') {
-      status = 1
-    }
-    if (selectedId == 'tosend') {
-      status = 2
-    }
-    if (selectedId == 'send') {
-      status = 3
-    }
-    if (selectedId == 'sign') {
-      status = 4
-    }
-    if(selectedId == 'close'){
-      status = 6
-    }
+    status = selectedId
     wx.setStorageSync('selectedId', selectedId)
 
     wx.login({
@@ -290,12 +270,12 @@ Page(Object.assign({}, Zan, {
         if (res) {
           console.log("onshow and selectedId=" + res.data)
           that.getDataFromNet(0, res.data)
-        } 
+        }
       },
       //初始化
-      fail:function(err){
+      fail: function (err) {
         console.log("onshow and selectedId=all")
-        that.getDataFromNet(0, 'all')
+        that.getDataFromNet(0, 'ALL')
       },
     })
   },
@@ -334,8 +314,8 @@ Page(Object.assign({}, Zan, {
           that.getDataFromNet(1, res.data)
         }
       },
-      fail:function(err){
-        that.getDataFromNet(1, "all")
+      fail: function (err) {
+        that.getDataFromNet(1, "ALL")
       }
     })
   },
