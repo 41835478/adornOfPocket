@@ -6,7 +6,7 @@ Page({
    */
   data: {
     url: 'mall/wx/good/findByGoodId',
-    payUrl: 'mall/wx/jsapi/order/preOrder',
+    payUrl: 'mall/wx/jsapi/order/unifiedOrder',
     tickUrl: 'mall/wx/ticket/findByUserId',
     goodInfo: {},
     payInfo: {},
@@ -209,8 +209,8 @@ Page({
     wx.hideLoading()
     wx.requestPayment({
       timeStamp: this.data.payInfo.timeStamp,
-      nonceStr: this.data.payInfo.nonce_str,
-      package: 'prepay_id=' + this.data.payInfo.prepay_id,
+      nonceStr: this.data.payInfo.nonceStr,
+      package:  this.data.payInfo.package,
       signType: 'MD5',
       paySign: this.data.payInfo.paySign,
       'success': function (res) {
