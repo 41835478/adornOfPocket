@@ -14,7 +14,7 @@ Page({
     addressList: {},
     deliveryId: '',
     region: ['北京市', '北京市', '东城区'],
-    delFlag: false
+    delFlag: false,
   },
   /**
    * input输入
@@ -89,7 +89,7 @@ Page({
         if (res.code) {
           params.id = that.data.deliveryId
           params.wx_code = res.code
-          params.recipients = that.data.name;
+          params.recipients = that.data.name?that.data.name:that;
           params.phone = that.data.phone;
           params.province = that.data.region[0];
           params.city = that.data.region[1];

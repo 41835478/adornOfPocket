@@ -42,9 +42,9 @@ App({
   globalData: {
     userInfo: null,
     // baseUrl: 'http://4mnkwf.natappfree.cc/',
-    baseUrl: 'http://192.168.0.108:8088/',     //方珂
+    // baseUrl: 'http://192.168.0.108:8088/',     //方珂
     // baseUrl: 'http://24ri4k.natappfree.cc/', //黄明月
-    // baseUrl:'https://zjhkhl.com/',               //生产
+    baseUrl:'https://zjhkhl.com/',               //生产
     baseImgUrl: 'https://zjhkhl.com',
   }
 })

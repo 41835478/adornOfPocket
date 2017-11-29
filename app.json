@@ -21,33 +21,33 @@
     "pages/profile/point/point"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#ff0066",
+    "navigationBarBackgroundColor": "#9a5afa",
     "navigationBarTitleText": "妆口袋",
     "navigationBarTextStyle": "#fff",
     "backgroundTextStyle": "dark",
-    "backgroundColor": "#f9f9f9",
-    "enablePullDownRefresh": "true"
+    "backgroundColor": "#dbdbdb",
+    "enablePullDownRefresh": "false"
   },
   "tabBar": {
     "color": "#8a8a8a",
-    "selectedColor": "#d81e06",
+    "selectedColor": "#4c68b1",
     "borderStyle": "black",
     "list": [
       {
-        "selectedIconPath": "images/home-red.png",
-        "iconPath": "images/home-default.png",
+        "selectedIconPath": "images/home_selected.png",
+        "iconPath": "images/home_normal.png",
         "pagePath": "pages/index/index",
         "text": "优选"
       },
       {
-        "selectedIconPath": "images/order-red.png",
-        "iconPath": "images/order-default.png",
+        "selectedIconPath": "images/order_selected.png",
+        "iconPath": "images/order_normal.png",
         "pagePath": "pages/order/order",
         "text": "订单"
       },
       {
-        "selectedIconPath": "images/me-red.png",
-        "iconPath": "images/me-default.png",
+        "selectedIconPath": "images/my_selected.png",
+        "iconPath": "images/my_normal.png",
         "pagePath": "pages/profile/profile",
         "text": "我的"
       }

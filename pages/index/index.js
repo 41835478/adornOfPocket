@@ -2,21 +2,55 @@
 //获取应用实例
 const app = getApp()
 var Zan = require('../../component/zanui-weapp/dist/index');
+var ZanTab = require('../../component/zanui-weapp/dist/tab/index');
 var Hongbao = require('../../common/template/hongbao/hongbao');
-Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
+Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab,{
   data: {
     userInfo: {},
     goodList: [],
     baseUrl: getApp().globalData.baseImgUrl,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-
     pageNo: 1,
+
+    tab: {
+      list: [{
+        id: 'ALL',
+        title: '面部清洁',
+      }, {
+        id: 'UN_PAY',
+        title: '基础护肤',
+      }, {
+        id: 'UN_DELIVERY',
+        title: '美白祛斑',
+      }, {
+        id: 'UN_RECEIVE',
+        title: '深层滋养',
+      }, {
+        id: 'DONE',
+        title: '彩妆系列',
+      }],
+      selectedId: 'ALL',
+      style:'index',
+    },
 
     activityShow: false,//红包活动显示标识
     hasUserInfo: false,
     lastPage: false,
     // pageComplete: true,
     animationData: {},
+  },
+
+  /**
+   * 点击导航切换数据
+   */
+  handleZanTabChange(e) {
+    var componentId = e.componentId;
+    var selectedId = e.selectedId;
+    //控制选中样式
+    this.setData({
+      [componentId + `.selectedId`]: selectedId
+    });
+    console.log("selected ==" + selectedId)
   },
 /**
  * 每次进入加载页面请求数据
@@ -98,12 +132,6 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
     console.log(e.detail.iv)
     console.log(e.detail.encryptedData)
   },
-  //事件处理函数
-  // bindViewTap: function () {
-  //   wx.navigateTo({
-  //     url: '../logs/logs'
-  //   })
-  // },
   /**
    * 点击查看商品详情
    */
@@ -189,7 +217,7 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, {
   // 下拉刷新事件
   onPullDownRefresh() {
     this.pullUp()
-    // wx.stopPullDownRefresh();
+    wx.stopPullDownRefresh();
   },
   getUserInfo: function (e) {
     console.log(e)

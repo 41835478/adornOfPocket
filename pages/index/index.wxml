@@ -1,51 +1,52 @@
-<view class="container" style="background:#ff0066">
-  <view class="seach_content">
-    <image src='../../images/3.png' style="height:180rpx;width:300rpx;"></image>
-  </view>
-  <view style='background:#fff;height:80rpx;border-radius:80rpx;margin-bottom:30rpx;width:90%;'>
-    <input style="padding:0 30rpx;text-align:center;margin-top:14rpx;color:#666;" type="text" readonly="readonly" placeholder="妆口袋 开启美一天" confirm-type='search' bindconfirm='searchGoodAction' />
+<import src="../../component/zanui-weapp/dist/tab/index.wxml" />
+
+<view class="container">
+
+  <view style="background:rgb(154,90,250);width:100%;text-align:center">
+    <view class="seach_content">
+      <image src='../../images/index_logo.jpg' style="height:180rpx;width:300rpx;"></image>
+    </view>
+    <view style='background:#fff;height:70rpx;border-radius:70rpx;margin-bottom:30rpx;width:90%;margin-left:5%'>
+      <input type="text" readonly="readonly" placeholder="妆口袋 开启美一天" confirm-type='search' bindconfirm='searchGoodAction' style='height:70rpx' />
+    </view>
   </view>
 
-  <view style='width:100%;background:#fff;'>
+  <view style='width:100%;background:#fff;height:140rpx'>
     <navigator url="" hover-class="navigator-hover">
-      <view style='width:25%;height:84rpx;float:left;'>
-        <image src='../../images/秒杀.png' style="width:48rpx;height:48rpx;padding:30rpx 66rpx;"></image>
+      <view style='width:33.3%;float:left;text-align:center;'>
+        <image src='../../images/index_buy.png' style="width:48rpx;height:48rpx;margin-top:20rpx"></image>
+        <view style='margin-top:10rpx'>拼团</view>
       </view>
     </navigator>
     <navigator url="/pages/tour/tour?title='拼团'" hover-class="navigator-hover">
-      <view style='width:25%;height:84rpx;float:left;'>
-        <image src='../../images/拼图.png' style="width:50rpx;height:50rpx;padding:30rpx 66rpx;"></image>
+      <view style='width:33.3%;float:left;text-align:center;'>
+        <image src='../../images/index_spell.png' style="width:48rpx;height:48rpx;margin-top:20rpx"></image>
+        <view style='margin-top:10rpx'>试用</view>
       </view>
     </navigator>
     <navigator url='/pages/trial/trial' hover-class='navigator-hover'>
-      <view style='width:25%;height:84rpx;float:left;'>
-        <image src='../../images/order-red.png' style="width:48rpx;height:48rpx;padding:30rpx 66rpx;"></image>
+      <view style='width:33.3%;float:left;text-align:center;'>
+        <image src='../../images/index_ticket.png' style="width:48rpx;height:48rpx;margin-top:20rpx"></image>
+        <view style='margin-top:10rpx'>优惠券</view>
       </view>
     </navigator>
-    
-    <view style='width:25%;height:84rpx;float:left;'>
-      <image src='../../images/分类.png' style="width:48rpx;height:48rpx;padding:30rpx 66rpx;"></image>
-    </view>
   </view>
-  <view style='width:100%;background:#fff;height:60rpx;'>
-    <view style="width:25%;height:20rpx;float:left;text-align:center;color:#666">
-      秒杀
-    </view>
-    <view style="width:25%;height:20rpx;float:left;text-align:center;color:#666">
-      拼团
-    </view>
-    <view style="width:25%;height:20rpx;float:left;text-align:center;color:#666">
-      试用
-    </view>
-    <view style="width:25%;height:20rpx;float:left;text-align:center;color:#666">
-      分类
-    </view>
-  </view>
-  <!-- <scroll-view scroll-y="true" style='height:150px;' lower-threshold="5" bindscrolltolower='pullUp' style='background:#fff;'> -->
-  <scroll-view scroll-y="true" style='background:#f9f9f9;'>
-    <view wx:for="{{goodList}}" wx:key="item">
-      <view class='pick_list' bindtap='goTogoodInfo' id='{{item.id}}'>
 
+  <view style='text-align:center;margin-top:20rpx;background:white;width:100%;'>
+    <view style='width:25%;border-bottom: 1rpx solid #dbdbdb;height:20px;float:left;margin-left:15%'></view>
+    <view style='margin-top:20rpx;color:grey;width:20%;float:left'>
+      今日特卖
+    </view>
+    <view style='width:25%;border-bottom: 1rpx solid #dbdbdb;height:20px;float:left'></view>
+    
+  </view>
+  <view style='width:100%'>
+      <template is="zan-tab" data="{{tab: tab, componentId: 'tab'}}"></template>
+    </view>
+  <scroll-view scroll-y="true" scroll-x="false" style='padding-top:15rpx;background:#f9f9f9'>
+    <view wx:for="{{goodList}}" wx:key="item">
+
+      <view class='pick_list' bindtap='goTogoodInfo' id='{{item.id}}'>
         <image class='item_image' src="{{baseUrl+item.main_image_url}}" mode='aspectFit'></image>
         <label class='label_style1'>{{item.good_name}}</label>
         <view>

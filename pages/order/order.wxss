@@ -1,5 +1,6 @@
 .order_tab {
   border-top: 1px solid #f9f3f3;
+  width: 100%;
 }
 .order_index{
   font-size: 0;
