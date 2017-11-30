@@ -71,22 +71,22 @@
     <view>
       <view class='confirm_content'>
         <view class='confirm_good_info'>
-          <image class='confirm_pic' src="{{imageUrl+goodInfo.mainImgUrl}}" mode='aspectFill'></image>
+          <image class='confirm_pic' src="{{imageUrl+goodInfo.main_image_url}}" mode='aspectFill'></image>
           <view class='confirm_good_introduce'>
             <view>{{goodInfo.good_name}}</view>
             <view class='confirm_single_price'> ¥ {{goodInfo.promotion/100}}</view>
           </view>
         </view>
         <!--类目  -->
-        <view class='good_category'>
-          <view class='category_list'>
-            <view class='item_tit'>尺寸:</view>
+        <!-- <view class='good_category'> -->
+          <!-- <view class='category_list'> -->
+            <!-- <view class='item_tit'>尺寸:</view>
             <view class='item_list' wx:for='{{specs}}' wx:key="item">
               <button wx:if="{{item.showSelect==false}}" class="zan-btn zan-btn--mini" bindtap='chickAction' id='{{item.id}}'>{{item.name}}cm</button>
               <button wx:else class="zan-btnSelect zan-btn--mini" bindtap='chickAction' id='{{item.id}}'>{{item.name}}cm</button>
             </view>
-          </view>
-        </view>
+          </view> -->
+        <!-- </view> -->
         <view class='confirm_good_count'>
           <view class='count_lf'>
             <p>购买数量:</p>

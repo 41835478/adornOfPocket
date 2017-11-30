@@ -16,7 +16,7 @@
     </view>
   </view>
 </view>
-<!-- <view class='add_btn' bindtap='skipPage' id='add'> -->
+
   <view class="zan-panel add_btn">
     <view class="zan-cell zan-cell--access" bindtap='skipPage' id='add'>
     <icon type="info" size="20"/>
@@ -24,4 +24,3 @@
        <view class="zan-cell__ft"></view> 
     </view>
   </view>
-<!-- </view> -->

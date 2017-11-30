@@ -210,7 +210,7 @@ Page({
     wx.requestPayment({
       timeStamp: this.data.payInfo.timeStamp,
       nonceStr: this.data.payInfo.nonceStr,
-      package:  this.data.payInfo.package,
+      package: this.data.payInfo.package,
       signType: 'MD5',
       paySign: this.data.payInfo.paySign,
       'success': function (res) {
@@ -290,7 +290,7 @@ Page({
         console.log(res.data.data)
         this.setData({
           goodInfo: res.data.data,
-          goodImageUrl: getApp().globalData.baseImgUrl + res.data.data.mainImgUrl
+          goodImageUrl: getApp().globalData.baseImgUrl + res.data.data.main_image_url
         })
         let price = res.data.data.promotion * quantity
         this.setData({
@@ -324,7 +324,7 @@ Page({
             url: getApp().globalData.baseUrl + 'mall/wx/delivery/getDefault?wxCode=' + res.code,
             success: res => {
               console.log('返回的地址数据' + JSON.stringify(res.data))
-              if(res.data.result==1){
+              if (res.data.result == 1) {
                 that.setData({
                   deliveryId: res.data.data.id,
                   addressInfo: res.data.data,

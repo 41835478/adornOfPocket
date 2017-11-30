@@ -5,8 +5,6 @@ Page({
    * 页面的初始数据
    */
   data: {
-
-    cityUrl: 'http://japi.zto.cn/zto/api_utf8/baseArea?msg_type=GET_AREA&data=',
     addUrl: 'mall/wx/delivery/add',
     delUrl: 'mall/wx/delivery/delete',
     saveUrl: 'mall/wx/delivery/update',
@@ -90,9 +88,9 @@ Page({
    */
   save() {
 
-wx.showLoading({
-  title: '加载中',
-})
+    wx.showLoading({
+      title: '加载中',
+    })
     let params = {};
     let that = this
     wx.login({
@@ -113,7 +111,7 @@ wx.showLoading({
             method: 'POST',
             data: params,
             success: function (res) {
-            wx.hideLoading()
+              wx.hideLoading()
               console.log(res);
               that.setData({
                 deliveryId: res.data.data.id
@@ -121,8 +119,8 @@ wx.showLoading({
               wx.showModal({
                 title: '提示',
                 content: '地址修改成功',
-                showCancel:false,
-                success:res=>{
+                showCancel: false,
+                success: res => {
                   wx.navigateBack({ delta: 1 });
                 }
               })
@@ -134,13 +132,11 @@ wx.showLoading({
           })
         }
       },
-      fail:err=>{
+      fail: err => {
         wx.hideLoading()
         console.log(err)
       }
     })
-
-
   },
   /**
    * 删除收获地址
@@ -155,25 +151,42 @@ wx.showLoading({
           wx.showLoading({
             title: '加载中',
           })
-          wx.request({
-            url: getApp().globalData.baseUrl + that.data.delUrl + "?id=" + that.data.deliveryId,
-            method: 'POST',
+          wx.login({
             success: res => {
-              wx.hideLoading()
-              console.log(JSON.stringify(res.data))
-              wx.showModal({
-                title: '提示',
-                content: '地址删除成功',
-                showCancel: false,
-                success: res => {
-                  wx.navigateBack({ delta: 1 });
-                }
-              })
-            },
-            fail: err => {
-                wx.hideLoading()
+              if (res.code) {
+                wx.request({
+                  url: getApp().globalData.baseUrl + that.data.delUrl + "?id=" + that.data.deliveryId + "&wxCode=" + res.code,
+                  method: 'POST',
+                  success: res => {
+                    wx.hideLoading()
+                    console.log(JSON.stringify(res.data))
+                    if(res.data.result == 1){
+                      wx.showModal({
+                        title: '提示',
+                        content: '地址删除成功',
+                        showCancel: false,
+                        success: res => {
+                          wx.navigateBack({ delta: 1 });
+                        }
+                      })
+                    }else{
+                      wx.showModal({
+                        title: '提示',
+                        content: '地址删除失败',
+                        showCancel: false,
+                      })
+                    }
+                   
+                  },
+                  fail: err => {
+                    wx.hideLoading()
+                  }
+                })
+              }
             }
           })
+
+
         }
       }
     })

@@ -4,39 +4,23 @@ const app = getApp()
 var Zan = require('../../component/zanui-weapp/dist/index');
 var ZanTab = require('../../component/zanui-weapp/dist/tab/index');
 var Hongbao = require('../../common/template/hongbao/hongbao');
-Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab,{
+var netWork = require('../../common/requestTool/request.js');
+Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab, netWork, {
   data: {
+    categoryUrl: 'mall/wx/category/findHomePage',
+    goodListUrl: 'mall/wx/good/findHomePage',
     userInfo: {},
     goodList: [],
     baseUrl: getApp().globalData.baseImgUrl,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     pageNo: 1,
-
     tab: {
-      list: [{
-        id: 'ALL',
-        title: '面部清洁',
-      }, {
-        id: 'UN_PAY',
-        title: '基础护肤',
-      }, {
-        id: 'UN_DELIVERY',
-        title: '美白祛斑',
-      }, {
-        id: 'UN_RECEIVE',
-        title: '深层滋养',
-      }, {
-        id: 'DONE',
-        title: '彩妆系列',
-      }],
-      selectedId: 'ALL',
-      style:'index',
+      list: [],
+      selectedId: 0,
+      style: 'index',
     },
-
-    activityShow: false,//红包活动显示标识
     hasUserInfo: false,
     lastPage: false,
-    // pageComplete: true,
     animationData: {},
   },
 
@@ -51,86 +35,71 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab,{
       [componentId + `.selectedId`]: selectedId
     });
     console.log("selected ==" + selectedId)
+    //发起商品列表请求
+    var params = {}
+    params.pageSize = 10
+    params.pageNo = 1
+    params.categoryId = selectedId
+    this.downLoadData(this.data.goodListUrl, params, 'goodList')
   },
-/**
- * 每次进入加载页面请求数据
- */
-  onShow() {
+
+  /**
+   * 网络获取数据
+   */
+  downLoadData(requestUrl, params, style) {
     wx.showLoading({
       title: '加载中',
     })
-    wx.request({
-      url: getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=1&pageSize=10',
-      method: 'GET',
-      success: res => {
-        wx.hideLoading()
-        console.log(res);
-        this.setData({
-          goodList: res.data.list,
-          lastPage: res.data.lastPage,
-          pageNo:1,
-        })
-      },
-      fail:err=>{
-        wx.hideLoading()
-      }
-    })
+    let that = this
+    netWork.GET(
+      {
+        url: requestUrl,
+        params: params,
+        success: function (res) {
+          wx.hideLoading()
+          that.dataSuccBack(res, style)
+        },
+        fail: function () {
+          //失败后的逻辑
+          wx.hideLoading()
+        },
+      })
   },
-  // 上拉加载
-  pullUp: function () {
-    console.log('是否最后一页:' + this.data.lastPage)
-    //最后一页，不再进行请求
-    if (this.data.lastPage) {
-      return;
+  /**
+   * 成功回调
+   */
+  dataSuccBack(res, style) {
+    console.log(res)
+    if (style == 'categroy') {
+      let list = res.data.list
+      let receive = []
+      for (let i = 0; i < list.length; i++) {
+        var dic = list[i]
+        var receiveDic = {}
+        receiveDic.id = dic.id
+        receiveDic.title = dic.category_name
+        receive[i] = receiveDic
+      }
+      this.setData({
+        tab: {
+          list: receive,
+          selectedId: receive[0].id
+        },
+      })
     }
-    // 防止过度频繁请求
-    // this.setData({
-    //   pageComplete: false
-    // })
-    wx.showLoading({
-      title: '加载中'
-    });
-    let pageNo = this.data.pageNo + 1;
-    console.log(pageNo);
-    let url = getApp().globalData.baseUrl + 'mall/wx/good/findAll?pageNo=' + pageNo + '&pageSize=10';
-    wx.request({
-      url: url,
-      method: "GET",
-      success: res => {
-        if (res.statusCode == 200) {
-          let arr = this.data.goodList.concat(res.data.list);
-          console.log(res.data);
-          if (res.data.list.length > 0) {
-            this.setData({
-              goodList: arr,
-              lastPage: res.data.lastPage,
-              pageNo: pageNo,
-              // pageComplete: true
-            });
-          }else{
-            console.log("没有更多了")
-            this.setData({
-              lastPage:true
-            })
-          }
-          console.log("lastPage="+this.data.lastPage)
-          wx.hideLoading();
-        }
-      },
-      fail: error => {
-        console.log(error)
-        wx.hideLoading();
+    if (style == 'goodList') {
+      if (res.statusCode == 200) {
         this.setData({
-          // pageComplete: true
+          goodList: res.data.list
         })
       }
-    })
+    }
   },
-  /**获取手机号 */
-  getPhoneNumber: function (e) {
-    console.log(e.detail.errMsg)
-    console.log(e.detail.iv)
-    console.log(e.detail.encryptedData)
+  /**
+   * 上拉刷新
+   */
+  pullUp: function () {
+    //待定
   },
   /**
    * 点击查看商品详情
@@ -142,7 +111,6 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab,{
       url: '/pages/good/good?goodId=' + goodID,
     })
   },
-
   /**
    * 搜索商品
    */
@@ -159,8 +127,27 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab,{
       }
     })
   },
+  /**
+   * 每次进入加载页面请求数据
+   */
+  onShow() {
+
+    //发起商品列表请求
+    var params = {}
+    params.pageSize = 10
+    params.pageNo = 1
+    params.categoryId = this.data.tab.selectedId
+    this.downLoadData(this.data.goodListUrl, params, 'goodList')
+  },
 
   onLoad: function () {
+    //加载类目
+    var params = {}
+    params.pageSize = 100
+    params.pageNo = 1
+    params.type = 'PARENT_CATEGORY'
+    this.downLoadData(this.data.categoryUrl, params, 'categroy')
+
     //判断本地是否有缓存
     wx.getStorage({
       key: 'token',
@@ -212,11 +199,11 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab,{
   },
   // 页面上拉触底事件的处理函数
   onReachBottom: function () {
-    this.pullUp()
+    // this.pullUp()
   },
   // 下拉刷新事件
   onPullDownRefresh() {
-    this.pullUp()
+    // this.pullUp()
     wx.stopPullDownRefresh();
   },
   getUserInfo: function (e) {
@@ -226,5 +213,11 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab,{
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
-  }
+  },
+  /**获取手机号 */
+  getPhoneNumber: function (e) {
+    console.log(e.detail.errMsg)
+    console.log(e.detail.iv)
+    console.log(e.detail.encryptedData)
+  },
 }))

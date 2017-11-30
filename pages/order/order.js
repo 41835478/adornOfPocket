@@ -1,6 +1,7 @@
 // pages/order/order.js
 var Zan = require('../../component/zanui-weapp/dist/tab/index');
-Page(Object.assign({}, Zan, {
+var netWork = require('../../common/requestTool/request.js')
+Page(Object.assign({}, Zan, netWork, {
   data: {
     url: 'mall/wx/order/findByUserId',
     confirmUrl: 'mall/wx/order/confirmReceipt',
@@ -66,7 +67,7 @@ Page(Object.assign({}, Zan, {
     console.log("data====" + JSON.stringify(data))
     let id = data.id
     let count = data.count
-    let goodId = data.goodId
+    let goodId = data.good_id
     wx.navigateTo({
       url: '/pages/pay/pay?id=' + id + '&quantity=' + count + '&goodId=' + goodId,
     })
@@ -88,12 +89,15 @@ Page(Object.assign({}, Zan, {
     data = e.currentTarget;
     console.log(e.currentTarget)
     let url = getApp().globalData.baseUrl + 'mall/wx/order/refund?orderId=' + data.id
-    wx.request({
+
+    var params = {}
+    params.orderId = data.id
+    netWork.POST({
       url: url,
-      method: 'POST',
+      wxCode: true,
+      params: params,
       success: res => {
-        wx.hideLoading()
-        console.log(res.data)
+        console.log(res)
         wx.showModal({
           title: '提示',
           content: res.data.data,
@@ -106,10 +110,32 @@ Page(Object.assign({}, Zan, {
         })
       },
       fail: err => {
-        wx.hideLoading()
         console.log(err)
       }
     })
+
+    // wx.request({
+    //   url: url,
+    //   method: 'POST',
+    //   success: res => {
+    //     wx.hideLoading()
+    //     console.log(res.data)
+    //     wx.showModal({
+    //       title: '提示',
+    //       content: res.data.data,
+    //       showCancel: false,
+    //       success: function (res) {
+    //         if (res.confirm) {
+    //           that.getDataFromNet(0, selectId)
+    //         }
+    //       }
+    //     })
+    //   },
+    //   fail: err => {
+    //     wx.hideLoading()
+    //     console.log(err)
+    //   }
+    // })
   },
   /**
    * 确认收货,取消订单
@@ -169,6 +195,8 @@ Page(Object.assign({}, Zan, {
       url: '/pages/order/evaluate/evaluate?goodId=' + goodId + "&goodName=" + goodName + "&goodUrl=" + goodUrl,
     })
   },
+
+
   /**
    * 获取当前列订单信息 e:0 导航栏点击 1:上拉刷新
    */
@@ -198,51 +226,70 @@ Page(Object.assign({}, Zan, {
       }
     //根据selectId设置请求orderStatus
     var status = ''
-    console.log("code=" + selectedId)
+    console.log("code=" + selectedId + "  e= " + e)
     status = selectedId
     wx.setStorageSync('selectedId', selectedId)
 
-    wx.login({
-      success: res => {
-        console.log(res);
-        if (res.code) {
-          let url = getApp().globalData.baseUrl + that.data.url + "?wxCode=" + res.code + "&pageNo=" + pageNo + "&pageSize=5" + "&orderStatus=" + status
-          console.log(url)
-          wx.request({
-            url: url,
-            method: 'GET',
-            success: function (res) {
-              wx.hideLoading()
-              if (res.statusCode == 200) {
-                console.log(res);
-                if (e == 0) {
-                  that.setData({
-                    goods: res.data.list,
-                    lastPage: res.data.lastPage,
-                    pageComplete: true,
-                    pageNo: pageNo
-                  })
-                } else {
-                  let arr = that.data.goods.concat(res.data.list);
-                  console.log(res.data.list)
-                  that.setData({
-                    goods: arr,
-                    lastPage: res.data.lastPage,
-                    pageComplete: true,
-                    pageNo: pageNo
-                  })
-                }
+  wx.login({
+    success:res=>{
+      var params = {}
+      params.pageNo = pageNo
+      params.pageSize = 10
+      params.orderStatus = status
+      // params.wxCode = res.code
+        netWork.GET({
+          url: that.data.url,
+          wxCode: true,
+          params: params,
+          success: res => {
+            wx.hideLoading()
+            console.log(res)
+            if (res.statusCode == 200) {
+              if (e == 0) {
+                that.setData({
+                  goods: res.data.list,
+                  lastPage: res.data.lastPage,
+                  pageComplete: true,
+                  pageNo: pageNo
+                })
+              } else {
+                let arr = that.data.goods.concat(res.data.list);
+                console.log(res.data.list)
+                that.setData({
+                  goods: arr,
+                  lastPage: res.data.lastPage,
+                  pageComplete: true,
+                  pageNo: pageNo
+                })
               }
-            },
-            fail: function (err) {
-              wx.hideLoading()
-              console.log(err)
             }
-          })
+          },
+          fail: err => {
+            wx.hideLoading()
+            console.log(err)
+          }
+        })
 
-        }
-      }
-    })
+    }
+  })
+   
+
+
+    // wx.request({
+    //   url: url,
+    //   method: 'GET',
+    //   success: function (res) {
+    //     wx.hideLoading()
+
+    //     }
+    //   },
+    //   fail: function (err) {
+    //     wx.hideLoading()
+    //     console.log(err)
+    //   }
+    // })
+
+
   },
   /**
    * 生命周期函数--监听页面加载
