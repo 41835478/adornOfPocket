@@ -9,8 +9,6 @@ Page({
     showList: [],
     showSelected: false,
     pageNo: 1,
-    lastPage: false,
-    completData: false,
     defaultSelect: 0,
     flag: '',
   },
@@ -37,9 +35,7 @@ Page({
         addressInfo: item,
         deliveryId: item.id
       })
-      wx.navigateBack({
-        
-      })
+      wx.navigateBack({})
     } else {
       wx.showLoading({
         title: '加载中',
@@ -56,7 +52,7 @@ Page({
               url: getApp().globalData.baseUrl + 'mall/wx/delivery/defaultAddress' + '?wxCode=' + res.code + '&id=' + item.id,
               success: res => {
                 wx.hideLoading()
-                console.log("backdata=" + JSON.stringify(res.data))
+                console.log("address  =====" + JSON.stringify(res.data))
                 // 刷新页面数据
                 let newArr = that.data.showList
                 for (let i = 0; i < newArr.length; i++) {
@@ -66,6 +62,7 @@ Page({
                     newArr[i] = 'UN_DEFAULT_ADDRESS'
                   }
                 }
+                console.log("newarr="+newArr)
                 that.setData({
                   showList: newArr
                 })
@@ -88,10 +85,19 @@ Page({
   skipPage(val) {
     let id = val.currentTarget.id
     if (id == 'add') {
-      let addUrl = '/pages/delivery/deliveryDetail/deliveryDetail?flag=1'
-      wx.navigateTo({
-        url: addUrl,
-      })
+
+      let arr = this.data.deliveryList
+      if(arr.length>=10){
+        wx.showModal({
+          title: '提示',
+          content: '您最多可以添加10条地址信息 , 敬请谅解!',
+        })
+      }else{
+        let addUrl = '/pages/delivery/deliveryDetail/deliveryDetail?flag=1'
+        wx.navigateTo({
+          url: addUrl,
+        })
+      }
     }
     if (id == 'modify') {
       console.log("val=", val)
@@ -122,8 +128,8 @@ Page({
               url: url,
               success: res => {
                 wx.hideLoading()
-                let arr = that.data.deliveryList.concat(res.data.list)
-                console.log(JSON.stringify(res.data))
+                let arr = res.data.list
+                console.log("arr =====" + JSON.stringify(arr))
                 let showArr = []
                 if (res.data.list.length > 0) {
                   for (let i = 0; i < arr.length; i++) {
@@ -134,14 +140,9 @@ Page({
                     deliveryList: res.data.list,
                     showList: showArr,
                     pageNo: pageNo,
-                    completData: true
-                  })
-                } else {
-                  that.setData({
-                    lastPage: true,
                   })
                 }
-
+                console.log("showList =  " + that.data.showList)
               },
               fail: err => {
                 wx.hideLoading()
@@ -184,10 +185,7 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    this.setData({
-      lastPage: false,
-      completData: false
-    })
+
   },
 
   /**

@@ -68,7 +68,14 @@ Page({
             data: params,
             success: function (res) {
               console.log("添加地址返回:" + JSON.stringify(res.data));
-              wx.navigateBack({ delta: 1 });
+              wx.showModal({
+                title: '提示',
+                content: '地址添加成功',
+                showCancel: false,
+                success: res => {
+                  wx.navigateBack({ delta: 1 });
+                }
+              })
             },
             fail: function (err) {
               console.log(err);
@@ -82,6 +89,10 @@ Page({
    * 保存地址
    */
   save() {
+
+wx.showLoading({
+  title: '加载中',
+})
     let params = {};
     let that = this
     wx.login({
@@ -89,30 +100,43 @@ Page({
         if (res.code) {
           params.id = that.data.deliveryId
           params.wx_code = res.code
-          params.recipients = that.data.name?that.data.name:that;
-          params.phone = that.data.phone;
+          params.recipients = that.data.name ? that.data.name : that.data.addressList.recipients;
+          params.phone = that.data.phone ? that.data.phone : that.data.addressList.phone;
           params.province = that.data.region[0];
-          params.city = that.data.region[1];
+          params.city = that.data.region[1]
           params.area = that.data.region[2];
-          params.address = that.data.address;
-          params.post_code = that.data.code;
+          params.address = that.data.address ? that.data.address : that.data.addressList.address;
+          params.post_code = that.data.code ? that.data.code : that.data.addressList.post_code;
           console.log(params);
           wx.request({
             url: getApp().globalData.baseUrl + that.data.saveUrl,
             method: 'POST',
             data: params,
             success: function (res) {
+            wx.hideLoading()
               console.log(res);
               that.setData({
                 deliveryId: res.data.data.id
               })
-              wx.navigateBack({ delta: 1 });
+              wx.showModal({
+                title: '提示',
+                content: '地址修改成功',
+                showCancel:false,
+                success:res=>{
+                  wx.navigateBack({ delta: 1 });
+                }
+              })
             },
             fail: function (err) {
               console.log(err);
+              wx.hideLoading()
             }
           })
         }
+      },
+      fail:err=>{
+        wx.hideLoading()
+        console.log(err)
       }
     })
 
@@ -125,19 +149,32 @@ Page({
     let that = this;
     wx.showModal({
       content: "确定要删除该地址吗?",
-      success: function () {
-        console.log("确定;" + that.data.deliveryId);
-        wx.request({
-          url: getApp().globalData.baseUrl + that.data.delUrl + "?id=" + that.data.deliveryId,
-          method: 'POST',
-          success: res => {
-            console.log(JSON.stringify(res.data))
-            wx.navigateBack({ delta: 1 });
-          },
-          fail: err => {
-
-          }
-        })
+      success: function (res) {
+        if (res.confirm) {
+          console.log("确定;" + that.data.deliveryId);
+          wx.showLoading({
+            title: '加载中',
+          })
+          wx.request({
+            url: getApp().globalData.baseUrl + that.data.delUrl + "?id=" + that.data.deliveryId,
+            method: 'POST',
+            success: res => {
+              wx.hideLoading()
+              console.log(JSON.stringify(res.data))
+              wx.showModal({
+                title: '提示',
+                content: '地址删除成功',
+                showCancel: false,
+                success: res => {
+                  wx.navigateBack({ delta: 1 });
+                }
+              })
+            },
+            fail: err => {
+                wx.hideLoading()
+            }
+          })
+        }
       }
     })
   },

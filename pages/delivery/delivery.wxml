@@ -21,7 +21,7 @@
     <view class="zan-cell zan-cell--access" bindtap='skipPage' id='add'>
     <icon type="info" size="20"/>
       <view class="zan-cell__bd">新增收货地址</view>
-      <view class="zan-cell__ft"></view>
+       <view class="zan-cell__ft"></view> 
     </view>
   </view>
 <!-- </view> -->
