@@ -12,13 +12,22 @@
       {{goodInfo.good_name}}
       <view class='single_price'>
         ¥ {{goodInfo.promotion*goodInfo.discount/10000}}
-        <span wx:if='{{goodInfo.discount!=100}}' style="text-decoration:line-through;margin-right:20rpx;color:gray;font-size: 12px;">¥ {{goodInfo.price/100}}</span>
+        <span wx:if='{{goodInfo.discount!=100}}' style="text-decoration:line-through;margin:20rpx;color:gray;font-size: 12px;">¥ {{goodInfo.price/100}}</span>
       </view>
     </view>
     <view class='good_selled'>
-      <span class='sell_item'>运费:免运费 </span>
-      <span class='sell_item'>剩余:{{goodInfo.stock}} </span>
-      <span class='sell_item'>销售:{{goodInfo.sale_volume}} </span>
+      <view class='sell_item'>
+        <image class='good_selled_image' src='../../images/good_way.png'></image>
+        <view class='good_selled_label'>免运费</view>
+      </view>
+      <view class='sell_item'>
+        <image class='good_selled_image' src='../../images/good_stock.png'></image>
+        <view class='good_selled_label'> {{goodInfo.stock}}</view>
+      </view>
+      <view class='sell_item'>
+        <image class='good_selled_image' src='../../images/good_volume.png'></image>
+        <view class='good_selled_label'> {{goodInfo.sale_volume}}</view>
+      </view>
     </view>
   </view>
   <view class='good_south'>
@@ -44,7 +53,7 @@
     <!-- 商品评价 -->
     <view class='suggest_content' style='margin-bottom:20px' wx:if='{{goodSuggest.length<1}}'>暂无商品评价</view>
     <view class='suggest_view' wx:for='{{goodSuggest}}' wx:key='item'>
-       <image class='suggest_image' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp' mode='aspectFill'></image> 
+      <image class='suggest_image' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp' mode='aspectFill'></image>
       <label class='suggest_name'>{{item.id}}</label>
       <label class='suggest_date'>{{item.create_date}}</label>
       <view class='suggest_content'>{{item.message}}</view>
@@ -79,8 +88,8 @@
         </view>
         <!--类目  -->
         <!-- <view class='good_category'> -->
-          <!-- <view class='category_list'> -->
-            <!-- <view class='item_tit'>尺寸:</view>
+        <!-- <view class='category_list'> -->
+        <!-- <view class='item_tit'>尺寸:</view>
             <view class='item_list' wx:for='{{specs}}' wx:key="item">
               <button wx:if="{{item.showSelect==false}}" class="zan-btn zan-btn--mini" bindtap='chickAction' id='{{item.id}}'>{{item.name}}cm</button>
               <button wx:else class="zan-btnSelect zan-btn--mini" bindtap='chickAction' id='{{item.id}}'>{{item.name}}cm</button>

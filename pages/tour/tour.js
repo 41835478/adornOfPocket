@@ -1,14 +1,15 @@
 // pages/tour/tour.js
-Page({
+var netWork = require('/../..//common/requestTool/request.js')
+Page(Object.assign({}, netWork, {
 
   /**
    * 页面的初始数据
    */
   data: {
-    tourGoodInfo:[],
-    imgUrl:getApp().globalData.baseImgUrl,
-    url:'mall/wx/activity/findByGroup',
-    lastPage:false,
+    tourGoodInfo: [],
+    imgUrl: getApp().globalData.baseImgUrl,
+    url: 'mall/wx/free/findFreeList',
+    lastPage: false,
 
   },
 
@@ -17,25 +18,33 @@ Page({
    */
   onLoad: function (options) {
     let that = this
-    wx.request({
-      url: getApp().globalData.baseUrl + this.data.url + "?pageNo=1&pageSize=10",
-      success:res=>{
-        console.log("backdata="+JSON.stringify(res))
+
+    let params = {}
+    params.pageNo = 1
+    params.pageSize = 10
+    netWork.GET({
+      url: this.data.url,
+      params: params,
+      success: res => {
+        console.log("backdata=" + JSON.stringify(res))
         let arr = res.data.list
-        if(arr){
-        that.setData({
-          tourGoodInfo:arr
-        })
+        if (arr) {
+          that.setData({
+            tourGoodInfo: arr
+          })
         }
+      },
+      fail: err => {
+        console.log(err)
       }
     })
   },
-  buyAction(e){
+  buyAction(e) {
     let goodId = e.currentTarget.id
-      console.log("点击购买商品! id="+goodId)
-      wx.navigateTo({
-        url: '/pages/good/good?goodId='+goodId,
-      })
+    console.log("点击购买商品! id=" + goodId)
+    wx.navigateTo({
+      url: '/pages/good/good?goodId=' + goodId,
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -85,4 +94,4 @@ Page({
   onShareAppMessage: function () {
 
   }
-})
+}))

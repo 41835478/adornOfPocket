@@ -1,7 +1,8 @@
 const app = getApp()
 var Zan = require('../../component/zanui-weapp/dist/index')
+var netWork = require('../../common/requestTool/request.js')
 // pages/my/my.js
-Page(Object.assign({}, Zan.Toast, {
+Page(Object.assign({}, Zan.Toast, netWork,{
 
   /**
    * 页面的初始数据
@@ -69,30 +70,20 @@ Page(Object.assign({}, Zan.Toast, {
    */
   getDataFromNet() {
     let that = this
-    wx.login({
-      success: res => {
-        if (res.code) {
-          let wxCode = res.code
-          let url = getApp().globalData.baseUrl + this.data.url + "?wxCode=" + wxCode
-          console.log("url = " + url)
-          wx.request({
-            url: url,
-            success: res => {
-  console.log("data="+res.data)
-              let result = res.data.result
-              if (result == 1) {
-                that.setData({
-                  pointInfo: res.data.data
-                })
-              }
-              console.log("backData=" + JSON.stringify(res.data.data))
-            },
-            fail: err => {
-
-              console.log("err=" + JSON.stringify(err))
-            }
+    netWork.GET({
+      url:that.data.url,
+      wxCode:true,
+      success:res=>{
+        console.log("data=" + res.data)
+        let result = res.data.result
+        if (result == 1) {
+          that.setData({
+            pointInfo: res.data.data
           })
         }
+      },
+      fail:err=>{
+        console.log(err)
       }
     })
   },

@@ -80,20 +80,17 @@ Page(Object.assign({}, Zan, netWork, {
     wx.showLoading({
       title: '加载中',
     })
+
     let selectId = this.data.selectedId
     if (!selectId) {
       selectId = 'ALL'
     }
     console.log("select=" + selectId)
-    var data = {}
-    data = e.currentTarget;
-    console.log(e.currentTarget)
-    let url = getApp().globalData.baseUrl + 'mall/wx/order/refund?orderId=' + data.id
 
     var params = {}
-    params.orderId = data.id
+    params.orderId = e.currentTarget.id
     netWork.POST({
-      url: url,
+      url: 'mall/wx/order/refund',
       wxCode: true,
       params: params,
       success: res => {
@@ -113,29 +110,6 @@ Page(Object.assign({}, Zan, netWork, {
         console.log(err)
       }
     })
-
-    // wx.request({
-    //   url: url,
-    //   method: 'POST',
-    //   success: res => {
-    //     wx.hideLoading()
-    //     console.log(res.data)
-    //     wx.showModal({
-    //       title: '提示',
-    //       content: res.data.data,
-    //       showCancel: false,
-    //       success: function (res) {
-    //         if (res.confirm) {
-    //           that.getDataFromNet(0, selectId)
-    //         }
-    //       }
-    //     })
-    //   },
-    //   fail: err => {
-    //     wx.hideLoading()
-    //     console.log(err)
-    //   }
-    // })
   },
   /**
    * 确认收货,取消订单
@@ -144,42 +118,37 @@ Page(Object.assign({}, Zan, netWork, {
     let url
     let that = this
     let status = e.currentTarget.dataset.good.order_status
-    console.log("status=" + status)
-    if (status == 3) {
+
+    if (status == 'UN_RECEIVE') {
       console.log("确认收货!")
-      url = getApp().globalData.baseUrl + that.data.confirmUrl
-    }
-    if (status == 1) {
-      console.log("取消订单!")
-      url = getApp().globalData.baseUrl + that.data.cancelUrl
+      url = that.data.confirmUrl
+    } else {
+      url = that.data.cancelUrl
     }
     let id = e.currentTarget.id
-
-    wx.login({
+    console.log("status=" + status + " url = " + url)
+    let params = {}
+    params.id = id
+    netWork.GET({
+      url: url,
+      params: params,
       success: res => {
-        if (res.code) {
-          let requestUrl = url + '?id=' + id + '&wxCode=' + res.code
-          console.log("url=" + requestUrl)
-          wx.request({
-            url: requestUrl,
-            success: res => {
-              var result = res.data.result
-              if (result == 1) {
-                wx.showModal({
-                  title: '提示',
-                  content: res.data.data,
-                  showCancel: false,
-                  success: function (res) {
-                    if (res.confirm) {
-                      that.getDataFromNet(0, that.data.selectedId)
-                    }
-                  }
-                })
+        var result = res.data.result
+        if (result == 1) {
+          wx.showModal({
+            title: '提示',
+            content: res.data.data,
+            showCancel: false,
+            success: function (res) {
+              if (res.confirm) {
+                that.getDataFromNet(0, that.data.selectedId)
               }
-              console.log("返回数据=" + JSON.stringify(res.data))
             }
           })
         }
+      },
+      fail: err => {
+        console.log(err)
       }
     })
   },
@@ -297,7 +266,6 @@ Page(Object.assign({}, Zan, netWork, {
       },
       //初始化
       fail: function (err) {
-        console.log("onshow and selectedId=all")
         that.getDataFromNet(0, 'ALL')
       },
     })

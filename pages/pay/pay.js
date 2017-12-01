@@ -133,7 +133,6 @@ Page(Object.assign({}, netWork, {
         title: '加载中',
       })
       let that = this
-      var wxcode
       let payMoney = that.data.quantity * that.data.goodInfo.price - that.data.selectTicketPrice - that.data.userPoint     //实付金额
       console.log("count = " + that.data.quantity + ";  paymoney=" + payMoney)
       let order = {}
@@ -185,7 +184,7 @@ Page(Object.assign({}, netWork, {
           }
         }
       })
-  }
+    }
   },
   /**
    * 准备支付
@@ -214,54 +213,48 @@ Page(Object.assign({}, netWork, {
    */
   againToPay() {
 
-    wx.login({
+    wx.showLoading({
+      title: '加载中',
+    })
+    let params = {}
+    params.orderId = this.data.orderId
+    netWork.GET({
+      url: 'mall/wx/jsapi/order/pay',
+      params: params,
+      wxCode: true,
       success: res => {
-        wx.showLoading({
-          title: '加载中',
-        })
-        if (res.code) {
-          let url = getApp().globalData.baseUrl + 'mall/wx/jsapi/order/pay?orderId=' + this.data.orderId + '&wxCode=' + res.code
-          console.log("再次支付:" + url)
-          wx.request({
-            url: url,
+        wx.hideLoading()
+        //支付错误情况
+        if (res.data.error) {
+          wx.showModal({
+            title: '提示',
+            content: res.data.error.message,
+            showCancel: false,
             success: res => {
-              wx.hideLoading()
-              console.log("重新申请 =" + JSON.stringify(res.data))
-              //支付错误情况
-              if (res.data.error) {
-                wx.showModal({
-                  title: '提示',
-                  content: res.data.error.message,
-                  showCancel: false,
-                  success: res => {
-                    if (res.confirm) {
-                      wx.navigateBack({
-
-                      })
-                    }
-                  }
-                })
-              } else {
-                wx.requestPayment({
-                  timeStamp: res.data.data.timeStamp,
-                  nonceStr: res.data.data.nonceStr,
-                  package: res.data.data.package,
-                  signType: 'MD5',
-                  paySign: res.data.data.paySign,
-                  'success': function (res) {
-                    console.log(res)
-                    wx.navigateBack({
-                    })
-                  },
-                  'fail': function (res) { },
-                  'complete': function (res) { }
-                })
+              if (res.confirm) {
+                wx.navigateBack({})
               }
-            },
-            fail: err => {
             }
           })
+        } else {
+          wx.requestPayment({
+            timeStamp: res.data.data.timeStamp,
+            nonceStr: res.data.data.nonceStr,
+            package: res.data.data.package,
+            signType: 'MD5',
+            paySign: res.data.data.paySign,
+            'success': function (res) {
+              console.log(res)
+              wx.navigateBack({
+              })
+            },
+            'fail': function (res) { },
+            'complete': function (res) { }
+          })
         }
+      },
+      fail:err=>{
+        console.log(err)
       }
     })
   },
@@ -289,9 +282,9 @@ Page(Object.assign({}, netWork, {
   /**
    * 获取默认地址
    */
-  getDefaultAddress(){
+  getDefaultAddress() {
     let that = this
-  netWork.GET({
+    netWork.GET({
       url: 'mall/wx/delivery/getDefault',
       wxCode: true,
       success: res => {
@@ -311,9 +304,9 @@ Page(Object.assign({}, netWork, {
    */
   getGoodInfo(goodId, quantity) {
     let that = this
-  let params = {}
-  params.goodId = goodId
-  netWork.GET({
+    let params = {}
+    params.goodId = goodId
+    netWork.GET({
       url: that.data.url,
       params: params,
       success: res => {

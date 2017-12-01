@@ -1,6 +1,6 @@
 @import '../../common/template/wxParse/wxParse.wxss';
 
-.good_container{
+.good_container {
 }
 
 .good-btn {
@@ -55,13 +55,31 @@
   padding: 30rpx 20rpx;
   color: #808080;
   font-size: 0;
+  height: 60rpx;
+  text-align: center;
+}
+
+.good_selled_image {
+  width: 40rpx;
+  height: 40rpx;
+  float: left;
+  margin-top: 8rpx;
+  margin-left: 60rpx;
+}
+
+.good_selled_label {
+  color: #9a5afa;
+  margin-top: 10rpx;
+  width: auto;
+  float: left;
+  margin-left: 10rpx;
 }
 
 .sell_item {
   display: inline-block;
   font-size: 26rpx;
   text-align: center;
-  width: 33%;
+  width: 33.3%;
 }
 
 /*商品介绍下部*/
@@ -239,12 +257,14 @@
   height: auto;
   font-size: 14px;
 }
-.suggest_date{
-  float:right;
+
+.suggest_date {
+  float: right;
   margin-top: 5px;
   margin-right: 10px;
   font-size: 14px;
 }
+
 .suggest_content {
   margin-left: 20px;
   margin-top: 5px;
