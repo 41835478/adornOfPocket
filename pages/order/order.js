@@ -85,15 +85,15 @@ Page(Object.assign({}, Zan, netWork, {
     if (!selectId) {
       selectId = 'ALL'
     }
-    console.log("select=" + selectId)
-
+    console.log("select=" + e.currentTarget.id)
+    let id = e.currentTarget.id
     var params = {}
-    params.orderId = e.currentTarget.id
+    params.orderId = id
     netWork.POST({
       url: 'mall/wx/order/refund',
-      wxCode: true,
       params: params,
       success: res => {
+        wx.hideLoading()
         console.log(res)
         wx.showModal({
           title: '提示',
@@ -107,6 +107,7 @@ Page(Object.assign({}, Zan, netWork, {
         })
       },
       fail: err => {
+        wx.hideLoading()
         console.log(err)
       }
     })

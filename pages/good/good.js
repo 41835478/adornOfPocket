@@ -124,38 +124,6 @@ Page(Object.assign({}, quantity, wxParse, netWork, {
 
       }
     })
-
-    // wx.request({
-    //   url: getApp().globalData.baseUrl + this.data.url + options.goodId,
-    //   method: 'GET',
-    //   success: res => {
-    //     console.log(res.data)
-    //     if(res.data.data){
-    //       this.setData({
-    //         goodInfo: res.data.data,
-    //       })
-    //       var article = res.data.data.rich_content
-    //       var that = this
-    //       wxParse.wxParse('article', 'html', article, that, 0)
-    //     }else{
-    //       //商品已下架
-    //       let err = res.data.error
-    //       wx.showModal({
-    //         title: '提示',
-    //         content: err.message,
-    //         showCancel:false,
-    //         success:res=>{
-    //           if(res.confirm){
-    //             wx.navigateBack({})
-    //           }
-    //         }
-    //       })
-    //     }
-    //   },
-    //   fail:err=>{
-    //     console.log(err)
-    //   }
-    // })
   },
   /**
    * 获取商品评价

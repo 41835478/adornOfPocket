@@ -19,7 +19,7 @@ function GET(requestHandler) {
     wx.login({
       success: res => {
         url = url + '?wxCode=' + res.code
-        console.log("url = " + url)
+        // console.log("url = " + url)
         request('GET', requestHandler, url)
       }
     })

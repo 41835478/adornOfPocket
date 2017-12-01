@@ -105,7 +105,7 @@ Page(Object.assign({}, netWork, {
    * 点击按钮 下单/付款
    */
   gotoPay() {
-
+    //测试 防止购买商品
     // wx.showModal({
     //   title: '提示',
     //   content: '目前版本还在测试阶段,下单功能暂不提供,敬请谅解!',
@@ -253,7 +253,7 @@ Page(Object.assign({}, netWork, {
           })
         }
       },
-      fail:err=>{
+      fail: err => {
         console.log(err)
       }
     })
@@ -273,21 +273,28 @@ Page(Object.assign({}, netWork, {
         orderId: options.id,
         againPay: true
       })
+      this.getGoodSnapshotData(options.id)
+    }else{
+      //获取商品信息
+      this.getGoodInfo(goodId, quantity)
     }
     //获取默认地址
     this.getDefaultAddress()
-    //获取商品信息
-    this.getGoodInfo(goodId, quantity)
+    
   },
   /**
    * 获取默认地址
    */
   getDefaultAddress() {
+    wx.showLoading({
+      title: '加载中',
+    })
     let that = this
     netWork.GET({
       url: 'mall/wx/delivery/getDefault',
       wxCode: true,
       success: res => {
+        wx.hideLoading()
         console.log('返回的地址数据' + JSON.stringify(res.data))
         if (res.data.result == 1) {
           that.setData({
@@ -296,6 +303,10 @@ Page(Object.assign({}, netWork, {
             deliveryFlag: true
           })
         }
+      },
+      fail: err => {
+        console.log(err)
+        wx.hideLoading()
       }
     })
   },
@@ -323,6 +334,30 @@ Page(Object.assign({}, netWork, {
         console.log("price=" + price)
       }
     })
+  },
+  /**
+   * 获取商品快照ID
+   */
+  getGoodSnapshotData(orderId){
+      let param = {}
+      let that = this
+      param.orderId = orderId
+      netWork.GET({
+        url:'mall/wx/good/findByGoodSnapshotDetail',
+        params:param,
+        success:res=>{
+          console.log(res.data.data)
+          that.setData({
+            goodInfo: res.data.data,
+            goodImageUrl: getApp().globalData.baseImgUrl + res.data.data.main_image_url
+          })
+          let price = res.data.data.price * quantity
+          that.setData({
+            totalPrice: price.toFixed(2),
+            quantity: quantity,
+          })
+        }
+      })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

@@ -118,9 +118,9 @@
   width: 100%;
   position: fixed;
   bottom: 0;
-  background: #fff;
+   background: #fff; 
   font-size: 0;
-  border-top: 1px solid #c1c1c1;
+   border-top: 1px solid #c1c1c1; 
 }
 
 .pay_footer_lf {

@@ -137,10 +137,9 @@
   </view>
 </view>
 
-
 <view class='pay_footer'>
   <view class='pay_footer_lf'>合计:
     <span class='price_color'>¥ {{(totalPrice-userPoint-selectTicketPrice)/100}}</span>
   </view>
-  <button class='zan-btn zan-btn--danger pay_footer_rg' bindtap='gotoPay'>{{btnTitle}}</button>
+  <button style='background:#9a5afa;color:white'  class='zan-btn zan-btn--large pay_footer_rg' bindtap='gotoPay'>{{btnTitle}}</button>
 </view>

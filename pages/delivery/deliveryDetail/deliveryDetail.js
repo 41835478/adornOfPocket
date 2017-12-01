@@ -1,5 +1,6 @@
 // pages/delivery/deliveryDetail/deliveryDetail.js
-Page({
+var netWork = require('../../../common/requestTool/request.js')
+Page(Object.assign(netWork, {
 
   /**
    * 页面的初始数据
@@ -48,38 +49,39 @@ Page({
    */
   add() {
     let that = this
+
     wx.login({
       success: res => {
-        if (res.code) {
-          let params = {};
-          params.wx_code = res.code;
-          params.recipients = that.data.name;
-          params.phone = that.data.phone;
-          params.province = that.data.region[0];
-          params.city = that.data.region[1];
-          params.area = that.data.region[2];
-          params.address = that.data.address;
-          params.post_code = that.data.code;
-          wx.request({
-            url: getApp().globalData.baseUrl + that.data.addUrl,
-            method: 'POST',
-            data: params,
-            success: function (res) {
-              console.log("添加地址返回:" + JSON.stringify(res.data));
-              wx.showModal({
-                title: '提示',
-                content: '地址添加成功',
-                showCancel: false,
-                success: res => {
-                  wx.navigateBack({ delta: 1 });
-                }
-              })
-            },
-            fail: function (err) {
-              console.log(err);
-            }
-          })
-        }
+        let params = {};
+        params.wx_code = res.code;
+        params.recipients = that.data.name;
+        params.phone = that.data.phone;
+        params.province = that.data.region[0];
+        params.city = that.data.region[1];
+        params.area = that.data.region[2];
+        params.address = that.data.address;
+        params.post_code = that.data.code;
+
+        netWork.POST({
+          url: that.data.addUrl,
+          params: params,
+          success: res => {
+            wx.hideLoading()
+            console.log("添加地址返回:" + JSON.stringify(res.data));
+            wx.showModal({
+              title: '提示',
+              content: '地址添加成功',
+              showCancel: false,
+              success: res => {
+                wx.navigateBack({ delta: 1 });
+              }
+            })
+          },
+          fail: err => {
+            wx.hideLoading()
+            console.log(err)
+          }
+        })
       }
     })
   },
@@ -160,7 +162,7 @@ Page({
                   success: res => {
                     wx.hideLoading()
                     console.log(JSON.stringify(res.data))
-                    if(res.data.result == 1){
+                    if (res.data.result == 1) {
                       wx.showModal({
                         title: '提示',
                         content: '地址删除成功',
@@ -169,14 +171,14 @@ Page({
                           wx.navigateBack({ delta: 1 });
                         }
                       })
-                    }else{
+                    } else {
                       wx.showModal({
                         title: '提示',
                         content: '地址删除失败',
                         showCancel: false,
                       })
                     }
-                   
+
                   },
                   fail: err => {
                     wx.hideLoading()
@@ -263,4 +265,4 @@ Page({
   onShareAppMessage: function () {
 
   }
-})
+}))

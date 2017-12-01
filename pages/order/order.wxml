@@ -50,7 +50,7 @@
               合计
             </view>
           </view>
-          <view class="zan-card__detail-row" wx:if='{{item.order_status==3}}'>
+          <view class="zan-card__detail-row" wx:if="{{item.order_status=='UN_RECEIVE'}}">
             <view class="zan-card__left-col-12 zan-c-gray-dark" style='font-size:26rpx;'>物流信息 : {{item.express_name}}</view>
             <view class="zan-card__left-col-12 zan-c-gray-dark" style='font-size:26rpx;'>运单号 : {{item.delivery_no}}</view>
           </view>
@@ -61,12 +61,15 @@
           <view class="zan-card__right-col">
           <button bindtap='confirmGood' class=' zan-btn zan-btn--small zan-btn--plain' wx:if="{{item.order_status=='UN_PAY'}}" id='{{item.id}}' data-good='{{item}}'>取消订单</button> 
             <button bindtap='goodsBuyAction' id='{{item.good_id}}' type='primary' class=' zan-btn zan-btn--small zan-btn--primary'>再次购买</button>
-            <button class=' zan-btn zan-btn--small zan-btn--danger' bindtap='goodsBackAction' wx:if="{{item.order_status=='UN_RECEIVE'||item.order_status=='UN_DELIVERY'||item.order_status=='DONE'}}" id='{{item.id}}' data-good='{{item}}'>申请退款</button>
-            <button class=' zan-btn zan-btn--small zan-btn--primary' bindtap='goodsSuggestAction' wx:if="{{item.order_status=='DONE'}}" id='{{item.good_id}}' data-good='{{item}}'>发表评论</button>
+            <button class=' zan-btn zan-btn--small zan-btn--danger' bindtap='goodsBackAction' wx:if="{{item.order_status=='UN_RECEIVE'||item.order_status=='UN_DELIVERY'}}" id='{{item.id}}' data-good='{{item}}'>申请退款</button>
+            <!-- <button class=' zan-btn zan-btn--small zan-btn--primary' bindtap='goodsSuggestAction' wx:if="{{item.order_status=='DONE'}}" id='{{item.good_id}}' data-good='{{item}}'>发表评论</button> -->
             <button class=' zan-btn zan-btn--small zan-btn--danger' bindtap='goodsPayAction' wx:if="{{item.order_status=='UN_PAY'}}" id='{{item.id}}' data-good='{{item}}'>去付款</button>
                
             <button  wx:if="{{item.order_status=='UN_DELIVERY'}}" class=' zan-btn zan-btn--small zan-btn--plain'>准备发货</button>
             <button class=' zan-btn zan-btn--small zan-btn--danger' bindtap='confirmGood' id='{{item.id}}'  wx:if="{{item.order_status=='UN_RECEIVE'}}" id='{{item.id}}' data-good='{{item}}'>确认收货</button>
+<button  wx:if="{{item.order_status=='REFUND'}}" class=' zan-btn zan-btn--small zan-btn--plain'>退款处理</button>
+<button  wx:if="{{item.order_status=='REFUND_FAIL'}}" class=' zan-btn zan-btn--small zan-btn--plain'>退款失败</button>
+<button  wx:if="{{item.order_status=='REFUND_SUCCESS'}}" class=' zan-btn zan-btn--small zan-btn--plain'>退款成功</button>
           </view>
         </view>
       </view>

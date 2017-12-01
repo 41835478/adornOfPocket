@@ -1,5 +1,6 @@
 // pages/address/address.js
-Page({
+var netWork = require('../../common/requestTool/request.js')
+Page(Object.assign({}, netWork, {
   /**
    * 页面的初始数据
    */
@@ -8,7 +9,6 @@ Page({
     deliveryList: [],
     showList: [],
     showSelected: false,
-    pageNo: 1,
     defaultSelect: 0,
     flag: '',
   },
@@ -22,7 +22,7 @@ Page({
     this.setData(obj);
   },
   /**
-   * 现在默认地址
+   * 设置默认地址
    */
   select(val) {
 
@@ -43,38 +43,35 @@ Page({
       let that = this
       let index = val.currentTarget.id
       let item = val.currentTarget.dataset.index
-      console.log("default address=" + JSON.stringify(index) + "item=" + JSON.stringify(item) + "addressArr=" + that.data.showList)
 
-      wx.login({
-        success: res => {
-          if (res.code) {
-            wx.request({
-              url: getApp().globalData.baseUrl + 'mall/wx/delivery/defaultAddress' + '?wxCode=' + res.code + '&id=' + item.id,
-              success: res => {
-                wx.hideLoading()
-                console.log("address  =====" + JSON.stringify(res.data))
-                // 刷新页面数据
-                let newArr = that.data.showList
-                for (let i = 0; i < newArr.length; i++) {
-                  if (i == index) {
-                    newArr[i] = 'DEFAULT_ADDRESS'
-                  } else {
-                    newArr[i] = 'UN_DEFAULT_ADDRESS'
-                  }
-                }
-                console.log("newarr="+newArr)
-                that.setData({
-                  showList: newArr
-                })
-                wx.showToast({
-                  title: '设置默认地址成功',
-                })
-              },
-              fail: err => {
-                wx.hideLoading()
-              }
-            })
-          }
+      let param = {}
+      param.id = item.id
+      netWork.GET({
+        url:'mall/wx/delivery/defaultAddress',
+        wxCode:true,
+        success:res=>{
+          wx.hideLoading()
+          console.log(res)
+          // 刷新页面数据
+          // let newArr = that.data.showList
+          // for (let i = 0; i < newArr.length; i++) {
+          //   if (i == index) {
+          //     newArr[i] = 'DEFAULT_ADDRESS'
+          //   } else {
+          //     newArr[i] = 'UN_DEFAULT_ADDRESS'
+          //   }
+          // }
+          // console.log("newarr=" + newArr)
+          // that.setData({
+          //   showList: newArr
+          // })
+          // wx.showToast({
+          //   title: '设置地址成功',
+          // })
+        },
+        fail:err=>{
+          wx.hideLoading()
+          console.log(err)
         }
       })
     }
@@ -87,12 +84,12 @@ Page({
     if (id == 'add') {
 
       let arr = this.data.deliveryList
-      if(arr.length>=10){
+      if (arr.length >= 10) {
         wx.showModal({
           title: '提示',
           content: '您最多可以添加10条地址信息 , 敬请谅解!',
         })
-      }else{
+      } else {
         let addUrl = '/pages/delivery/deliveryDetail/deliveryDetail?flag=1'
         wx.navigateTo({
           url: addUrl,
@@ -116,41 +113,33 @@ Page({
       title: '加载中',
     })
     let that = this
-    let pageNo = 1
-    wx.login({
+    let param = {}
+    param.pageSize = 10
+    param.pageNo = 1
+
+    netWork.GET({
+      url: that.data.url,
+      params: param,
+      wxCode: true,
       success: res => {
-        console.log(res);
-        if (res.code) {
-          let url = getApp().globalData.baseUrl + that.data.url + "?wxCode=" + res.code + "&pageNo=" + pageNo + "&pageSize=10"
-          console.log("url=" + url)
-          if (res.code) {
-            wx.request({
-              url: url,
-              success: res => {
-                wx.hideLoading()
-                let arr = res.data.list
-                console.log("arr =====" + JSON.stringify(arr))
-                let showArr = []
-                if (res.data.list.length > 0) {
-                  for (let i = 0; i < arr.length; i++) {
-                    let cell = arr[i]
-                    showArr.push(cell.default_address)
-                  }
-                  that.setData({
-                    deliveryList: res.data.list,
-                    showList: showArr,
-                    pageNo: pageNo,
-                  })
-                }
-                console.log("showList =  " + that.data.showList)
-              },
-              fail: err => {
-                wx.hideLoading()
-                console.log(res)
-              }
-            })
+        wx.hideLoading()
+        let arr = res.data.list
+        console.log(res)
+        let showArr = []
+        if (res.data.list.length > 0) {
+          for (let i = 0; i < arr.length; i++) {
+            let cell = arr[i]
+            showArr.push(cell.default_address)
           }
+          that.setData({
+            deliveryList: res.data.list,
+            showList: showArr,
+          })
         }
+      },
+      fail: err => {
+        wx.hideLoading()
+        console.log(err)
       }
     })
   },
@@ -215,4 +204,4 @@ Page({
   onShareAppMessage: function () {
 
   }
-})
+}))
