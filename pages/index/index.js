@@ -117,13 +117,25 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab, netWork, {
   searchGoodAction(e) {
     let that = this
     console.log("搜索的内容为:" + JSON.stringify(e.detail.value))
-    wx.request({
-      url: getApp().globalData.baseUrl + "mall/wx/good/findBySearchKey" + "?searchKey=" + e.detail.value + "&pageNo=1&pageSize=20",
-      success: function (res) {
-        console.log(JSON.stringify(res.data))
-        that.setData({
-          goodList: res.data.list
-        })
+
+    var params = {}
+    params.searchKey = e.detail.value
+    params.pageNo = 1
+    params.pageSize = 20
+
+    netWork.GET({
+      url: "mall/wx/good/findBySearchKey",
+      params:params,
+      success:res=>{
+        console.log(res)
+        if(res.data){
+          that.setData({
+            goodList: res.data.list
+          })
+        }
+      },
+      fail:err=>{
+        console.log(err)
       }
     })
   },

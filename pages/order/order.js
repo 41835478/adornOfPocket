@@ -154,6 +154,7 @@ Page(Object.assign({}, Zan, netWork, {
       url = getApp().globalData.baseUrl + that.data.cancelUrl
     }
     let id = e.currentTarget.id
+
     wx.login({
       success: res => {
         if (res.code) {
@@ -196,7 +197,6 @@ Page(Object.assign({}, Zan, netWork, {
     })
   },
 
-
   /**
    * 获取当前列订单信息 e:0 导航栏点击 1:上拉刷新
    */
@@ -230,66 +230,42 @@ Page(Object.assign({}, Zan, netWork, {
     status = selectedId
     wx.setStorageSync('selectedId', selectedId)
 
-  wx.login({
-    success:res=>{
-      var params = {}
-      params.pageNo = pageNo
-      params.pageSize = 10
-      params.orderStatus = status
-      // params.wxCode = res.code
-        netWork.GET({
-          url: that.data.url,
-          wxCode: true,
-          params: params,
-          success: res => {
-            wx.hideLoading()
-            console.log(res)
-            if (res.statusCode == 200) {
-              if (e == 0) {
-                that.setData({
-                  goods: res.data.list,
-                  lastPage: res.data.lastPage,
-                  pageComplete: true,
-                  pageNo: pageNo
-                })
-              } else {
-                let arr = that.data.goods.concat(res.data.list);
-                console.log(res.data.list)
-                that.setData({
-                  goods: arr,
-                  lastPage: res.data.lastPage,
-                  pageComplete: true,
-                  pageNo: pageNo
-                })
-              }
-            }
-          },
-          fail: err => {
-            wx.hideLoading()
-            console.log(err)
+    var params = {}
+    params.pageNo = pageNo
+    params.pageSize = 10
+    params.orderStatus = status
+    netWork.GET({
+      url: that.data.url,
+      wxCode: true,
+      params: params,
+      success: res => {
+        wx.hideLoading()
+        console.log(res)
+        if (res.statusCode == 200) {
+          if (e == 0) {
+            that.setData({
+              goods: res.data.list,
+              lastPage: res.data.lastPage,
+              pageComplete: true,
+              pageNo: pageNo
+            })
+          } else {
+            let arr = that.data.goods.concat(res.data.list);
+            console.log(res.data.list)
+            that.setData({
+              goods: arr,
+              lastPage: res.data.lastPage,
+              pageComplete: true,
+              pageNo: pageNo
+            })
           }
-        })
-
-    }
-  })
-   
-
-
-    // wx.request({
-    //   url: url,
-    //   method: 'GET',
-    //   success: function (res) {
-    //     wx.hideLoading()
-
-    //     }
-    //   },
-    //   fail: function (err) {
-    //     wx.hideLoading()
-    //     console.log(err)
-    //   }
-    // })
-
-
+        }
+      },
+      fail: err => {
+        wx.hideLoading()
+        console.log(err)
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面加载

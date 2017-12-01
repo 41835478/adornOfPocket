@@ -113,11 +113,11 @@
         <view class='token_content'>
           <view class='content_lf'>
             ¥
-            <span class='money'>{{item.reduceMoney/100}}</span>
+            <span class='money'>{{item.reduce_money/100}}</span>
           </view>
           <view class='content_rg'>
             <view class='least_money'>{{item.content}}</view>
-            <view class='use_range'>{{item.ticketName}}</view>
+            <view class='use_range'>{{item.ticket_name}}</view>
           </view>
         </view>
         <view class='token_footer'>
@@ -125,7 +125,7 @@
             <label wx:if='{{item.type==1}}'>全平台</label>
           </span>
           <span class='footer_rg'>
-            有效期:{{item.startDate}} 至 {{item.endDate}}
+            有效期:{{item.start_date}} 至 {{item.end_date}}
           </span>
         </view>
       </view>

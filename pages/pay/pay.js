@@ -1,5 +1,6 @@
 // pages/pay/pay.js
-Page({
+var netWork = require('/../..//common/requestTool/request.js')
+Page(Object.assign({}, netWork, {
 
   /**
    * 页面的初始数据
@@ -55,25 +56,24 @@ Page({
     })
   },
   /**
-   * 打开token列表
+   * 获取优惠券列表
    */
   toggleDialog() {
 
     let that = this
-    wx.login({
+    let params = {}
+    params.pageNo = 1
+    params.pageSize = 10
+    netWork.GET({
+      url: that.data.tickUrl,
+      params: params,
+      wxCode: true,
       success: res => {
-        if (res.code) {
-          wx.request({
-            url: getApp().globalData.baseUrl + that.data.tickUrl + '?pageNo=1&pageSize=10' + '&wxCode=' + res.code,
-            success: res => {
-              console.log('data=====' + JSON.stringify(res.data.list))
-              that.setData({
-                ticketInfo: res.data.list,
-                showTokenDialog: !that.data.showTokenDialog
-              })
-            }
-          })
-        }
+        console.log('data=====' + JSON.stringify(res.data.list))
+        that.setData({
+          ticketInfo: res.data.list,
+          showTokenDialog: !that.data.showTokenDialog
+        })
       }
     })
   },
@@ -150,56 +150,42 @@ Page({
       }
       order.ticket = that.data.selectTicketId
       order.point = that.data.userPoint  //消耗积分
-      // order.paymentFee = payMoney
       order.payment_fee = 1
       order.reduce_fee = that.data.selectTicketPrice       //优惠金额
       order.freight_fee = 0       //运费金额
       order.good_fee = that.data.goodInfo.price //商品金额
-      console.log("第一次下单order = " + JSON.stringify(order))
-      wx.login({
+
+      let params = {}
+      params.order = order
+      netWork.GET({
+        url: that.data.payUrl,
+        params: params,
+        wxCode: true,
         success: res => {
+          wx.hideLoading()
           console.log(res);
-          if (res.code) {
-            let url = getApp().globalData.baseUrl + that.data.payUrl + "?wxCode=" + res.code + "&order=" + JSON.stringify(order)
-            console.log("下单地址:" + url)
-            wx.request({
-              url: url,
-              method: 'GET',
+          if (res.data.error) {
+            wx.showModal({
+              title: '提示',
+              content: res.data.error.message,
+              showCancel: false,
               success: res => {
-                wx.hideLoading()
-                console.log("payInfo=" + JSON.stringify(res))
-
-                if (res.data.error) {
-                  wx.showModal({
-                    title: '提示',
-                    content: res.data.error.message,
-                    showCancel: false,
-                    success: res => {
-                      if (res.confirm) {
-                        wx.navigateBack({
-
-                        })
-                      }
-                    }
-                  })
-                } else {
-                  if (res.data.result == 1) {
-                    that.setData({
-                      payInfo: res.data.data
-                    })
-                    that.readyToPay()
-                  }
+                if (res.confirm) {
+                  wx.navigateBack({})
                 }
-              },
-              fail: function (err) {
-                console.log(err);
-                wx.hideLoading()
               }
             })
+          } else {
+            if (res.data.result == 1) {
+              that.setData({
+                payInfo: res.data.data
+              })
+              that.readyToPay()
+            }
           }
         }
       })
-    }
+  }
   },
   /**
    * 准备支付
@@ -280,28 +266,6 @@ Page({
     })
   },
   /**
-   * 获取商品信息
-   */
-  getGoodInfo(goodId, quantity) {
-    wx.request({
-      url: getApp().globalData.baseUrl + this.data.url + "?goodId=" + goodId,
-      method: 'GET',
-      success: res => {
-        console.log(res.data.data)
-        this.setData({
-          goodInfo: res.data.data,
-          goodImageUrl: getApp().globalData.baseImgUrl + res.data.data.main_image_url
-        })
-        let price = res.data.data.promotion * quantity
-        this.setData({
-          totalPrice: price.toFixed(2),
-          quantity: quantity,
-        })
-        console.log("price=" + price)
-      }
-    })
-  },
-  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
@@ -317,27 +281,55 @@ Page({
         againPay: true
       })
     }
-    wx.login({
+    //获取默认地址
+    this.getDefaultAddress()
+    //获取商品信息
+    this.getGoodInfo(goodId, quantity)
+  },
+  /**
+   * 获取默认地址
+   */
+  getDefaultAddress(){
+    let that = this
+  netWork.GET({
+      url: 'mall/wx/delivery/getDefault',
+      wxCode: true,
       success: res => {
-        if (res.code) {
-          wx.request({
-            url: getApp().globalData.baseUrl + 'mall/wx/delivery/getDefault?wxCode=' + res.code,
-            success: res => {
-              console.log('返回的地址数据' + JSON.stringify(res.data))
-              if (res.data.result == 1) {
-                that.setData({
-                  deliveryId: res.data.data.id,
-                  addressInfo: res.data.data,
-                  deliveryFlag: true
-                })
-              }
-            }
+        console.log('返回的地址数据' + JSON.stringify(res.data))
+        if (res.data.result == 1) {
+          that.setData({
+            deliveryId: res.data.data.id,
+            addressInfo: res.data.data,
+            deliveryFlag: true
           })
         }
       }
     })
-    //获取商品信息
-    this.getGoodInfo(goodId, quantity)
+  },
+  /**
+   * 获取商品信息
+   */
+  getGoodInfo(goodId, quantity) {
+    let that = this
+  let params = {}
+  params.goodId = goodId
+  netWork.GET({
+      url: that.data.url,
+      params: params,
+      success: res => {
+        console.log(res.data.data)
+        that.setData({
+          goodInfo: res.data.data,
+          goodImageUrl: getApp().globalData.baseImgUrl + res.data.data.main_image_url
+        })
+        let price = res.data.data.promotion * quantity
+        that.setData({
+          totalPrice: price.toFixed(2),
+          quantity: quantity,
+        })
+        console.log("price=" + price)
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -387,4 +379,4 @@ Page({
   onShareAppMessage: function () {
 
   }
-})
+}))
