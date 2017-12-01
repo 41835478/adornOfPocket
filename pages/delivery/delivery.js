@@ -49,25 +49,32 @@ Page(Object.assign({}, netWork, {
       netWork.GET({
         url:'mall/wx/delivery/defaultAddress',
         wxCode:true,
+        params:param,
         success:res=>{
           wx.hideLoading()
           console.log(res)
           // 刷新页面数据
-          // let newArr = that.data.showList
-          // for (let i = 0; i < newArr.length; i++) {
-          //   if (i == index) {
-          //     newArr[i] = 'DEFAULT_ADDRESS'
-          //   } else {
-          //     newArr[i] = 'UN_DEFAULT_ADDRESS'
-          //   }
-          // }
-          // console.log("newarr=" + newArr)
-          // that.setData({
-          //   showList: newArr
-          // })
-          // wx.showToast({
-          //   title: '设置地址成功',
-          // })
+          if(res.data.result == 1){
+            let newArr = that.data.showList
+            for (let i = 0; i < newArr.length; i++) {
+              if (i == index) {
+                newArr[i] = 'DEFAULT_ADDRESS'
+              } else {
+                newArr[i] = 'UN_DEFAULT_ADDRESS'
+              }
+            }
+            console.log("newarr=" + newArr)
+            that.setData({
+              showList: newArr
+            })
+            wx.showToast({
+              title: '设置成功',
+            })
+          }else{
+            wx.showToast({
+              title: '设置失败',
+            })
+          }
         },
         fail:err=>{
           wx.hideLoading()

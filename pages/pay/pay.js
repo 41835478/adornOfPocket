@@ -19,6 +19,7 @@ Page(Object.assign({}, netWork, {
     userPoint: 0,
     word: '',
     goodImageUrl: '',
+    goodPrice:'',
     customerOpt: {
       isMessage: true,
       word: ''
@@ -262,6 +263,7 @@ Page(Object.assign({}, netWork, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options)
     let that = this
     let goodId = options.goodId
     let quantity = options.quantity
@@ -273,7 +275,7 @@ Page(Object.assign({}, netWork, {
         orderId: options.id,
         againPay: true
       })
-      this.getGoodSnapshotData(options.id)
+      this.getGoodSnapshotData(options.id, quantity)
     }else{
       //获取商品信息
       this.getGoodInfo(goodId, quantity)
@@ -330,6 +332,7 @@ Page(Object.assign({}, netWork, {
         that.setData({
           totalPrice: price.toFixed(2),
           quantity: quantity,
+          goodPrice: res.data.data.promotion
         })
         console.log("price=" + price)
       }
@@ -338,7 +341,7 @@ Page(Object.assign({}, netWork, {
   /**
    * 获取商品快照ID
    */
-  getGoodSnapshotData(orderId){
+  getGoodSnapshotData(orderId, quantity){
       let param = {}
       let that = this
       param.orderId = orderId
@@ -346,7 +349,7 @@ Page(Object.assign({}, netWork, {
         url:'mall/wx/good/findByGoodSnapshotDetail',
         params:param,
         success:res=>{
-          console.log(res.data.data)
+          console.log(res)
           that.setData({
             goodInfo: res.data.data,
             goodImageUrl: getApp().globalData.baseImgUrl + res.data.data.main_image_url
@@ -355,6 +358,7 @@ Page(Object.assign({}, netWork, {
           that.setData({
             totalPrice: price.toFixed(2),
             quantity: quantity,
+            goodPrice:res.data.data.price,
           })
         }
       })

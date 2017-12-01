@@ -29,7 +29,7 @@
       </view>
       <view class="zan-card__detail">
         <view class="zan-card__detail-row">
-          <view class="zan-card__right-col">¥ {{goodInfo.promotion/100}}</view>
+          <view class="zan-card__right-col">¥ {{goodPrice/100}}</view>
           <view class="zan-card__left-col zan-ellipsis--l2">
             {{goodInfo.good_name}}
           </view>
