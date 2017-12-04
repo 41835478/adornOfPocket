@@ -8,7 +8,7 @@ Page(Object.assign({}, netWork, {
   data: {
     tourGoodInfo: [],
     imgUrl: getApp().globalData.baseImgUrl,
-    url: 'mall/wx/free/findFreeList',
+    url: 'mall/wx/activity/groupList',
     lastPage: false,
 
   },
@@ -26,7 +26,7 @@ Page(Object.assign({}, netWork, {
       url: this.data.url,
       params: params,
       success: res => {
-        console.log("backdata=" + JSON.stringify(res))
+        console.log(res.data)
         let arr = res.data.list
         if (arr) {
           that.setData({

@@ -12,19 +12,19 @@
   </view>
 
   <view style='width:100%;background:#fff;height:140rpx'>
-    <navigator url="" hover-class="navigator-hover">
+    <navigator url="/pages/tour/tour" hover-class="navigator-hover">
       <view style='width:33.3%;float:left;text-align:center;'>
         <image src='../../images/index_buy.png' style="width:48rpx;height:48rpx;margin-top:20rpx" mode='aspectFit'></image>
         <view style='margin-top:10rpx'>拼团</view>
       </view>
     </navigator>
-    <navigator url="/pages/tour/tour?title='拼团'" hover-class="navigator-hover">
+    <navigator url="/pages/trial/trial" hover-class="navigator-hover">
       <view style='width:33.3%;float:left;text-align:center;'>
         <image src='../../images/index_spell.png' style="width:48rpx;height:48rpx;margin-top:20rpx" mode='aspectFit'></image>
         <view style='margin-top:10rpx'>试用</view>
       </view>
     </navigator>
-    <navigator url='/pages/trial/trial' hover-class='navigator-hover'>
+    <navigator url='' hover-class='navigator-hover'>
       <view style='width:33.3%;float:left;text-align:center;'>
         <image src='../../images/index_ticket.png' style="width:48rpx;height:48rpx;margin-top:20rpx" mode='aspectFit'></image>
         <view style='margin-top:10rpx'>优惠券</view>
