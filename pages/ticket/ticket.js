@@ -1,10 +1,13 @@
 // pages/ticket/ticket.js
-Page({
+var netWrok = require('../../common/requestTool/request.js')
+
+Page(Object.assign({},netWrok, {
 
   /**
    * 页面的初始数据
    */
   data: {
+    url: 'mall/wx/ticket/findByUserId',
     ticketList: [],//卡券列表
 
   },
@@ -18,81 +21,90 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getDataFromNet()
-  },
 
-  myTicketAction(){
+  },
+/**
+ * 我的优惠券
+ */
+  myTicketAction() {
+   wx.showLoading({
+     title: '加载中',
+   })
     let that = this
-    wx.login({
+    let params = {}
+    params.pageNo = 1
+    params.pageSize = 10
+    netWrok.GET({
+      url: 'mall/wx/ticket/findByUserId',
+      params: params,
+      wxCode: true,
       success: res => {
-        if (res.code) {
-          wx.request({
-            url: getApp().globalData.baseUrl + "mall/wx/ticket/findByUserId?pageNo=1&pageSize=100"+"&wxCode="+res.code,
-            success: res => {
-              console.log("优惠券结果:" + JSON.stringify(res.data))
-              var arr = res.data.list
-              that.setData({
-                ticketList: arr
-              })
-            }
-          })
-        }
+        wx.hideLoading()
+        console.log(res)
+        var arr = res.data.list
+        that.setData({
+          ticketList: arr
+        })
+      },
+      fail: err => {
+        wx.hideLoading()
+        console.log(err)
       }
     })
   },
 
   /**
-   * 获取优惠券信息
+   * 获取全部优惠券信息
    */
   getDataFromNet() {
+    wx.showLoading({
+      title: '加载中',
+    })
     let that = this
-    wx.login({
+    let params = {}
+    params.pageSize = 10
+    params.pageNo = 1
+    netWrok.GET({
+      url: 'mall/wx/ticket/findAll',
+      params: params,
       success: res => {
-        if (res.code) {
-          wx.request({
-            url: getApp().globalData.baseUrl + "mall/wx/ticket/findAll?" +"pageNo=1&pageSize=100",
-            success: res => {
-              console.log("优惠券结果:" + JSON.stringify(res.data))
-              var arr = res.data.list
-              that.setData({
-                ticketList: arr
-              })
-            }
-          })
-        }
+        wx.hideLoading()
+        console.log(res.data)
+        var arr = res.data.list
+        that.setData({
+          ticketList: arr
+        })
+      },
+      fail: err => {
+        wx.hideLoading()
+        console.log(err)
       }
     })
   },
   /**
    * 领取优惠券 
    */
-  selectAction(e){
+  selectAction(e) {
     let that = this
-    let ticketId = e.currentTarget.id
-    wx.login({
+    let params = {}
+    params.ticketId = e.currentTarget.id
+    netWrok.GET({
+      url: 'mall/wx/ticket/getTicket',
+      wxCode: true,
+      params: params,
       success: res => {
-        if (res.code) {
-          wx.request({
-            url: getApp().globalData.baseUrl + "mall/wx/ticket/getTicket?" + "ticketId=" + ticketId + "&wxCode="+res.code,
-            success: res => {
-              console.log("优惠券结果:" + JSON.stringify(res.data))
-              if(res.data.result==1){
-                  wx.showModal({
-                    title: '提示',
-                    content: '领取成功',
-                    showCancel:false,
-                  })
-              }else{
-                wx.showModal({
-                  title: '提示',
-                  content: res.data.error.message,
-                  showCancel: false,
-                })
-              }
-              that.setData({
-                // ticketList: arr
-              })
-            }
+        console.log("优惠券结果:" + JSON.stringify(res.data))
+        if (res.data.result == 1) {
+          wx.showModal({
+            title: '提示',
+            content: '领取成功',
+            showCancel: false,
+          })
+        } else {
+          wx.showModal({
+            title: '提示',
+            content: res.data.error.message,
+            showCancel: false,
           })
         }
       }
@@ -102,7 +114,6 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
 
   },
 
@@ -147,4 +158,4 @@ Page({
   onShareAppMessage: function () {
 
   }
-})
+}))

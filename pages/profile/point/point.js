@@ -1,5 +1,6 @@
 // pages/profile/point/point.js
-Page({
+var netWork = require('../../../common/requestTool/request.js')
+Page(Object.assign({},netWork,{
 
   /**
    * 页面的初始数据
@@ -8,30 +9,39 @@ Page({
     url: 'mall/wx/point/pointLog',
     pointInfo: [],
   },
-
+/**
+ * 获取积分使用情况
+ */
+downLoadData(){
+  let that = this
+  wx.showLoading({
+    title: '加载中',
+  })
+  let params = {}
+  params.pageNo = 1,
+    params.pageSize = 10,
+    netWork.GET({
+      url: that.data.url,
+      wxCode: true,
+      params: params,
+      success: res => {
+        wx.hideLoading()
+        console.log(res.data.list)
+        that.setData({
+          pointInfo: res.data.list
+        })
+      },
+      fail: err => {
+        wx.hideLoading()
+        console.log(err)
+      }
+    })
+},
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let that = this
-    wx.login({
-      success: res => {
-        if (res.code) {
-          wx.request({
-            url: getApp().globalData.baseUrl + this.data.url + "?wxCode=" + res.code + "&pageNo=1&pageSize=10",
-            success: res => {
-              console.log(res.data.list)
-              that.setData({
-                pointInfo: res.data.list
-              })
-            },
-            fail: err => {
-              console.log(JSON.stringify(err))
-            }
-          })
-        }
-      }
-    })
+      this.downLoadData()
   },
 
   /**
@@ -45,7 +55,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    
   },
 
   /**
@@ -82,4 +92,4 @@ Page({
   onShareAppMessage: function () {
 
   }
-})
+}))

@@ -17,6 +17,7 @@ Page(Object.assign({}, Zan.Toast, netWork,{
    */
   pageSkip(val) {
     let url = val.currentTarget.dataset.url;
+    console.log("url ===" + url)
     wx.navigateTo({
       url: url
     })
@@ -28,44 +29,6 @@ Page(Object.assign({}, Zan.Toast, netWork,{
     })
   },
   /**
-   * 查看积分使用情况
-   */
-  checkPointAction() {
-    console.log("积分查看")
-    wx.navigateTo({
-      url: '/pages/profile/point/point',
-    })
-  },
-  /**
-   * test 接口
-   */
-  anctions() {
-    // wx.showLoading({
-    //   title: '加载中',
-    // })
-    //  wx.login({
-    //    success:res=>{
-    //      if(res.code){
-    //        wx.request({
-    //          url: getApp().globalData.baseUrl +'mall/wx/delivery/findById?id=10',
-    //          success:res=>{
-    //            wx.hideLoading()
-    //            if(res.data.result == 1){
-    //              console.log( res.data.data)
-    //            }else{
-    //              console.log(res.data)
-    //            }
-    //          },
-    //          fail: err =>{
-    //            wx.hideLoading()
-    //          }
-    //        })
-    //      }
-    //    }
-    //  })
-  },
-
-  /**
    * 获取积分信息
    */
   getDataFromNet() {
@@ -74,7 +37,7 @@ Page(Object.assign({}, Zan.Toast, netWork,{
       url:that.data.url,
       wxCode:true,
       success:res=>{
-        console.log("data=" + res.data)
+        console.log(res.data)
         let result = res.data.result
         if (result == 1) {
           that.setData({
@@ -94,7 +57,7 @@ Page(Object.assign({}, Zan.Toast, netWork,{
     this.setData({
       userInfo: app.globalData.userInfo
     })
-    this.getDataFromNet()
+    // this.getDataFromNet()
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

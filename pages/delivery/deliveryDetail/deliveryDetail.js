@@ -1,6 +1,6 @@
 // pages/delivery/deliveryDetail/deliveryDetail.js
 var netWork = require('../../../common/requestTool/request.js')
-Page(Object.assign(netWork, {
+Page(Object.assign({},netWork, {
 
   /**
    * 页面的初始数据
@@ -67,7 +67,7 @@ Page(Object.assign(netWork, {
           params: params,
           success: res => {
             wx.hideLoading()
-            console.log("添加地址返回:" + JSON.stringify(res.data));
+            console.log(res.data);
             wx.showModal({
               title: '提示',
               content: '地址添加成功',
@@ -203,6 +203,7 @@ Page(Object.assign(netWork, {
                 url: that.data.delUrl,
                 params: params,
                 success: res => {
+                  console.log(res)
                   wx.hideLoading()
                   if (res.data.result == 1) {
                     wx.showModal({
@@ -237,6 +238,7 @@ Page(Object.assign(netWork, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options)
     if (options.flag == "1") {
       this.setData({
         typeFlag: options.flag,

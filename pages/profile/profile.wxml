@@ -5,7 +5,7 @@
     <view style='width: 50%;color: #fff;margin-left:300rpx;line-height: 80rpx'>
       <view style='padding-top:20rpx'> {{userInfo.nickName}}</view>
       <view>{{pointInfo.level_name}}</view>
-      <view style='font-size:14px' bindtap='checkPointAction'>积分 : {{pointInfo.point}}</view>
+      <view style='font-size:14px' data-url='/pages/profile/point/point'  bindtap='pageSkip'>积分 : {{pointInfo.point}}</view>
     </view>
   </view>
   <view class="zan-panel">

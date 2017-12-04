@@ -4,15 +4,15 @@
     <button class='btn zan-btn--large' bindtap='getDataFromNet' style='width:45%'>全部优惠券</button>
   </view>
 
-  <view class='ticket_item' wx:for="{{ticketList}}" bindtap='selectAction' id='{{item.id}}'>
+  <view class='ticket_item' wx:for="{{ticketList}}" wx:key='item'  bindtap='selectAction' id='{{item.id}}'>
     <view class='ticket_content'>
       <view class='content_lf'>
         ¥
-        <span class='money'>{{item.reduceMoney/100}}</span>
+        <span class='money'>{{item.reduce_money/100}}</span>
       </view>
       <view class='content_rg'>
         <view class='least_money'>订单满 {{item.money/100}} 可用</view>
-        <view class='content_rg'>{{item.ticketName}}</view>
+        <view class='content_rg'>{{item.ticket_name}}</view>
       </view>
     </view>
     <view class='ticket_footer'>
@@ -20,7 +20,7 @@
         <label wx:if='{{item.type==1}}'>全平台</label>
       </span>
       <span class='footer_rg'>
-        有效期:{{item.startDate}} 至 {{item.endDate}}
+        有效期:{{item.start_date}} 至 {{item.end_date}}
       </span>
     </view>
   </view>

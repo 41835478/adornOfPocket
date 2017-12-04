@@ -132,15 +132,21 @@ Page(Object.assign({}, netWork, {
         wx.hideLoading()
         let arr = res.data.list
         console.log(res)
-        let showArr = []
-        if (res.data.list.length > 0) {
-          for (let i = 0; i < arr.length; i++) {
-            let cell = arr[i]
-            showArr.push(cell.default_address)
+        if(arr.length>0){
+          let showArr = []
+          if (res.data.list.length > 0) {
+            for (let i = 0; i < arr.length; i++) {
+              let cell = arr[i]
+              showArr.push(cell.default_address)
+            }
+            that.setData({
+              deliveryList: res.data.list,
+              showList: showArr,
+            })
           }
+        }else{
           that.setData({
-            deliveryList: res.data.list,
-            showList: showArr,
+            deliveryList: arr,
           })
         }
       },

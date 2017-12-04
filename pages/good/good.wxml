@@ -63,7 +63,7 @@
     <view class='back'>
       <navigator url="/pages/index/index" open-type="reLaunch" hover-class="navigator-hover">
         <view style='height:100rpx;background:#f9f9f9'>
-          <image style='width:80rpx;height:80rpx;padding:10rpx' src='../../images/back_home.png'></image>
+          <image style='width:80rpx;height:80rpx;padding:10rpx' src='../../images/home_normal.png'></image>
         </view>
       </navigator>
     </view>

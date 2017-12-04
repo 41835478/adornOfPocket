@@ -1,6 +1,7 @@
 const app = getApp()
 var Zan = require('../../../component/zanui-weapp/dist/index');
-Page(Object.assign({}, Zan.CheckLabel, {
+var netWork = require('../../../common/requestTool/request.js')
+Page(Object.assign({}, Zan.CheckLabel, netWork, {
   // Page({
   /**
    * 页面的初始数据
@@ -60,29 +61,23 @@ Page(Object.assign({}, Zan.CheckLabel, {
         params.type = that.data.checkedValue
         params.content = that.data.inputValue
         params.wxCode = res.code
-        if (res.code) {
-          wx.request({
-            url: getApp().globalData.baseUrl + that.data.url,
-            data: params,
-            method: 'POST',
-            success: res => {
-              console.log('data=' + JSON.stringify(res.data))
-              
-              wx.showModal({
-                title: '提示',
-                content: '反馈成功!',
-                showCancel:false,
-                success: function (res) {
-                  if (res.confirm) {
-                      wx.navigateBack({})
-                  } else if (res.cancel) {
-                    console.log('用户点击取消')
-                  }
+        netWork.POST({
+          url: that.data.url,
+          params: params,
+          success: res => {
+            console.log(res)
+            wx.showModal({
+              title: '提示',
+              content: '反馈成功!',
+              showCancel: false,
+              success: function (res) {
+                if (res.confirm) {
+                  wx.navigateBack({})
                 }
-              })
-            }
-          })
-        }
+              }
+            })
+          }
+        })
       }
     })
   },
