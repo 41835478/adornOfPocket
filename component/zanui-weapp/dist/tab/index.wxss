@@ -2,14 +2,14 @@
   height: 45px;
 }
 .zan-tab__bd {
-  width: 100%;
+  width: 750rpx;
   display: flex;
   flex-direction: row;
   border-bottom: 1rpx solid #e5e5e5;
   background: #fff;
 }
 .zan-tab__bd_line{
-  width: 100%;
+  width: 750rpx;
   display: flex;
   flex-direction: row;
    border-bottom: 1rpx solid white; 

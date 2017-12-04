@@ -38,12 +38,12 @@
       今日特卖
     </view>
     <view style='width:25%;border-bottom: 1rpx solid #dbdbdb;height:20px;float:left'></view>
-    
+
   </view>
-  <view style='width:100%'>
-      <template is="zan-tab" data="{{tab: tab, componentId: 'tab'}}"></template>
-    </view>
-  <scroll-view scroll-y="true" scroll-x="false" style='padding-top:15rpx;background:#f9f9f9'>
+  <!-- TAB -->
+  <template is="zan-tab" data="{{tab: tab, componentId: 'tab'}}"></template>
+
+  <scroll-view scroll-y="true" style='padding-top:15rpx;background:#f9f9f9'>
     <view wx:for="{{goodList}}" wx:key="item">
 
       <view class='pick_list' bindtap='goTogoodInfo' id='{{item.id}}'>

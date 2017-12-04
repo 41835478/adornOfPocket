@@ -18,6 +18,8 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab, netWork, {
       list: [],
       selectedId: 0,
       style: 'index',
+      scroll:true,
+      height: 45
     },
     hasUserInfo: false,
     lastPage: false,
@@ -83,7 +85,9 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab, netWork, {
       this.setData({
         tab: {
           list: receive,
-          selectedId: receive[0].id
+          selectedId: receive[0].id,
+          style: 'index',
+          scroll: true,
         },
       })
     }

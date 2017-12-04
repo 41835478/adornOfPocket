@@ -1,19 +1,19 @@
 <template name="zan-tab">
   <view class="zan-tab">
-      <block wx:if="{{tab.scroll}}">
-        <scroll-view
-          class="{{tab.style=='index'?'zan-tab__bd_line':'zan-tab__bd'}}    zan-tab__bd--scroll {{ fixed ? 'zan-tab__bd--fixed' : '' }}"
+      <block wx:if='{{tab.scroll}}'>
+          <scroll-view 
+          class="{{tab.style=='index'?'zan-tab__bd_line':'zan-tab__bd'}}  zan-tab__bd--scroll {{ fixed ? 'zan-tab__bd--fixed' : '' }}"
           scroll-x="true"
           style="height: {{ tab.height ? tab.height + 'px' : 'auto' }}"
-        >
+        > 
           <template is="zan-tab-list" data="{{ tab, componentId }}"></template>
         </scroll-view>
       </block>
-      <block wx:else>
-        <view class="{{tab.style=='index'?'zan-tab__bd_line':'zan-tab__bd'}}{{fixed ? 'zan-tab__bd--fixed' : ''}}">
+       <block wx:else>
+        <view class="{{tab.style=='index'?'zan-tab__bd_line':'zan-tab__bd'}} {{fixed ? 'zan-tab__bd--fixed' : ''}}">
           <template is="zan-tab-list" data="{{ tab, componentId }}"></template>
         </view>
-      </block>
+      </block> 
   </view>
 </template>
 
