@@ -1,10 +1,13 @@
 <!--pages/tour/tour.wxml-->
 <view style='background:#f9f9f9'>
   <view class='tour_item' wx:for='{{tourGoodInfo}}' wx:key='item'>
-    <image class='tour_item_image' src='{{imgUrl+item.main_image_url}}' mode='aspectFill'></image>
-    <view>
+  <view class='tour_item_image'>
+  <image style='width:230rpx;height:200rpx'  src='{{imgUrl+item.main_image_url}}' mode='aspectFit'></image>
+  </view>
+    <view style='margin-left:20rpx'>
     <view class='zan-font-14 zan-c-black tour_item_label'>{{item.good_name}}</view>
-    <view style='margin-left:20rpx;margin_right:20rpx'>
+
+    <view style='margin-left:20rpx;margin-right:20rpx;'>
       <label class='zan-c-red'>¥ {{item.price/100}}</label>
       <label style='margin-left:20rpx' class=' zan-c-gray-dark zan-font-12'>已拼团{{item.sale_volume}}件</label>
             <button class='zan-btn zan-btn--small zan-btn--primary' style='float:right;margin-right:20rpx' bindtap='buyAction' id='{{item.good_id}}'>去拼团</button>

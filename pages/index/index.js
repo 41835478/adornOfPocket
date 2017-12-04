@@ -19,7 +19,6 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab, netWork, {
       selectedId: 0,
       style: 'index',
       scroll:true,
-      height: 45
     },
     hasUserInfo: false,
     lastPage: false,

@@ -11,10 +11,10 @@
 }
 
 .tour_item_image {
-  padding: 20rpx;
-  width: 500rpx;
+  padding: 20rpx 10rpx;
+  width: 250rpx;
   height: 200rpx;
-  /* background: red; */
+  /* background: red;  */
 }
 
 .tour_item_label {

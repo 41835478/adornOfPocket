@@ -22,6 +22,7 @@ Page(Object.assign({}, netWork, {
     let params = {}
     params.pageNo = 1
     params.pageSize = 10
+    params.activityType = 'SPELL_GROUP'
     netWork.GET({
       url: this.data.url,
       params: params,
