@@ -1,7 +1,7 @@
 // pages/ticket/ticket.js
 var netWrok = require('../../common/requestTool/request.js')
 
-Page(Object.assign({},netWrok, {
+Page(Object.assign({}, netWrok, {
 
   /**
    * 页面的初始数据
@@ -9,7 +9,9 @@ Page(Object.assign({},netWrok, {
   data: {
     url: 'mall/wx/ticket/findByUserId',
     ticketList: [],//卡券列表
-
+    mySelect: true,
+    allSelect: false,
+    btnTitle: '去使用',
   },
   /**
    * 初始化
@@ -21,15 +23,22 @@ Page(Object.assign({},netWrok, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.myTicketAction()
   },
-/**
- * 我的优惠券
- */
+  /**
+   * 我的优惠券
+   */
   myTicketAction() {
-   wx.showLoading({
-     title: '加载中',
-   })
+
+    this.setData({
+      mySelect: true,
+      allSelect: false,
+      btnTitle: '去使用',
+    })
+
+    wx.showLoading({
+      title: '加载中',
+    })
     let that = this
     let params = {}
     params.pageNo = 1
@@ -57,6 +66,13 @@ Page(Object.assign({},netWrok, {
    * 获取全部优惠券信息
    */
   getDataFromNet() {
+
+    this.setData({
+      mySelect: false,
+      allSelect: true,
+      btnTitle: '立即领取',
+    })
+
     wx.showLoading({
       title: '加载中',
     })
@@ -86,29 +102,34 @@ Page(Object.assign({},netWrok, {
    */
   selectAction(e) {
     let that = this
-    let params = {}
-    params.ticketId = e.currentTarget.id
-    netWrok.GET({
-      url: 'mall/wx/ticket/getTicket',
-      wxCode: true,
-      params: params,
-      success: res => {
-        console.log("优惠券结果:" + JSON.stringify(res.data))
-        if (res.data.result == 1) {
-          wx.showModal({
-            title: '提示',
-            content: '领取成功',
-            showCancel: false,
-          })
-        } else {
-          wx.showModal({
-            title: '提示',
-            content: res.data.error.message,
-            showCancel: false,
-          })
+    let myTicket = that.data.mySelect
+    if (myTicket) {
+      console.log("去使用=>")
+    } else {
+      let params = {}
+      params.ticketId = e.currentTarget.id
+      netWrok.GET({
+        url: 'mall/wx/ticket/getTicket',
+        wxCode: true,
+        params: params,
+        success: res => {
+          console.log("优惠券结果:" + JSON.stringify(res.data))
+          if (res.data.result == 1) {
+            wx.showModal({
+              title: '提示',
+              content: '领取成功',
+              showCancel: false,
+            })
+          } else {
+            wx.showModal({
+              title: '提示',
+              content: res.data.error.message,
+              showCancel: false,
+            })
+          }
         }
-      }
-    })
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

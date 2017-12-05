@@ -1,27 +1,36 @@
 <view class="ticket_container">
-  <view style='padding:20px;display:inline-flex'>
-    <button class='btn zan-btn--large' bindtap='myTicketAction' style='width:45%'>我的优惠券</button>
-    <button class='btn zan-btn--large' bindtap='getDataFromNet' style='width:45%'>全部优惠券</button>
+  <view style='display:inline-flex;text-align:center;padding:10rpx 20rpx;height:60rpx'>
+    <view class="{{mySelect?'ticket_btn_view_select':'ticket_btn_view_normal'}}" bindtap='myTicketAction'>
+      我的优惠
+    </view>
+    <view class="{{allSelect?'ticket_btn_view_select':'ticket_btn_view_normal'}}" bindtap='getDataFromNet'>
+      全部优惠
+    </view>
   </view>
 
-  <view class='ticket_item' wx:for="{{ticketList}}" wx:key='item'  bindtap='selectAction' id='{{item.id}}'>
+  <view class='ticket_item' wx:for='{{ticketList}}' wx:key='item' bindtap='selectAction' id='{{item.id}}'>
     <view class='ticket_content'>
-      <view class='content_lf'>
-        ¥
-        <span class='money'>{{item.reduce_money/100}}</span>
+      <view class='ticket_content_left'>
+        <view class='ticket_label_white' style='font-size:30rpx;width:40rpx;margin-left:10rpx;margin-top:20rpx;height:60rpx;'>全品类</view>
       </view>
-      <view class='content_rg'>
-        <view class='least_money'>订单满 {{item.money/100}} 可用</view>
-        <view class='content_rg'>{{item.ticket_name}}</view>
+      <view class='ticket_content_middle'>
+
+
+        <label style='float:left;font-size:30rpx;color:#3d3f41'>{{item.ticket_name}}</label>
+
+        <view style='width:460rpx;float:left;color:#9a5afa;font-size:26rpx;'>
+
+          <label style='float:left;margin-top:24rpx'>¥ </label>
+          <label style='float:left;margin-top:10rpx;font-size:40rpx'> {{item.reduce_money/100}}</label>
+          <label style='margin-top:24rpx;float:left;margin-left:20rpx;text-align:left'>订单满 {{item.money/100}} 可用</label>
+  
+        </view>
+        <label style='float:left;font-size:24rpx;margin-top:20rpx;color:grey'>
+        有效期: {{item.start_date}}至{{item.end_date}}
+</label>
+
       </view>
-    </view>
-    <view class='ticket_footer'>
-      <span class='footer_lf'>
-        <label wx:if='{{item.type==1}}'>全平台</label>
-      </span>
-      <span class='footer_rg'>
-        有效期:{{item.start_date}} 至 {{item.end_date}}
-      </span>
+      <view class='ticket_label_white ticket_content_right'>{{btnTitle}}</view>
     </view>
   </view>
 </view>

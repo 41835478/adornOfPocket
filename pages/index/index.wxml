@@ -24,7 +24,7 @@
         <view style='margin-top:10rpx'>试用</view>
       </view>
     </navigator>
-    <navigator url='' hover-class='navigator-hover'>
+    <navigator url='/pages/ticket/ticket' hover-class='navigator-hover'>
       <view style='width:33.3%;float:left;text-align:center;'>
         <image src='../../images/index_ticket.png' style="width:48rpx;height:48rpx;margin-top:20rpx" mode='aspectFit'></image>
         <view style='margin-top:10rpx'>优惠券</view>
