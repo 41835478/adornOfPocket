@@ -32,16 +32,14 @@
   </view>
   <view class='good_south'>
     <view class='shop_type'>
-      <view class='zan-icon zan-icon-certificate type_item'>
+       <view class=' type_item'> 
+       <!-- zan-icon zan-icon-certificate -->
         <span class='word'>商品详情</span>
-      </view>
-
+       </view> 
     </view>
     <!-- 商品详情 -->
-    <view class='wxParse'>
-      <template is="wxParse" data="{{wxParseData:article.nodes}}" />
-    </view>
-    <view class='pic_introduce'>
+    <view  style='width:100%;'>
+        <template is="wxParse" data="{{wxParseData:article.nodes}}" />  
     </view>
   </view>
   <!-- <view class='good_bottom'>
@@ -100,8 +98,8 @@
             <p>剩余{{goodInfo.stock}}件</p>
           </view>
           <view class='count_rg'>
-            <template is='zan-quantity' data="{{min:1,max:10,quantity:quantity,componentId:'quantity'}}">
-            </template>
+             <template is='zan-quantity' data="{{min:1,max:10,quantity:quantity,componentId:'quantity'}}">
+             </template>  
           </view>
         </view>
       </view>

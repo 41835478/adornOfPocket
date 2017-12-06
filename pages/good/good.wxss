@@ -1,6 +1,7 @@
 @import '../../common/template/wxParse/wxParse.wxss';
 
 .good_container {
+  width: 750rpx;
 }
 
 .good-btn {
@@ -86,6 +87,8 @@
 
 .good_south {
   background: #fff;
+  padding-bottom: 100rpx; 
+  width: 750rpx;
 }
 
 .shop_type {
