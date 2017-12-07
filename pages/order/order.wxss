@@ -59,3 +59,31 @@ font-size: 26rpx;
   text-align: center;
   width: 180rpx;
 }
+.zhuang_btn{
+  float: right;
+  width: 150rpx;
+  height: 50rpx;
+  border-radius:50rpx;
+  border: 1rpx solid #9a5afa;
+  text-align: center;
+  font-size: 28rpx;
+  padding-top:11rpx;
+  margin: 10rpx;
+}
+.zhuang_btn_gray
+{
+  color: gray;
+  background: white;
+    border: 1rpx solid gray;
+
+}
+.zhuang_btn_normal
+{
+  color: #9a5afa;
+  background: white;
+}
+.zhuang_btn_select
+{
+  color: white;
+  background: #9a5afa;
+}

@@ -1,5 +1,6 @@
 .zan-c-red {
-  color: #f44 !important;
+  /* color: #f44 !important; */
+  color: #9a5afa
 }
 
 .zan-c-gray {

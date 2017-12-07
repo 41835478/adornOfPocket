@@ -7,10 +7,10 @@
     <view style='margin-left:20rpx'>
     <view class='zan-font-14 zan-c-black tour_item_label'>{{item.good_name}}</view>
 
-    <view style='margin-left:20rpx;margin-right:20rpx;'>
+    <view style='margin-left:0rpx;margin-right:20rpx;'>
       <label class='zan-c-red'>¥ {{item.price/100}}</label>
-      <label style='margin-left:20rpx' class=' zan-c-gray-dark zan-font-12'>已拼团{{item.sale_volume}}件</label>
-            <button class='zan-btn zan-btn--small zan-btn--primary' style='float:right;margin-right:20rpx' bindtap='buyAction' id='{{item.good_id}}'>去拼团</button>
+      <label style='margin-left:10rpx' class=' zan-c-gray-dark zan-font-12'>已拼团{{item.sale_volume}}/{{item.num}}件</label>
+            <button class='zan-btn zan-btn--small zan-btn--primary' style='float:right;margin-right:20rpx' bindtap='buyAction' id='{{item.good_id}}' data-goodItem='{{item}}'>去拼团</button>
     </view>
     
     </view>

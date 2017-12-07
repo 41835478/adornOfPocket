@@ -22,7 +22,7 @@
       </view>
       <view class='sell_item'>
         <image class='good_selled_image' src='../../images/good_stock.png'></image>
-        <view class='good_selled_label'> {{goodInfo.stock}}</view>
+        <view class='good_selled_label'> {{activity?activityStock:goodInfo.stock}}</view>
       </view>
       <view class='sell_item'>
         <image class='good_selled_image' src='../../images/good_volume.png'></image>
@@ -97,8 +97,12 @@
             <p>购买数量:</p>
             <p>剩余{{goodInfo.stock}}件</p>
           </view>
-          <view class='count_rg'>
-             <template is='zan-quantity' data="{{min:1,max:10,quantity:quantity,componentId:'quantity'}}">
+          <view class='count_rg' wx:if='{{activity==false}}'>
+             <template is='zan-quantity' data="{{min:1,max:10,quantity:quantity,componentId:'quantity'}}" >
+             </template>  
+          </view>
+          <view class='count_rg' wx:else>
+             <template is='zan-quantity' data="{{min:1,max:1,quantity:quantity,componentId:'quantity'}}" >
              </template>  
           </view>
         </view>

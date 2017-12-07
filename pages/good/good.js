@@ -29,7 +29,9 @@ Page(Object.assign({}, quantity, wxParse, netWork, {
       name: "300",
       showSelect: false
     },],
-    selectId: 0
+    selectId: 0,
+    activity:false,    //是否活动商品
+    activityStock:0 //活动商品库存
   },
   /**
    *跳转付款页面 
@@ -42,7 +44,7 @@ Page(Object.assign({}, quantity, wxParse, netWork, {
     })
     var quantityCount = e.currentTarget.dataset.count
     wx.navigateTo({
-      url: '/pages/pay/pay?goodId=' + goodId + '&quantity=' + quantityCount,
+      url: '/pages/pay/pay?goodId=' + goodId + '&quantity=' + quantityCount +'&activity=' + this.data.activity,
     })
   },
   /**
@@ -87,9 +89,17 @@ Page(Object.assign({}, quantity, wxParse, netWork, {
 
     this.setData({
       id: options.goodId,
+      activityStock:options.stock
     })
     //商品评价
     // this.getGoodSuggest(options.goodId)
+
+    if(options.activity){
+      this.setData({
+        activity:true
+      })
+    }
+
 
     var params = {}
     params.goodId = options.goodId

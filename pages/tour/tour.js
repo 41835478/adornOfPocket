@@ -40,11 +40,17 @@ Page(Object.assign({}, netWork, {
       }
     })
   },
+
+  /**
+   * 去拼团
+   */
   buyAction(e) {
     let goodId = e.currentTarget.id
-    console.log("点击购买商品! id=" + goodId)
+    let goodItem = e.currentTarget.dataset.gooditem
+    console.log(e)
+    let activity = true
     wx.navigateTo({
-      url: '/pages/good/good?goodId=' + goodId,
+      url: '/pages/good/good?goodId=' + goodId +'&activity=' + activity +'&stock='+goodItem.actgStock,
     })
   },
   /**

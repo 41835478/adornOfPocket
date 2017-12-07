@@ -19,7 +19,7 @@ Page(Object.assign({}, netWork, {
     userPoint: 0,
     word: '',
     goodImageUrl: '',
-    goodPrice:'',
+    goodPrice: '',
     customerOpt: {
       isMessage: true,
       word: ''
@@ -31,7 +31,9 @@ Page(Object.assign({}, netWork, {
     showTokenDialog: false,//token优惠券Dialog开关
     deliveryFlag: false,
     orderId: '', //订单ID
-    againPay: false //订单页过来
+    againPay: false,//订单页过来
+
+    activity: false
   },
   /**
    * 获取数据
@@ -121,6 +123,9 @@ Page(Object.assign({}, netWork, {
     // })
     // return
 
+
+
+
     if (this.data.againPay) {
       //去完成已下单的付款
       this.againToPay()
@@ -134,57 +139,90 @@ Page(Object.assign({}, netWork, {
         title: '加载中',
       })
       let that = this
-      let payMoney = that.data.quantity * that.data.goodInfo.price - that.data.selectTicketPrice - that.data.userPoint     //实付金额
-      console.log("count = " + that.data.quantity + ";  paymoney=" + payMoney)
-      let order = {}
-      order.good_id = that.data.goodInfo.id
-      order.delivery_id = that.data.deliveryId
-      order.order_fee = that.data.quantity * that.data.goodInfo.price
-      order.count = that.data.quantity
-      order.message = that.data.word
-      order.order_type = 2 //手机下单
-      if (that.data.selectTicketId) {
-        order.use_ticket = 1
-      } else {
-        order.use_ticket = 0
-      }
-      order.ticket = that.data.selectTicketId
-      order.point = that.data.userPoint  //消耗积分
-      order.payment_fee = 1
-      order.reduce_fee = that.data.selectTicketPrice       //优惠金额
-      order.freight_fee = 0       //运费金额
-      order.good_fee = that.data.goodInfo.price //商品金额
-
-      let params = {}
-      params.order = order
-      netWork.GET({
-        url: that.data.payUrl,
-        params: params,
-        wxCode: true,
-        success: res => {
-          wx.hideLoading()
-          console.log(res);
-          if (res.data.error) {
-            wx.showModal({
-              title: '提示',
-              content: res.data.error.message,
-              showCancel: false,
+      if (this.data.activity) {
+        //拼团商品支付
+        wx.login({
+          success: res => {
+            let wxFreeOrder = {}
+            wxFreeOrder.wx_code = res.code
+            wxFreeOrder.activity_id = that.data.acitvity_id
+            wxFreeOrder.good_id = that.data.goodInfo.id
+            wxFreeOrder.delivery_id = that.data.deliveryId
+            wxFreeOrder.good_fee = that.data.goodInfo.price
+            wxFreeOrder.payment_fee = 1
+            wxFreeOrder.order_fee = that.data.goodInfo.price
+            let param = {}
+            param.wxFeeOrder = wxFreeOrder
+            netWork.POST({
+              url: 'mall/wx/activity/joinGroup',
+              params: param,
               success: res => {
-                if (res.confirm) {
-                  wx.navigateBack({})
+                console.log(res.data)
+                if (res.data.result == 1) {
+                  that.setData({
+                    payInfo: res.data.data
+                  })
+                  that.readyToPay()
                 }
               }
             })
-          } else {
-            if (res.data.result == 1) {
-              that.setData({
-                payInfo: res.data.data
+          }
+        })
+      } else {
+        //正常商品支付
+
+        let payMoney = that.data.quantity * that.data.goodInfo.price - that.data.selectTicketPrice - that.data.userPoint     //实付金额
+        console.log("count = " + that.data.quantity + ";  paymoney=" + payMoney)
+        let order = {}
+        order.good_id = that.data.goodInfo.id
+        order.delivery_id = that.data.deliveryId
+        order.order_fee = that.data.quantity * that.data.goodInfo.price
+        order.count = that.data.quantity
+        order.message = that.data.word
+        order.order_type = 2 //手机下单
+        if (that.data.selectTicketId) {
+          order.use_ticket = 1
+        } else {
+          order.use_ticket = 0
+        }
+        order.ticket = that.data.selectTicketId
+        order.point = that.data.userPoint  //消耗积分
+        order.payment_fee = 1
+        order.reduce_fee = that.data.selectTicketPrice       //优惠金额
+        order.freight_fee = 0       //运费金额
+        order.good_fee = that.data.goodInfo.price //商品金额
+
+        let params = {}
+        params.order = order
+        netWork.GET({
+          url: that.data.payUrl,
+          params: params,
+          wxCode: true,
+          success: res => {
+            wx.hideLoading()
+            console.log(res);
+            if (res.data.error) {
+              wx.showModal({
+                title: '提示',
+                content: res.data.error.message,
+                showCancel: false,
+                success: res => {
+                  if (res.confirm) {
+                    wx.navigateBack({})
+                  }
+                }
               })
-              that.readyToPay()
+            } else {
+              if (res.data.result == 1) {
+                that.setData({
+                  payInfo: res.data.data
+                })
+                that.readyToPay()
+              }
             }
           }
-        }
-      })
+        })
+      }
     }
   },
   /**
@@ -268,6 +306,12 @@ Page(Object.assign({}, netWork, {
     let goodId = options.goodId
     let quantity = options.quantity
     console.log("订单id=" + JSON.stringify(options));
+
+    if (options.activity) {
+      activity: true
+    }
+
+
     if (options.id) {
       //订单页面而来
       this.setData({
@@ -276,13 +320,13 @@ Page(Object.assign({}, netWork, {
         againPay: true
       })
       this.getGoodSnapshotData(options.id, quantity)
-    }else{
+    } else {
       //获取商品信息
       this.getGoodInfo(goodId, quantity)
     }
     //获取默认地址
     this.getDefaultAddress()
-    
+
   },
   /**
    * 获取默认地址
@@ -341,27 +385,27 @@ Page(Object.assign({}, netWork, {
   /**
    * 获取商品快照ID
    */
-  getGoodSnapshotData(orderId, quantity){
-      let param = {}
-      let that = this
-      param.orderId = orderId
-      netWork.GET({
-        url:'mall/wx/good/findByGoodSnapshotDetail',
-        params:param,
-        success:res=>{
-          console.log(res)
-          that.setData({
-            goodInfo: res.data.data,
-            goodImageUrl: getApp().globalData.baseImgUrl + res.data.data.main_image_url
-          })
-          let price = res.data.data.price * quantity
-          that.setData({
-            totalPrice: price.toFixed(2),
-            quantity: quantity,
-            goodPrice:res.data.data.price,
-          })
-        }
-      })
+  getGoodSnapshotData(orderId, quantity) {
+    let param = {}
+    let that = this
+    param.orderId = orderId
+    netWork.GET({
+      url: 'mall/wx/good/findByGoodSnapshotDetail',
+      params: param,
+      success: res => {
+        console.log(res)
+        that.setData({
+          goodInfo: res.data.data,
+          goodImageUrl: getApp().globalData.baseImgUrl + res.data.data.main_image_url
+        })
+        let price = res.data.data.price * quantity
+        that.setData({
+          totalPrice: price.toFixed(2),
+          quantity: quantity,
+          goodPrice: res.data.data.price,
+        })
+      }
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
