@@ -142,7 +142,8 @@ Page(Object.assign({}, Zan, netWork, {
             showCancel: false,
             success: function (res) {
               if (res.confirm) {
-                that.getDataFromNet(0, that.data.selectedId)
+                console.log(that.data.selectedId)
+                  that.getDataFromNet(0, that.data.selectedId)
               }
             }
           })

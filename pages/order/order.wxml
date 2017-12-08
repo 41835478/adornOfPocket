@@ -37,13 +37,18 @@
             </view>
           </view>
           <view class="zan-card__detail-row zan-c-gray-darker">
-            <view class="zan-card__right-col">x{{item.count}}</view>
+            <view class="zan-card__right-col">x {{item.count}}</view>
             <view class="zan-card__left-col">
             </view>
           </view>
+          <!-- <view class="zan-card__detail-row zan-c-gray-darker">
+            <view class="zan-card__right-col">免运费</view>
+            <view class="zan-card__left-col">
+            </view>
+          </view> -->
         </view>
       </view>
-      <view class='zan-panel'>
+      <view class='zan-panel' style='border-top:0rpx'>
         <view class='zan-card'>
           <view class="zan-card__detail-row">
             <view class="zan-card__right-col zan-c-red">¥ {{item.payment_fee/100}}</view>
@@ -58,7 +63,6 @@
         </view>
       </view>
       <view class='zan-card'>
-        <view class="zan-card__detail-row">
 
           <view class='zhuang_btn zhuang_btn_select' bindtap='goodsPayAction' wx:if="{{item.order_status=='UN_PAY'}}" id='{{item.id}}' data-good='{{item}}'>去付款</view>
           <view class="zan-card__right-col" style='diapaly:inline-flex;'>
@@ -66,8 +70,8 @@
             <view wx:if="{{item.order_status=='REFUND_FAIL'}}" class='zhuang_btn zhuang_btn_gray'>退款失败</view>
             <view wx:if="{{item.order_status=='REFUND_SUCCESS'}}" class='zhuang_btn zhuang_btn_gray'>退款成功</view>
             <view class='zhuang_btn zhuang_btn_gray' wx:if="{{item.order_status=='UN_DELIVERY'}}">准备发货</view>
-            <view class='zhuang_btn' bindtap='confirmGood' wx:if="{{item.order_status=='UN_RECEIVE'}}" id='{{item.id}}' data-good='{{item}}'>确认收货</view>
-            <view class='zhuang_btn zhuang_btn_normal' wx:if="{{item.order_status=='UN_PAY'}}" id='{{item.id}}' data-good='{{item}}'>取消订单</view>
+            <view class='zhuang_btn zhuang_btn_select' bindtap='confirmGood' wx:if="{{item.order_status=='UN_RECEIVE'}}" id='{{item.id}}' data-good='{{item}}'>确认收货</view>
+            <view class='zhuang_btn zhuang_btn_normal' wx:if="{{item.order_status=='UN_PAY'}}" id='{{item.id}}' data-good='{{item}}' bindtap='confirmGood' >取消订单</view>
             <view class='zhuang_btn zhuang_btn_select' bindtap='goodsBackAction' wx:if="{{item.order_status=='UN_RECEIVE'||item.order_status=='UN_DELIVERY'}}" id='{{item.id}}' data-good='{{item}}'>申请退款</view>
             <view class='zhuang_btn zhuang_btn_normal' bindtap='goodsBuyAction' id='{{item.good_id}}'>再次购买</view>
 
@@ -84,7 +88,7 @@
             <!-- <button wx:if="{{item.order_status=='REFUND'}}" class=' zan-btn zan-btn--small zan-btn--plain'>退款处理</button>
             <button wx:if="{{item.order_status=='REFUND_FAIL'}}" class=' zan-btn zan-btn--small zan-btn--plain'>退款失败</button>
             <button wx:if="{{item.order_status=='REFUND_SUCCESS'}}" class=' zan-btn zan-btn--small zan-btn--plain'>退款成功</button> -->
-          </view>
+
         </view>
       </view>
     </view>
