@@ -22,11 +22,11 @@
       </view>
       <view class='sell_item'>
         <image class='good_selled_image' src='../../images/good_stock.png'></image>
-        <view class='good_selled_label'> {{activity?activityStock:goodInfo.stock}}</view>
+        <view class='good_selled_label'> 库存{{activity?activityStock:goodInfo.stock}}件</view>
       </view>
       <view class='sell_item'>
         <image class='good_selled_image' src='../../images/good_volume.png'></image>
-        <view class='good_selled_label'> {{goodInfo.sale_volume}}</view>
+        <view class='good_selled_label'> 销量{{goodInfo.sale_volume}}件</view>
       </view>
     </view>
   </view>

@@ -51,6 +51,7 @@ Page(Object.assign({}, netWrok, {
         wx.hideLoading()
         console.log(res)
         var arr = res.data.list
+        arr = that.subString(arr)
         that.setData({
           ticketList: arr
         })
@@ -61,6 +62,19 @@ Page(Object.assign({}, netWrok, {
       }
     })
   },
+
+/**
+ * 字符串截取
+ */
+ subString(arr){
+   for (let i = 0; i < arr.length; i++) {
+     var startDate = arr[i].start_date
+     arr[i].start_date = startDate.substring(0, 10)
+     var endDate = arr[i].end_date
+     arr[i].end_date = endDate.substring(0, 10)
+   }
+   return arr
+},
 
   /**
    * 获取全部优惠券信息
@@ -87,6 +101,7 @@ Page(Object.assign({}, netWrok, {
         wx.hideLoading()
         console.log(res.data)
         var arr = res.data.list
+        arr = that.subString(arr)
         that.setData({
           ticketList: arr
         })

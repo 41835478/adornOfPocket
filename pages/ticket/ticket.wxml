@@ -14,8 +14,6 @@
         <view class='ticket_label_white' style='font-size:30rpx;width:40rpx;margin-left:10rpx;margin-top:20rpx;height:60rpx;'>全品类</view>
       </view>
       <view class='ticket_content_middle'>
-
-
         <label style='float:left;font-size:30rpx;color:#3d3f41'>{{item.ticket_name}}</label>
 
         <view style='width:460rpx;float:left;color:#9a5afa;font-size:26rpx;'>
@@ -23,12 +21,10 @@
           <label style='float:left;margin-top:24rpx'>¥ </label>
           <label style='float:left;margin-top:10rpx;font-size:40rpx'> {{item.reduce_money/100}}</label>
           <label style='margin-top:24rpx;float:left;margin-left:20rpx;text-align:left'>订单满 {{item.money/100}} 可用</label>
-  
         </view>
         <label style='float:left;font-size:24rpx;margin-top:20rpx;color:grey'>
-        有效期: {{item.start_date}}至{{item.end_date}}
-</label>
-
+          有效期: {{item.start_date}} 至 {{item.end_date}}
+        </label>
       </view>
       <view class='ticket_label_white ticket_content_right'>{{btnTitle}}</view>
     </view>

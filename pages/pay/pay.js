@@ -36,7 +36,7 @@ Page(Object.assign({}, netWork, {
     activity: false
   },
   /**
-   * 获取数据
+   * 给商家留言
    */
   getData(e) {
     let obj = {
@@ -73,8 +73,10 @@ Page(Object.assign({}, netWork, {
       wxCode: true,
       success: res => {
         console.log('data=====' + JSON.stringify(res.data.list))
+        let arr = res.data.list
+        arr = that.subString(arr)
         that.setData({
-          ticketInfo: res.data.list,
+          ticketInfo: arr,
           showTokenDialog: !that.data.showTokenDialog
         })
       }
@@ -125,11 +127,10 @@ Page(Object.assign({}, netWork, {
     // })
     // return
 
-
+    let that = this
     if (this.data.againPay) {
       //去完成已下单的付款
       this.againToPay()
-
     } else {
       //第一次下单
       this.setData({
@@ -138,96 +139,116 @@ Page(Object.assign({}, netWork, {
       wx.showLoading({
         title: '加载中',
       })
-      let that = this
-      console.log(that.data.goodInfo)
-      if (this.data.activity) {
-        //拼团商品支付
-        wx.login({
-          success: res => {
-            let wxFreeOrder = {}
-            wxFreeOrder.wx_code = res.code
-            wxFreeOrder.activity_id = that.data.goodInfo.activity_id
-            wxFreeOrder.good_id = that.data.goodInfo.id
-            wxFreeOrder.delivery_id = that.data.deliveryId
-            wxFreeOrder.good_fee = that.data.goodInfo.price
-            wxFreeOrder.payment_fee = 1
-            wxFreeOrder.order_fee = that.data.goodInfo.price
-            let param = {}
-            param = wxFreeOrder
-            netWork.POST({
-              url: 'mall/wx/activity/joinGroup',
-              params: param,
-              success: res => {
-                console.log(res.data)
-                if (res.data.result == 1) {
-                  that.setData({
-                    payInfo: res.data.data
-                  })
-                  that.readyToPay()
-                }
-              },
-              fail:err=>{
+      //判断活动还是正常商品
+      if (that.data.activity) {
 
-              }
-            })
-          }
-        })
+        that.payActivityGood()
       } else {
-      //   //正常商品支付
-
-      //   let payMoney = that.data.quantity * that.data.goodInfo.price - that.data.selectTicketPrice - that.data.userPoint     //实付金额
-      //   console.log("count = " + that.data.quantity + ";  paymoney=" + payMoney)
-      //   let order = {}
-      //   order.good_id = that.data.goodInfo.id
-      //   order.delivery_id = that.data.deliveryId
-      //   order.order_fee = that.data.quantity * that.data.goodInfo.price
-      //   order.count = that.data.quantity
-      //   order.message = that.data.word
-      //   order.order_type = 2 //手机下单
-      //   if (that.data.selectTicketId) {
-      //     order.use_ticket = 1
-      //   } else {
-      //     order.use_ticket = 0
-      //   }
-      //   order.ticket = that.data.selectTicketId
-      //   order.point = that.data.userPoint  //消耗积分
-      //   order.payment_fee = 1
-      //   order.reduce_fee = that.data.selectTicketPrice       //优惠金额
-      //   order.freight_fee = 0       //运费金额
-      //   order.good_fee = that.data.goodInfo.price //商品金额
-
-      //   let params = {}
-      //   params.order = order
-      //   netWork.GET({
-      //     url: that.data.payUrl,
-      //     params: params,
-      //     wxCode: true,
-      //     success: res => {
-      //       wx.hideLoading()
-      //       console.log(res);
-      //       if (res.data.error) {
-      //         wx.showModal({
-      //           title: '提示',
-      //           content: res.data.error.message,
-      //           showCancel: false,
-      //           success: res => {
-      //             if (res.confirm) {
-      //               wx.navigateBack({})
-      //             }
-      //           }
-      //         })
-      //       } else {
-      //         if (res.data.result == 1) {
-      //           that.setData({
-      //             payInfo: res.data.data
-      //           })
-      //           that.readyToPay()
-      //         }
-      //       }
-      //     }
-      //   })
+        
+        that.payNormalGood()
       }
     }
+  },
+
+  /**
+   * 正常商品支付
+   */
+  payNormalGood() {
+    //正常商品支付
+    let that = this
+    let payMoney = that.data.quantity * that.data.goodInfo.price - that.data.selectTicketPrice - that.data.userPoint     //实付金额
+    console.log("count = " + that.data.quantity + ";  paymoney=" + payMoney)
+    let order = {}
+    order.good_id = that.data.goodInfo.id
+    order.delivery_id = that.data.deliveryId
+    order.order_fee = that.data.quantity * that.data.goodInfo.price
+    order.count = that.data.quantity
+    order.message = that.data.word
+    order.order_type = 2 //手机下单
+    if (that.data.selectTicketId) {
+      order.use_ticket = 1
+    } else {
+      order.use_ticket = 0
+    }
+    order.ticket = that.data.selectTicketId
+    order.point = that.data.userPoint  //消耗积分
+    order.payment_fee = 1
+    order.reduce_fee = that.data.selectTicketPrice       //优惠金额
+    order.freight_fee = 0       //运费金额
+    order.good_fee = that.data.goodInfo.price //商品金额
+
+    let params = {}
+    params.order = order
+    netWork.GET({
+      url: that.data.payUrl,
+      params: params,
+      wxCode: true,
+      success: res => {
+        wx.hideLoading()
+        console.log(res);
+        if (res.data.error) {
+          wx.showModal({
+            title: '提示',
+            content: res.data.error.message,
+            showCancel: false,
+            success: res => {
+              if (res.confirm) {
+                wx.navigateBack({})
+              }
+            }
+          })
+        } else {
+          if (res.data.result == 1) {
+            that.setData({
+              payInfo: res.data.data
+            })
+            that.readyToPay()
+          }
+        }
+      }
+    })
+  },
+  /**
+   * 活动商品支付
+   */
+  payActivityGood() {
+    let that = this
+    //拼团商品支付
+    wx.login({
+      success: res => {
+        let wxFreeOrder = {}
+        wxFreeOrder.wx_code = res.code
+        wxFreeOrder.activity_id = that.data.goodInfo.activity_id
+        wxFreeOrder.good_id = that.data.goodInfo.id
+        wxFreeOrder.delivery_id = that.data.deliveryId
+        wxFreeOrder.good_fee = that.data.goodInfo.price
+        wxFreeOrder.payment_fee = 1
+        wxFreeOrder.order_fee = that.data.goodInfo.price
+
+        netWork.POST({
+          url: 'mall/wx/activity/joinGroup',
+          params: wxFreeOrder,
+          success: res => {
+            console.log(res.data)
+            if (res.data.result == 1) {
+              that.setData({
+                payInfo: res.data.data
+              })
+              that.readyToPay()
+            }else{
+              wx.hideLoading(),
+              wx.showToast({
+                title: '支付失败',
+              })
+            }
+          },
+          fail: err => {
+            wx.hideLoading()
+
+          }
+        })
+      }
+    })
   },
   /**
    * 微信支付
@@ -411,6 +432,19 @@ Page(Object.assign({}, netWork, {
         })
       }
     })
+  },
+
+  /**
+ * 字符串截取
+ */
+  subString(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      var startDate = arr[i].start_date
+      arr[i].start_date = startDate.substring(0, 10)
+      var endDate = arr[i].end_date
+      arr[i].end_date = endDate.substring(0, 10)
+    }
+    return arr
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

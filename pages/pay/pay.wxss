@@ -142,29 +142,18 @@
 
 /*优惠券Dialog*/
 
-.toke_list_tit {
-  text-align: center;
+ .toke_list_tit { 
+  text-align: center; 
   font-size: 30rpx;
   padding: 18rpx 0;
-}
-
-.token_list {
-  border-top: 1px solid #f9f9f9;
-}
-
-.token_list .not_find {
-  height: 200rpx;
-  font-size: 26rpx;
-  color: #c1c1c1;
-  text-align: center;
-}
+} 
 
 /*优惠券*/
 
 .ticket_item {
-  padding: 20rpx;
+  padding: 0rpx 10rpx;
   width: 90%;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   border-top: 1px solid #f9f9f9;
 }
 
@@ -209,78 +198,49 @@
 }
 
 .ticket_scroll {
-  width: 95%;
-  padding: 20rpx;
-  height: 300px;
+  width: 750rpx;
+  padding: 10rpx ;
+  background: #eef0fd;
+  height: 350px;
+}
+.ticket_label_white {
+  font-size: 28rpx;
+  color: white;
+}
+
+.ticket_label_violet {
+  font-size: 28rpx;
+  color: #9a5afa;
+}
+
+.ticket_item {
+  width: 710rpx;
+  height: auto;
 }
 
 /*卡券内容*/
-
 .ticket_content {
-  height: 150rpx;
-  padding: 20rpx 0;
-  border: 1px solid #e14424;
-  border-bottom: 0;
-  border-top-left-radius: 14rpx;
-  border-top-right-radius: 14rpx;
-  color: #e14424;
-}
-
-.content_lf {
-  width: 30%;
-  line-height: 150rpx;
+  display: inline-flex;
   text-align: center;
+  padding: 20rpx;
+  height: 180rpx;
 }
 
-.content_lf .money {
-  /* font-size: 72rpx; */
-  font-size-adjust: 30px;
+.ticket_content_left {
+  width: 25%;
+  background: #9a5afa;
 }
 
-.content_rg {
-  float: right;
-  width: 65%;
-  text-align: left;
+.ticket_content_middle {
+  background: white;
+  width: 40%rpx;
+  display: list-item;
+  padding: 10rpx 20rpx;
+  list-style: none;
 }
 
-.content_rg .least_money {
-  font-size: 36rpx;
-  margin-top: 20rpx;
-  margin-bottom: 12rpx;
-}
-
-.content_rg .use_range {
-  font-size: 22rpx;
-}
-
-/*卡券底部*/
-
-.ticket_footer {
-  border-left: 1px solid #e14424;
-  border-right: 1px solid #e14424;
-  background: #e14424;
-  height: 70rpx;
-  color: #fff;
-  font-size: 28rpx;
-  padding: 0 15rpx;
-  line-height: 70rpx;
-  border-bottom-left-radius: 14rpx;
-  border-bottom-right-radius: 14rpx;
-}
-
-.footer_lf, .footer_rg, .content_lf, .content_rg {
-  display: inline-block;
-  height: 100%;
-}
-
-.footer_lf {
-  width: 30%;
-  text-align: left;
-}
-
-.footer_rg {
-  width: 60%;
-  float: right;
-  font-size: 24rpx;
-  text-align: right;
+.ticket_content_right {
+  width: 35%;
+  background: #9a5afa;
+  padding-top: 60rpx;
 }

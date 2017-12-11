@@ -65,7 +65,7 @@
   height: 40rpx;
   float: left;
   margin-top: 8rpx;
-  margin-left: 60rpx;
+  margin-left: 40rpx;
 }
 
 .good_selled_label {
@@ -73,7 +73,7 @@
   margin-top: 10rpx;
   width: auto;
   float: left;
-  margin-left: 10rpx;
+  margin-left: 5rpx;
 }
 
 .sell_item {
