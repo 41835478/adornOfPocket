@@ -43,8 +43,8 @@ App({
     userInfo: null,
     // baseUrl: 'http://4mnkwf.natappfree.cc/',
     // baseUrl: 'http://192.168.0.103:8088/',     //方珂
-    // baseUrl: 'http://9392ye.natappfree.cc/', //黄明月
-    baseUrl:'https://zjhkhl.com/',               //生产
+    baseUrl: 'http://uxke9r.natappfree.cc/', //黄明月
+    // baseUrl:'https://zjhkhl.com/',               //生产
     baseImgUrl: 'https://zjhkhl.com',
   }
 })

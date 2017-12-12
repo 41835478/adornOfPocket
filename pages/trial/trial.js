@@ -42,12 +42,39 @@ Page(Object.assign({}, netWork, {
       }
     })
   },
+  /**
+   * 申请试用
+   */
   buyAction(e) {
     let goodId = e.currentTarget.id
-    console.log("点击购买商品! id=" + goodId)
-    wx.navigateTo({
-      url: '/pages/good/good?goodId=' + goodId,
-    })
+    let good = e.currentTarget.dataset.good
+    console.log(good)
+    wx.login({
+      success:res=>{
+        let param = {}
+        param.wx_code = res.code,
+          param.activity_id = good.activity_id,
+          param.good_id = good.good_id,
+          param.delivery_id = '102',
+          param.freight_fee = good.freight_fee,
+          param.payment_fee = 1;
+        netWork.POST({
+          url: 'mall/wx/free/apply',
+          params:param,
+          success:res=>{
+            console.log(res)
+          },
+          fail:err=>{
+            console.log(err)
+          }
+        })
+      }
+    })  
+   
+    // console.log("点击购买商品! id=" + goodId)
+    // wx.navigateTo({
+    //   url: '/pages/good/good?goodId=' + goodId,
+    // })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
