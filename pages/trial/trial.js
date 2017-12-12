@@ -10,6 +10,7 @@ Page(Object.assign({}, netWork, {
     imgUrl: getApp().globalData.baseImgUrl,
     useUrl: 'mall/wx/free/findFreeList',
     lastPage: false,
+    payInfo:{},
   },
 
   /**
@@ -46,6 +47,7 @@ Page(Object.assign({}, netWork, {
    * 申请试用
    */
   buyAction(e) {
+    let that = this
     let goodId = e.currentTarget.id
     let good = e.currentTarget.dataset.good
     console.log(good)
@@ -63,6 +65,10 @@ Page(Object.assign({}, netWork, {
           params:param,
           success:res=>{
             console.log(res)
+            that.setData({
+              payInfo : res.data.data
+            })
+            that.readyToPay()
           },
           fail:err=>{
             console.log(err)
@@ -76,6 +82,30 @@ Page(Object.assign({}, netWork, {
     //   url: '/pages/good/good?goodId=' + goodId,
     // })
   },
+
+  /**
+   * 微信支付
+   */
+  readyToPay() {
+    console.log(this.data.payInfo)
+    wx.hideLoading()
+    wx.requestPayment({
+      timeStamp: this.data.payInfo.timeStamp,
+      nonceStr: this.data.payInfo.nonceStr,
+      package: this.data.payInfo.package,
+      signType: 'MD5',
+      paySign: this.data.payInfo.paySign,
+      'success': function (res) {
+        console.log(res)
+        wx.navigateBack({
+          delta: 1
+        })
+      },
+      'fail': function (res) { },
+      'complete': function (res) { }
+    })
+  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

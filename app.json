@@ -18,7 +18,8 @@
     "pages/tour/tour",
     "pages/order/evaluate/evaluate",
     "pages/trial/trial",
-    "pages/profile/point/point"
+    "pages/profile/point/point",
+    "pages/trial/trialgood/trialgood"
   ],
   "window": {
     "navigationBarBackgroundColor": "#9a5afa",
