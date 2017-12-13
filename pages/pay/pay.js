@@ -30,10 +30,10 @@ Page(Object.assign({}, netWork, {
     btnTitle: "提交订单",
     showTokenDialog: false,//token优惠券Dialog开关
     deliveryFlag: false,
-    orderId: '', //订单ID
-    againPay: false,//订单页过来
 
-    activity: false
+    againPay: false,    //是否订单页过来
+    activity: false,      //商品页传入,是否活动商品
+    goodType: '',     //活动类型
   },
   /**
    * 给商家留言
@@ -88,11 +88,11 @@ Page(Object.assign({}, netWork, {
   selectAction(e) {
     let that = this
     let ticketId = e.currentTarget.id
-    let price = e.currentTarget.dataset.ticket.reduceMoney
+    let price = e.currentTarget.dataset.ticket.reduce_money
     that.setData({
       selectTicketId: ticketId,
       selectTicketPrice: price,
-      ticketName: e.currentTarget.dataset.ticket.ticketName,
+      ticketName: e.currentTarget.dataset.ticket.ticket_name,
       showTokenDialog: !that.data.showTokenDialog
     })
   },
@@ -113,6 +113,7 @@ Page(Object.assign({}, netWork, {
 
     console.log(this.data.goodInfo)
     //测试 防止购买商品
+
     // wx.showModal({
     //   title: '提示',
     //   content: '目前版本还在测试阶段,下单功能暂不提供,敬请谅解!',
@@ -139,12 +140,20 @@ Page(Object.assign({}, netWork, {
       wx.showLoading({
         title: '加载中',
       })
-      //判断活动还是正常商品
-      if (that.data.activity) {
 
-        that.payActivityGood()
+      //判断商品类型
+      if (that.data.activity) {
+        if (that.data.goodType == 'FREE_ORDER') {
+          //试用商品下单
+          let url = 'mall/wx/free/apply'
+          that.payActivityGood(url,1)
+        } else if (that.data.goodType == 'SPELL_GROUP_ORDER') {
+          //拼团商品下单
+          let url = 'mall/wx/activity/joinGroup'
+          that.payActivityGood(url,2)
+        }
       } else {
-        
+        //普通商品下单
         that.payNormalGood()
       }
     }
@@ -211,7 +220,7 @@ Page(Object.assign({}, netWork, {
   /**
    * 活动商品支付
    */
-  payActivityGood() {
+  payActivityGood(url,goodType) {
     let that = this
     //拼团商品支付
     wx.login({
@@ -222,11 +231,14 @@ Page(Object.assign({}, netWork, {
         wxFreeOrder.good_id = that.data.goodInfo.id
         wxFreeOrder.delivery_id = that.data.deliveryId
         wxFreeOrder.good_fee = that.data.goodInfo.price
-        wxFreeOrder.payment_fee = 1
         wxFreeOrder.order_fee = that.data.goodInfo.price
-
+        if(goodType == 1){
+          wxFreeOrder.payment_fee = 1
+        }else if(goodType == 2){
+          wxFreeOrder.payment_fee = 2
+        }
         netWork.POST({
-          url: 'mall/wx/activity/joinGroup',
+          url: url,
           params: wxFreeOrder,
           success: res => {
             console.log(res.data)
@@ -235,43 +247,21 @@ Page(Object.assign({}, netWork, {
                 payInfo: res.data.data
               })
               that.readyToPay()
-            }else{
+            } else {
               wx.hideLoading(),
-              wx.showToast({
-                title: '支付失败',
-              })
+                wx.showToast({
+                  title: '支付失败',
+                })
             }
           },
           fail: err => {
             wx.hideLoading()
-
           }
         })
       }
     })
   },
-  /**
-   * 微信支付
-   */
-  readyToPay() {
-    console.log(this.data.payInfo)
-    wx.hideLoading()
-    wx.requestPayment({
-      timeStamp: this.data.payInfo.timeStamp,
-      nonceStr: this.data.payInfo.nonceStr,
-      package: this.data.payInfo.package,
-      signType: 'MD5',
-      paySign: this.data.payInfo.paySign,
-      'success': function (res) {
-        console.log(res)
-        wx.navigateBack({
-          delta: 1
-        })
-      },
-      'fail': function (res) { },
-      'complete': function (res) { }
-    })
-  },
+
   /**
    * 订单页面重新付款
    */
@@ -282,8 +272,10 @@ Page(Object.assign({}, netWork, {
     })
     let params = {}
     params.orderId = this.data.orderId
+    console.log('重新申请!')
+    //'mall/wx/jsapi/order/pay'
     netWork.GET({
-      url: 'mall/wx/jsapi/order/pay',
+      url: 'mall/wx/free/pay',
       params: params,
       wxCode: true,
       success: res => {
@@ -323,6 +315,28 @@ Page(Object.assign({}, netWork, {
     })
   },
   /**
+   * 微信支付
+   */
+  readyToPay() {
+    console.log(this.data.payInfo)
+    wx.hideLoading()
+    wx.requestPayment({
+      timeStamp: this.data.payInfo.timeStamp,
+      nonceStr: this.data.payInfo.nonceStr,
+      package: this.data.payInfo.package,
+      signType: 'MD5',
+      paySign: this.data.payInfo.paySign,
+      'success': function (res) {
+        console.log(res)
+        wx.navigateBack({
+          delta: 1
+        })
+      },
+      'fail': function (res) { },
+      'complete': function (res) { }
+    })
+  },
+  /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
@@ -332,27 +346,30 @@ Page(Object.assign({}, netWork, {
     let quantity = options.quantity
     console.log("订单id=" + JSON.stringify(options));
 
-    if (options.activity == "true") {
-      this.setData({
-        activity: true
-      })
-    }
-
-    if (options.id) {
-      //订单页面而来
-      this.setData({
+    //是否订单页而来
+    if (options.orderId) {
+      that.setData({
         btnTitle: "去支付",
-        orderId: options.id,
-        againPay: true
+        againPay: true,
+        goodType: options.activityType
       })
-      this.getGoodSnapshotData(options.id, quantity)
+      //获取商品快照信息
+      this.getGoodSnapshotData(options.orderId, quantity)
     } else {
+      if (options.activity) {
+        that.setData({
+          activity: true,
+          goodType: options.activity
+        })
+      }
       //获取商品信息
       this.getGoodInfo(goodId, quantity)
     }
+
+    console.log("goodtype=" + that.data.goodType)
+
     //获取默认地址
     this.getDefaultAddress()
-
   },
   /**
    * 获取默认地址

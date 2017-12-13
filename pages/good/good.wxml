@@ -10,19 +10,28 @@
     </swiper>
     <view class='good_price border_north'>
       {{goodInfo.good_name}}
-      <view class='single_price'>
+      <view class='single_price' wx:if='{{!activity}}'>
         ¥ {{goodInfo.promotion*goodInfo.discount/10000}}
         <span wx:if='{{goodInfo.discount!=100}}' style="text-decoration:line-through;margin:20rpx;color:gray;font-size: 12px;">¥ {{goodInfo.price/100}}</span>
       </view>
+
+      <view class='single_price' wx:if="{{activityStyle=='spell'}}">
+        ¥ {{goodInfo.promotion*goodInfo.discount/10000}} <span style="margin:20rpx;color:gray;font-size: 12px;">拼团价</span>
+      </view>
+      <view class='single_price' wx:if="{{activityStyle=='free'}}">
+        ¥ 0
+        <span style="text-decoration:line-through;margin:20rpx;color:gray;font-size: 12px;">¥ {{goodInfo.price/100}}</span>
+      </view>
     </view>
+
     <view class='good_selled'>
       <view class='sell_item'>
         <image class='good_selled_image' src='../../images/good_way.png'></image>
-        <view class='good_selled_label'>免运费</view>
+        <view class='good_selled_label'>运费:¥ {{goodInfo.freight_fee/100}}</view>
       </view>
       <view class='sell_item'>
         <image class='good_selled_image' src='../../images/good_stock.png'></image>
-        <view class='good_selled_label'> 库存{{activity?activityStock:goodInfo.stock}}件</view>
+        <view class='good_selled_label'> 库存{{activity?goodInfo.activity_stock:goodInfo.stock}}件</view>
       </view>
       <view class='sell_item'>
         <image class='good_selled_image' src='../../images/good_volume.png'></image>
@@ -32,14 +41,14 @@
   </view>
   <view class='good_south'>
     <view class='shop_type'>
-       <view class=' type_item'> 
-       <!-- zan-icon zan-icon-certificate -->
+      <view class=' type_item'>
+        <!-- zan-icon zan-icon-certificate -->
         <span class='word'>商品详情</span>
-       </view> 
+      </view>
     </view>
     <!-- 商品详情 -->
-    <view  style='width:100%;'>
-        <template is="wxParse" data="{{wxParseData:article.nodes}}" />  
+    <view style='width:100%;'>
+      <template is="wxParse" data="{{wxParseData:article.nodes}}" />
     </view>
   </view>
   <!-- <view class='good_bottom'>
@@ -48,8 +57,8 @@
         <span class='word'>商品评价</span>
       </view>
     </view> -->
-    <!-- 商品评价 -->
-    <!-- <view class='suggest_content' style='margin-bottom:20px' wx:if='{{goodSuggest.length<1}}'>暂无商品评价</view>
+  <!-- 商品评价 -->
+  <!-- <view class='suggest_content' style='margin-bottom:20px' wx:if='{{goodSuggest.length<1}}'>暂无商品评价</view>
     <view class='suggest_view' wx:for='{{goodSuggest}}' wx:key='item'>
       <image class='suggest_image' src='https://img.alicdn.com/tfs/TB1G4y2cnnI8KJjy0FfXXcdoVXa-520-280.jpg_q90_.webp' mode='aspectFill'></image>
       <label class='suggest_name'>{{item.id}}</label>
@@ -65,8 +74,7 @@
         </view>
       </navigator>
     </view>
-    <button style='background:#9a5afa' wx:if='{{goodInfo.stock>0}}' class="zan-btn zan-btn--large zan-btn--danger"  bindtap='toggleDialog'>立即下单</button>
-    <button wx:else class="zan-btn zan-btn--large zan-btn--warn">货源不足</button>
+    <button style="{{btnBindTap?'background:#9a5afa':''}}" class="{{btnBindTap?'zan-btn zan-btn--large zan-btn--danger':'zan-btn zan-btn--large zan-btn--warn'}}" bindtap="{{btnBindTap?'toggleDialog':''}}">{{btnTitle}}</button>
   </view>
 </view>
 <!-- 弹出视图 -->
@@ -82,28 +90,18 @@
             <view class='confirm_single_price'> ¥ {{goodInfo.promotion/100}}</view>
           </view>
         </view>
-        <!--类目  -->
-        <!-- <view class='good_category'> -->
-        <!-- <view class='category_list'> -->
-        <!-- <view class='item_tit'>尺寸:</view>
-            <view class='item_list' wx:for='{{specs}}' wx:key="item">
-              <button wx:if="{{item.showSelect==false}}" class="zan-btn zan-btn--mini" bindtap='chickAction' id='{{item.id}}'>{{item.name}}cm</button>
-              <button wx:else class="zan-btnSelect zan-btn--mini" bindtap='chickAction' id='{{item.id}}'>{{item.name}}cm</button>
-            </view>
-          </view> -->
-        <!-- </view> -->
         <view class='confirm_good_count'>
           <view class='count_lf'>
             <p>购买数量:</p>
             <p>剩余{{goodInfo.stock}}件</p>
           </view>
           <view class='count_rg' wx:if='{{activity==false}}'>
-             <template is='zan-quantity' data="{{min:1,max:10,quantity:quantity,componentId:'quantity'}}" >
-             </template>  
+            <template is='zan-quantity' data="{{min:1,max:10,quantity:quantity,componentId:'quantity'}}">
+            </template>
           </view>
           <view class='count_rg' wx:else>
-             <template is='zan-quantity' data="{{min:1,max:1,quantity:quantity,componentId:'quantity'}}" >
-             </template>  
+            <template is='zan-quantity' data="{{min:1,max:1,quantity:quantity,componentId:'quantity'}}">
+            </template>
           </view>
         </view>
       </view>

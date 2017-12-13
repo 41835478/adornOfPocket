@@ -8,7 +8,7 @@
     <view class='zan-font-14 zan-c-black tour_item_label'>{{item.good_name}}</view>
     <view style='margin-left:0rpx;margin-right:20rpx;'>
       <!-- <label class='zan-c-red'>¥ {{item.price/100}}</label> -->
-      <label style='margin-left:10rpx' class=' zan-c-gray-dark zan-font-12'>提供{{item.num}}份 {{item.sale_volume}}人申请</label>
+      <label style='margin-left:10rpx' class=' zan-c-gray-dark zan-font-12'>提供{{item.actgStock}}份 {{item.sale_volume}}人申请</label>
       <view class='zhuang_btn zhuang_btn_select' style='float:right;margin-right:20rpx'  bindtap='buyAction' id='{{item.good_id}}' data-good='{{item}}'>申请</view>
     </view>
     </view>

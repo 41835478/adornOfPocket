@@ -69,7 +69,7 @@ Page(Object.assign({}, Zan, netWork, {
     let count = data.count
     let goodId = data.good_id
     wx.navigateTo({
-      url: '/pages/pay/pay?id=' + id + '&quantity=' + count + '&goodId=' + goodId,
+      url: '/pages/pay/pay?orderId=' + id + '&quantity=' + count + '&goodId=' + goodId + '&orderType=' + data.order_type,
     })
   },
   /**

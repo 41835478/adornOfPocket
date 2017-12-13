@@ -10,7 +10,6 @@ Page(Object.assign({}, netWork, {
     imgUrl: getApp().globalData.baseImgUrl,
     url: 'mall/wx/activity/groupList',
     lastPage: false,
-
   },
 
   /**
@@ -46,11 +45,10 @@ Page(Object.assign({}, netWork, {
    */
   buyAction(e) {
     let goodId = e.currentTarget.id
-    let goodItem = e.currentTarget.dataset.gooditem
+    // let goodItem = e.currentTarget.dataset.gooditem
     console.log(e)
-    let activity = true
     wx.navigateTo({
-      url: '/pages/good/good?goodId=' + goodId +'&activity=' + activity +'&stock='+goodItem.actgStock,
+      url: '/pages/good/good?goodId=' + goodId +'&activity=SPELL_GROUP_ORDER',
     })
   },
   /**

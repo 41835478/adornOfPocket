@@ -12,26 +12,15 @@ Page(Object.assign({}, quantity, wxParse, netWork, {
     goodSuggest: [],
     id: '', //商品ID
     imageUrl: getApp().globalData.baseImgUrl,
-    url: 'mall/wx/good/findByGoodId',
+    goodUrl: 'mall/wx/good/findByGoodId',
     suggestUrl: 'mall/wx/good/findEstimate',
     showDialog: false,//dialog开关
     quantity: 1,//件数
-    specs: [{
-      id: 0,
-      name: "100",
-      showSelect: false
-    }, {
-      id: 1,
-      name: "200",
-      showSelect: false
-    }, {
-      id: 2,
-      name: "300",
-      showSelect: false
-    },],
     selectId: 0,
-    activity:false,    //是否活动商品
-    activityStock:0 //活动商品库存
+    activity: false,    //是否活动商品
+    activityStyle: '', //活动类型
+    btnTitle:'', //按钮标题
+    btnBindTap:true
   },
   /**
    *跳转付款页面 
@@ -44,7 +33,7 @@ Page(Object.assign({}, quantity, wxParse, netWork, {
     })
     var quantityCount = e.currentTarget.dataset.count
     wx.navigateTo({
-      url: '/pages/pay/pay?goodId=' + goodId + '&quantity=' + quantityCount +'&activity=' + this.data.activity,
+      url: '/pages/pay/pay?goodId=' + goodId + '&quantity=' + quantityCount + '&activity=' + this.data.activityStyle,
     })
   },
   /**
@@ -64,18 +53,6 @@ Page(Object.assign({}, quantity, wxParse, netWork, {
       showDialog: !this.data.showDialog
     })
   },
-  chickAction(e) {
-    console.log(e)
-    for (var i = 0; i < this.data.specs.length; i++) {
-      if (e.currentTarget.id == this.data.specs[i].id) {
-        this.data.specs[i].showSelect = true
-      } else {
-        this.data.specs[i].showSelect = false
-      }
-    }
-    this.setData(this.data)
-    console.log(this.data.specs)
-  },
   /**
    * 打开选择数量页面
    */
@@ -86,34 +63,65 @@ Page(Object.assign({}, quantity, wxParse, netWork, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    //商品id
     this.setData({
       id: options.goodId,
-      activityStock:options.stock
     })
+
     //商品评价
     // this.getGoodSuggest(options.goodId)
 
-    if(options.activity){
+    //活动商品
+    if (options.activity) {
       this.setData({
-        activity:true
+        activity: true,
+        activityStyle: options.activity
       })
     }
-
-
+    //商品详情
+    this.getGoodDetail(options)
+  },
+  /**
+   * 获取商品详情
+   */
+  getGoodDetail(options) {
+    let that = this
     var params = {}
     params.goodId = options.goodId
     netWork.GET({
-      url: this.data.url,
+      url: that.data.goodUrl,
       params: params,
       success: res => {
         console.log(res.data)
         if (res.data.data) {
-          this.setData({
+          var goodItem = res.data.data
+          var btn_title = ''
+          var btn_canBindtap = true
+          if (that.data.activity){
+            if (goodItem.activity_stock>0){
+              if (that.data.activityStyle == 'free'){
+                btn_title = '立即试用'
+              }else{
+                btn_title = '立即下单'
+              }
+            }else{
+              btn_title = '货源不足'
+              btn_canBindtap = false
+            }
+          }else{
+            if(goodItem.stock>0){
+              btn_title = '立即下单'
+            }else{
+              btn_title = '货源不足'
+              btn_canBindtap = false
+            }
+          }
+          that.setData({
             goodInfo: res.data.data,
+            btnTitle: btn_title,
+            btnBindTap:btn_canBindtap
           })
           var article = res.data.data.rich_content
-          var that = this
           wxParse.wxParse('article', 'html', article, that, 0)
         } else {
           //商品已下架
@@ -131,25 +139,33 @@ Page(Object.assign({}, quantity, wxParse, netWork, {
         }
       },
       fail: err => {
-
+        console.log(err)
       }
     })
   },
+
   /**
    * 获取商品评价
    */
   getGoodSuggest(goodId) {
-    // let that = this
-    // let url = getApp().globalData.baseUrl + that.data.suggestUrl + '?goodId=' + goodId + '&pageNo=1&pageSize=5'
-    // wx.request({
-    //   url: url,
-    //   success: res => {
-    //     that.setData({
-    //       goodSuggest: res.data.data
-    //     })
-    //     console.log("backdata="+ JSON.stringify(res.data.data))
-    //   }
-    // })
+    let that = this
+    let param = {}
+    param.goodId = goodId
+    param.pageNo = 1
+    param.pageSize = 5
+    netWork.GET({
+      url:that.data.suggestUrl,
+      params:param,
+      success:res=>{
+        console.log(res)
+        that.setData({
+          goodSuggest: res.data.data
+        })
+      },
+      fail:err=>{
+        console.log(err)
+      }
+    })
   },
 
   /**

@@ -7,7 +7,7 @@
       </view>
       <view class='zan-cell__ft'></view>
     </view>
-    <view class='info_delivery_pay zan-cell--access' hidden="{{!deliveryFlag}}" bindtap='skipToPage' data-url='/pages/delivery/delivery?flag=1'>
+    <view class='info_delivery_pay zan-cell--access' hidden="{{!deliveryFlag}}" bindtap="{{againPay?'':'skipToPage'}}" data-url='/pages/delivery/delivery?flag=1'>
       <image class='location_img' src='../../images/location.png'></image>
       <view class='person'>收货人: {{addressInfo.recipients}}
         <view class='phone'>{{addressInfo.phone}}</view>
@@ -37,7 +37,6 @@
         <view class="zan-card__detail-row zan-c-gray-darker">
           <view class="zan-card__right-col">x{{quantity}}</view>
           <view class="zan-card__left-col">
-            <!-- 3000克 50% -->
           </view>
         </view>
       </view>
@@ -45,7 +44,7 @@
     <view class='zan-cell'>
       <view class='zan-cell__bd'>配送方式</view>
       <view class='zan-cell__ft'>
-        <view style='margin-bottom:10rpx;'>免运费</view>
+        <view style='margin-bottom:10rpx;'>{{goodType=='FREE_ORDER'?'¥ '+goodInfo.freight_fee:'免运费'}}</view>
         <view style='font-size:24rpx'>快递发货</view>
       </view>
     </view>
@@ -59,20 +58,20 @@
       <view class='zan-cell__ft price_color'>¥{{totalPrice/100}}</view>
     </view>
   </view>
-  <view class='zan-panel token_pay'>
+  <view class='zan-panel token_pay' wx:if="{{goodType==''}}">
     <view class='zan-cell zan-cell--access' bindtap='toggleDialog'>
       <view class='zan-cell__bd'>优惠</view>
-      <view class='zan-cell__ft' style='font-size:26rpx;color:red'>{{selectTicketId?ticketName:"使用优惠"}}</view>
+      <view class='zan-cell__ft' style='font-size:26rpx;color:red'>{{selectTicketId?ticketName:"使用优惠劵"}}</view>
     </view>
   </view>
-  <view class='zan-panel message_pay'>
+  <!-- <view class='zan-panel message_pay'>
     <view class='zan-cell'>
       <view class='zan-cell__bd'>短信通知收件人</view>
       <view class='zan-cell__ft'>
         <switch checked='{{customerOpt.isMessage}}' bindchange='isSendMessage' />
       </view>
     </view>
-  </view>
+  </view> -->
   <view class='zan-panel price_info_pay'>
     <view class='zan-cell cost_info'>
       <view class='zan-cell__bd'>商品金额</view>
@@ -80,8 +79,8 @@
         ¥ {{totalPrice/100}}
       </view>
     </view>
-    <view class='zan-cell cost_info'>
-      <view class='zan-cell__bd'>优惠券</view>
+    <view class='zan-cell cost_info' wx:if="{{goodType==''}}">
+      <view class='zan-cell__bd' >优惠券</view>
       <view class='zan-cell__ft'>
         - ¥ {{selectTicketPrice/100}}
       </view>
@@ -95,7 +94,7 @@
     <view class='zan-cell'>
       <view class='zan-cell__bd'>运费</view>
       <view class='zan-cell__ft'>
-        免运费
+        {{goodType=='FREE_ORDER'?'¥ '+goodInfo.freight_fee:'免运费'}}
       </view>
     </view>
   </view>
@@ -109,7 +108,7 @@
       暂无可用优惠券
     </view> -->
     <scroll-view scroll-y="true" class='ticket_scroll'>
-      <view class='ticket_item' wx:for='{{ticketInfo}}' wx:key='item' bindtap='selectAction' id='{{item.id}}'>
+      <view class='ticket_item' wx:for='{{ticketInfo}}' wx:key='item' bindtap='selectAction' id='{{item.id}}' data-ticket='{{item}}'>
     <view class='ticket_content'>
       <view class='ticket_content_left'>
         <view class='ticket_label_white' style='font-size:30rpx;width:40rpx;margin-left:10rpx;margin-top:20rpx;height:60rpx;'>全品类</view>
