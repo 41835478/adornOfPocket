@@ -1,16 +1,17 @@
 <import src="../../../component/zanui-weapp/dist/form/check_label.wxml" />
 <view class='adive_body'>
-  <view class="zan-panel" style='background:white'>
-    <label style='font-size:12px;margin-left:30rpx;'>请勾选以下建议</label>
-  </view>
-  <view class="zan-panel">
-    <template is="zan-check-label" data="{{items, checkedValue}}" />
-  </view>
-  <textarea placeholder='请留下您宝贵的建议...' class='zan-label advice_label' bindinput='inputDataAction'>
+    <view style='font-size:30rpx;margin-left:30rpx;margin-top:30rpx'>反馈的类型</view>
+    <view style='text-align:center;'>
+      <view class="advice_item {{item.selected?'advice_item_titleColor':''}}" wx:for="{{items}}" wx:key='item' bindtap='handleCheckLabelSelect' data-data='{{item}}'>
+        <view style='float:left;margin-top:20rpx;margin-left:90rpx;font-size:30rpx;width:120rpx'>{{item.name}}</view>
+      </view>
+    </view>
+</view>
+<view style='margin-top:20rpx;padding:20rpx;border-top: 1rpx solid lightgray'>
+  <view style='margin-left:10rpx;font-size:30rpx;margin-top:10rpx'>填写您的意见</view>
+  <textarea class='zan-label advice_label' bindinput='inputDataAction' auto-focus='true' maxlength='150'>
   </textarea>
-  <!-- <input placeholder='请留下您宝贵的建议...' class='zan-label advice_label' bindinput='inputDataAction'></input> -->
-  <view class='zan-panel'>
-    <button type="primary" class='advice_button' bindtap='btnAction'> 提交建议</button>
 
-  </view>
+    <button  class='advice_button' bindtap='btnAction' > 提交建议 </button>
+
 </view>

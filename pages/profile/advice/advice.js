@@ -10,22 +10,22 @@ Page(Object.assign({}, Zan.CheckLabel, netWork, {
     url: 'mall/wx/member/suggest',
     items: [
       {
-        padding: 0,
+        selected: true,
         value: '0',
-        name: '给小程序界面优化的建议',
+        name: '界面优化',
       },
       {
-        padding: 0,
+        selected: false,
         value: '1',
-        name: '给购物体验的建议',
+        name: '购物体验',
       },
       {
-        padding: 0,
+        selected: false,
         value: '2',
-        name: '给售后服务的建议',
+        name: '售后服务',
       },
       {
-        padding: 0,
+        selected: false,
         value: '3',
         name: '其他建议',
       },
@@ -34,12 +34,24 @@ Page(Object.assign({}, Zan.CheckLabel, netWork, {
     inputValue: '0',
   },
   /**
-   * template回调
+   * 点击回调
    */
-  handleZanCheckLabelSelect(e) {
+  handleCheckLabelSelect(e) {
+    console.log(e.currentTarget.dataset.data)
+    let data = e.currentTarget.dataset.data
+    let index = data.value
+    let arr = this.data.items
+    for (let i = 0; i < arr.length; i++) {
+      if (i == index) {
+        arr[i].selected = true
+      } else {
+        arr[i].selected = false
+      }
+    }
     this.setData({
-      checkedValue: e.value
-    });
+      checkedValue:data.value,
+      items: arr
+    })
   },
   /**
    * 页面数据保存
@@ -55,6 +67,9 @@ Page(Object.assign({}, Zan.CheckLabel, netWork, {
    */
   btnAction() {
     let that = this
+    wx.showLoading({
+      title: '加载中',
+    })
     wx.login({
       success: res => {
         var params = {}
@@ -65,6 +80,7 @@ Page(Object.assign({}, Zan.CheckLabel, netWork, {
           url: that.data.url,
           params: params,
           success: res => {
+            wx.hideLoading()
             console.log(res)
             wx.showModal({
               title: '提示',
@@ -76,6 +92,10 @@ Page(Object.assign({}, Zan.CheckLabel, netWork, {
                 }
               }
             })
+          },
+          fail:err=>{
+            console.log(err)
+            wx.hideLoading()
           }
         })
       }

@@ -30,7 +30,7 @@ Page(Object.assign({}, netWork, {
     btnTitle: "提交订单",
     showTokenDialog: false,//token优惠券Dialog开关
     deliveryFlag: false,
-
+    orderId:'', //订单id
     againPay: false,    //是否订单页过来
     activity: false,      //商品页传入,是否活动商品
     goodType: '',     //活动类型
@@ -112,6 +112,7 @@ Page(Object.assign({}, netWork, {
   gotoPay() {
 
     console.log(this.data.goodInfo)
+
     //测试 防止购买商品
 
     // wx.showModal({
@@ -267,15 +268,19 @@ Page(Object.assign({}, netWork, {
    */
   againToPay() {
 
+    let url = ''
+    if (this.data.goodType =='FREE_ORDER'){
+      url = 'mall/wx/free/pay'
+  }else{
+      url = 'mall/wx/jsapi/order/pay'
+  }
     wx.showLoading({
       title: '加载中',
     })
     let params = {}
     params.orderId = this.data.orderId
-    console.log('重新申请!')
-    //'mall/wx/jsapi/order/pay'
     netWork.GET({
-      url: 'mall/wx/free/pay',
+      url: url,
       params: params,
       wxCode: true,
       success: res => {
@@ -351,7 +356,8 @@ Page(Object.assign({}, netWork, {
       that.setData({
         btnTitle: "去支付",
         againPay: true,
-        goodType: options.activityType
+        goodType: options.activityType,
+        orderId:options.orderId
       })
       //获取商品快照信息
       this.getGoodSnapshotData(options.orderId, quantity)
