@@ -51,11 +51,11 @@ Page(Object.assign({}, Zan, netWork, {
    * 再次购买
    */
   goodsBuyAction(e) {
-    var data = {}
-    data = e.currentTarget.id;
-    console.log("data====" + data.id)
+    let data = e.currentTarget.dataset.data
+    let goodId = e.currentTarget.id;
+    console.log(data)
     wx.navigateTo({
-      url: '/pages/good/good?goodId=' + data,
+      url: '/pages/good/good?goodId=' + goodId + '&activity=' + data.order_type,
     })
   },
   /**

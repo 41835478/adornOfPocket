@@ -99,7 +99,7 @@ Page(Object.assign({}, quantity, wxParse, netWork, {
           var btn_canBindtap = true
           if (that.data.activity){
             if (goodItem.activity_stock>0){
-              if (that.data.activityStyle == 'free'){
+              if (that.data.activityStyle == 'FREE_ORDER'){
                 btn_title = '立即试用'
               }else{
                 btn_title = '立即下单'
