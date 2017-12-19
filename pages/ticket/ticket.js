@@ -12,8 +12,9 @@ Page(Object.assign({}, netWrok, {
     mySelect: true,
     allSelect: false,
     btnTitle: '去使用',
-    windowH:'',
-
+    windowH: '',
+    haveMoreData: true,
+    pageNo: 0,
   },
   /**
    * 初始化
@@ -28,9 +29,9 @@ Page(Object.assign({}, netWrok, {
     let that = this
     this.myTicketAction()
     wx.getSystemInfo({
-      success: function(res) {
+      success: function (res) {
         that.setData({
-          windowH:res.windowHeight
+          windowH: res.windowHeight
         })
       },
     })
@@ -39,21 +40,34 @@ Page(Object.assign({}, netWrok, {
   /**
    * 我的优惠券
    */
-  myTicketAction() {
+  myTicketAction(pull) {
 
     this.setData({
       mySelect: true,
       allSelect: false,
       btnTitle: '去使用',
     })
-
+    let that = this
+    let params = {}
+    if (pull == 'pull') {
+      if (that.data.haveMoreData) {
+        params.pageNo = that.data.pageNo + 1
+      } else {
+        wx.showModal({
+          title: '提示',
+          content: '没有更多了',
+          showCancel: false
+        })
+        return
+      }
+    } else {
+      params.pageNo = 1
+    }
+    params.pageSize = 10
     wx.showLoading({
       title: '加载中',
     })
-    let that = this
-    let params = {}
-    params.pageNo = 1
-    params.pageSize = 10
+
     netWrok.GET({
       url: 'mall/wx/ticket/findByUserId',
       params: params,
@@ -63,9 +77,22 @@ Page(Object.assign({}, netWrok, {
         console.log(res)
         var arr = res.data.list
         arr = that.subString(arr)
-        that.setData({
-          ticketList: arr
-        })
+        let newArr = that.data.ticketList.concat(arr)
+        if (pull != "pull") {
+          newArr = arr
+        }
+        if (arr.length > 0) {
+          that.setData({
+            pageNo: res.data.pageNum,
+            haveMoreData: true,
+            ticketList: newArr,
+          })
+        } else {
+          console.log("no more data!")
+          that.setData({
+            haveMoreData: false,
+          })
+        }
       },
       fail: err => {
         wx.hideLoading()
@@ -74,37 +101,48 @@ Page(Object.assign({}, netWrok, {
     })
   },
 
-/**
- * 字符串截取
- */
- subString(arr){
-   for (let i = 0; i < arr.length; i++) {
-     var startDate = arr[i].start_date
-     arr[i].start_date = startDate.substring(0, 10)
-     var endDate = arr[i].end_date
-     arr[i].end_date = endDate.substring(0, 10)
-   }
-   return arr
-},
+  /**
+   * 字符串截取
+   */
+  subString(arr) {
+    for (let i = 0; i < arr.length; i++) {
+      var startDate = arr[i].start_date
+      arr[i].start_date = startDate.substring(0, 10)
+      var endDate = arr[i].end_date
+      arr[i].end_date = endDate.substring(0, 10)
+    }
+    return arr
+  },
 
   /**
    * 获取全部优惠券信息
    */
-  getDataFromNet() {
-
+  getDataFromNet(pull) {
     this.setData({
       mySelect: false,
       allSelect: true,
       btnTitle: '立即领取',
     })
-
+    let that = this
+    let params = {}
+    if (pull == 'pull') {
+      if (that.data.haveMoreData) {
+        params.pageNo = that.data.pageNo + 1
+      }else{
+        wx.showModal({
+          title: '提示',
+          content: '没有更多了',
+          showCancel: false
+        })
+        return
+      }
+    }else{
+      params.pageNo = 1
+    }
+    params.pageSize = 10
     wx.showLoading({
       title: '加载中',
     })
-    let that = this
-    let params = {}
-    params.pageSize = 10
-    params.pageNo = 1
     netWrok.GET({
       url: 'mall/wx/ticket/findAll',
       params: params,
@@ -113,9 +151,22 @@ Page(Object.assign({}, netWrok, {
         console.log(res.data)
         var arr = res.data.list
         arr = that.subString(arr)
-        that.setData({
-          ticketList: arr
-        })
+        let newArr = that.data.ticketList.concat(arr)
+        if(pull != "pull"){
+          newArr = arr
+        }
+        if (arr.length > 0) {
+          that.setData({
+            pageNo: res.data.pageNum,
+            haveMoreData: true,
+            ticketList: newArr,
+          })
+        } else {
+          console.log("no more data!")
+          that.setData({
+            haveMoreData: false,
+          })
+        }
       },
       fail: err => {
         wx.hideLoading()
@@ -157,9 +208,17 @@ Page(Object.assign({}, netWrok, {
       })
     }
   },
-
-  refreshDataAction(event){
+  /**
+   * 上拉刷新
+   */
+  refreshDataAction(event) {
     console.log("pullup")
+    if (this.data.mySelect) {
+      this.myTicketAction("pull")
+    } else {
+      this.getDataFromNet("pull")
+    }
+
   },
 
   /**

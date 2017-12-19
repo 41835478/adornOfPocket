@@ -7,8 +7,7 @@
 
 .hepl_content_a {
         background-color: white;
-        height: 160rpx;
-        padding-left: 40rpx;
+        padding: 20rpx 20rpx;
 }
 
 .hepl_tips_a {
