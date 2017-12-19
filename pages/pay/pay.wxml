@@ -1,6 +1,6 @@
 <view class='pay_content'>
   <view class='zan-panel delivery_pay '>
-    <view class='add_delivery_pay zan-cell--access'  hidden="{{deliveryFlag}}" bindtap='skipToPage' data-url='/pages/delivery/delivery?flag=1'>
+    <view class='add_delivery_pay zan-cell--access' hidden="{{deliveryFlag}}" bindtap='skipToPage' data-url='/pages/delivery/delivery?flag=1'>
       <view class='zan-cell__body'>
         <image class='add_pay_img' src='../../images/add_pay.png'></image>
         <span class='add_tit'>新增收获地址</span>
@@ -20,10 +20,10 @@
   </view>
   <view class='zan-panel good_pay'>
     <view class='good_source'>
-      <view class='zan-icon zan-icon-store good_source_icon'></view>
-      <span>妆口袋</span>
+      <image style='width:40rpx;height:40rpx;float:left' mode='aspectFit' src='../../images/shop.png'></image>
+      <view style='width:100rpx;height:40rpx;margin-top:2rpx;float:left;margin-left:10rpx'>妆口袋</view>
     </view>
-    <view class="zan-card">
+    <view class="zan-card" style='float:left;margin-top:20rpx'>
       <view class="zan-card__thumb">
         <image class="zan-card__img" src="{{goodImageUrl}}" mode="aspectFit"></image>
       </view>
@@ -54,8 +54,8 @@
       </view>
     </view>
     <view class='zan-cell'>
-      <view class='zan-cell__bd'>合计</view>
-      <view class='zan-cell__ft price_color'>¥{{totalPrice/100}}</view>
+      <view class='zan-cell__bd'>小计</view>
+      <view class='zan-cell__ft price_color'>共件{{quantity}}商品 ¥{{totalPrice/100}}</view>
     </view>
   </view>
   <view class='zan-panel token_pay' wx:if="{{goodType==''}}">
@@ -80,7 +80,7 @@
       </view>
     </view>
     <view class='zan-cell cost_info' wx:if="{{goodType==''}}">
-      <view class='zan-cell__bd' >优惠券</view>
+      <view class='zan-cell__bd'>优惠券</view>
       <view class='zan-cell__ft'>
         - ¥ {{selectTicketPrice/100}}
       </view>
@@ -109,52 +109,28 @@
     </view> -->
     <scroll-view scroll-y="true" class='ticket_scroll'>
       <view class='ticket_item' wx:for='{{ticketInfo}}' wx:key='item' bindtap='selectAction' id='{{item.id}}' data-ticket='{{item}}'>
-    <view class='ticket_content'>
-      <view class='ticket_content_left'>
-        <view class='ticket_label_white' style='font-size:30rpx;width:40rpx;margin-left:10rpx;margin-top:20rpx;height:60rpx;'>全品类</view>
-      </view>
-      <view class='ticket_content_middle'>
-        <label style='float:left;font-size:30rpx;color:#3d3f41'>{{item.ticket_name}}</label>
-
-        <view style='width:460rpx;float:left;color:#9a5afa;font-size:26rpx;'>
-
-          <label style='float:left;margin-top:24rpx'>¥ </label>
-          <label style='float:left;margin-top:10rpx;font-size:40rpx'> {{item.reduce_money/100}}</label>
-          <label style='margin-top:24rpx;float:left;margin-left:20rpx;text-align:left'>订单满 {{item.money/100}} 可用</label>
-        </view>
-        <label style='float:left;font-size:24rpx;margin-top:20rpx;color:grey'>
-          有效期: {{item.start_date}} 至 {{item.end_date}}
-        </label>
-      </view>
-      <view class='ticket_label_white ticket_content_right'>使用</view>
-    </view>
-  </view>
-
-      <!-- <view class='ticket_item' wx:for='{{ticketInfo}}' wx:key='item' bindtap='selectAction' id='{{item.id}}' data-ticket='{{item}}'>
-        <view class='token_content'>
-          <view class='content_lf'>
-            ¥
-            <span class='money'>{{item.reduce_money/100}}</span>
+        <view class='ticket_content'>
+          <view class='ticket_content_left'>
+            <view class='ticket_label_white' style='font-size:30rpx;width:40rpx;margin-left:10rpx;margin-top:20rpx;height:60rpx;'>全品类</view>
           </view>
-          <view class='content_rg'>
-            <view class='least_money'>{{item.content}}</view>
-            <view class='use_range'>{{item.ticket_name}}</view>
+          <view class='ticket_content_middle'>
+            <label style='float:left;font-size:30rpx;color:#3d3f41'>{{item.ticket_name}}</label>
+
+            <view style='width:460rpx;float:left;color:#9a5afa;font-size:26rpx;'>
+
+              <label style='float:left;margin-top:24rpx'>¥ </label>
+              <label style='float:left;margin-top:10rpx;font-size:40rpx'> {{item.reduce_money/100}}</label>
+              <label style='margin-top:24rpx;float:left;margin-left:20rpx;text-align:left'>订单满 {{item.money/100}} 可用</label>
+            </view>
+            <label style='float:left;font-size:24rpx;margin-top:20rpx;color:grey'>
+              有效期: {{item.start_date}} 至 {{item.end_date}}
+            </label>
           </view>
+          <view class='ticket_label_white ticket_content_right'>使用</view>
         </view>
-        <view class='token_footer'>
-          <span class='footer_lf'>
-            <label wx:if='{{item.type==1}}'>全平台</label>
-          </span>
-          <span class='footer_rg'>
-            有效期:{{item.start_date}} 至 {{item.end_date}}
-          </span>
-        </view>
-      </view> -->
+      </view>
     </scroll-view>
-    <!-- <view class='token_btn'>
-      <view>取消</view>
-      <view class='token_btn_lf' bindtap='selectAction'>确认</view>
-    </view> -->
+
   </view>
 </view>
 
@@ -162,5 +138,5 @@
   <view class='pay_footer_lf'>合计:
     <span class='price_color'>¥ {{(totalPrice-userPoint-selectTicketPrice)/100}}</span>
   </view>
-  <button style='background:#9a5afa;color:white'  class='zan-btn zan-btn--large pay_footer_rg' bindtap='gotoPay'>{{btnTitle}}</button>
+  <button style='background:#9a5afa;color:white' class='zan-btn zan-btn--large pay_footer_rg' bindtap='gotoPay'>{{btnTitle}}</button>
 </view>

@@ -4,36 +4,36 @@
      <image style='width: 180rpx;height: 180rpx;border-radius: 50%;margin-top: 20rpx;margin-left: 30rpx;float: left;' src="{{userInfo.avatarUrl}}"></image>
     <view style='width: 50%;color: #fff;margin-left:300rpx;line-height: 80rpx'>
       <view style='padding-top:20rpx'> {{userInfo.nickName}}</view>
-      <view>{{pointInfo.level_name}}</view>
+      <!-- <view>{{pointInfo.level_name}}</view> -->
       <view style='font-size:14px' data-url='/pages/profile/point/point'  bindtap='pageSkip'>积分 : {{pointInfo.point}}</view>
     </view>
   </view>
   <view class="zan-panel">
     <view class="zan-cell zan-cell--access" bindtap='pageSkip' data-url="/pages/delivery/delivery">
-      <view class="zan-cell__bd">收货地址</view>
+    <image style='width:40rpx;height:40rpx' src='../../images/good_address.png' mode='aspectFit'></image>
+      <view class="zan-cell__bd" style='margin-left:20rpx'>收货地址</view>
       <view class="zan-cell__ft"></view>
     </view>
   </view>
   <view class="zan-panel">
     <view class="zan-cell zan-cell--access" bindtap='pageSkip' data-url='/pages/ticket/ticket'>
-      <view class="zan-cell__bd">优惠券</view>
+    <image style='width:40rpx;height:40rpx' src='../../images/ticket.png' mode='aspectFit'></image>
+      <view class="zan-cell__bd" style='margin-left:20rpx'>优惠券</view>
       <view class="zan-cell__ft"></view>
     </view>
   </view>
   <view class="zan-panel">
-    <!-- <view class="zan-cell zan-cell--access" >
-      <view class="zan-cell__bd">联系客服</view>
-      <view class="zan-cell__ft"></view>
-    </view> -->
     <view class="zan-cell zan-cell--access" bindtap="pageSkip" data-url='/pages/help/help'>
-      <view class="zan-cell__bd">帮助中心</view>
+     <image style='width:40rpx;height:40rpx' src='../../images/help.png' mode='aspectFit'></image>
+      <view class="zan-cell__bd" style='margin-left:20rpx'>帮助中心</view>
       <view class="zan-cell__ft"></view>
     </view>
 
   </view>
   <view class="zan-panel">
     <view class="zan-cell zan-cell--access" bindtap="showToast">
-      <view class="zan-cell__bd">意见反馈</view>
+     <image style='width:40rpx;height:40rpx' src='../../images/advice.png' mode='aspectFit'></image>
+      <view class="zan-cell__bd" style='margin-left:20rpx'>意见反馈</view>
       <view class="zan-cell__ft"></view>
     </view>
   </view>

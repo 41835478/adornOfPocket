@@ -31,6 +31,6 @@
         <input placeholder='邮政编码（选填）' bindinput='getData' data-name='code' value='{{addressList.post_code}}'>{{code}}</input>
       </view>
     </view>
-    <button type="primary" bindtap="primary" class='btn zan-btn--large' bindtap='submit'> 保存 </button>
+    <button  bindtap="primary" class='btn zan-btn--large' bindtap='submit' style='background:#9a5afa;color:white'> 保存 </button>
   </form>
 </view>
