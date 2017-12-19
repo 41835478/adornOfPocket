@@ -6,6 +6,7 @@ Page(Object.assign({}, netWork, {
    */
   data: {
     url: 'mall/wx/delivery/findByWxCode',
+    delUrl: 'mall/wx/delivery/delete',
     deliveryList: [],
     showList: [],
     showSelected: false,
@@ -89,7 +90,6 @@ Page(Object.assign({}, netWork, {
   skipPage(val) {
     let id = val.currentTarget.id
     if (id == 'add') {
-
       let arr = this.data.deliveryList
       if (arr.length >= 10) {
         wx.showModal({
@@ -156,7 +156,60 @@ Page(Object.assign({}, netWork, {
       }
     })
   },
-
+/**
+ * 删除地址
+ */
+  deleteAction(val){
+    let item = val.currentTarget.dataset.address
+    let that = this;
+    wx.showModal({
+      content: "确定要删除该地址吗?",
+      success: function (res) {
+        if (res.confirm) {
+          console.log("确定;" + item.id);
+          wx.showLoading({
+            title: '加载中',
+          })
+          wx.login({
+            success: res => {
+              let params = {}
+              params.id = item.id
+              params.wx_code = res.code
+              //request
+              netWork.POST({
+                url: that.data.delUrl,
+                params: params,
+                success: res => {
+                  console.log(res)
+                  wx.hideLoading()
+                  if (res.data.result == 1) {
+                    wx.showModal({
+                      title: '提示',
+                      content: '地址删除成功',
+                      showCancel: false,
+                      success: res => {
+                          that.getDataFromNet()
+                      }
+                    })
+                  } else {
+                    wx.showModal({
+                      title: '提示',
+                      content: '地址删除失败',
+                      showCancel: false,
+                    })
+                  }
+                },
+                fail: err => {
+                  console.log(err)
+                  wx.hideLoading()
+                }
+              })
+            }
+          })
+        }
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */

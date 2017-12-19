@@ -12,6 +12,8 @@ Page(Object.assign({}, netWrok, {
     mySelect: true,
     allSelect: false,
     btnTitle: '去使用',
+    windowH:'',
+
   },
   /**
    * 初始化
@@ -23,7 +25,16 @@ Page(Object.assign({}, netWrok, {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let that = this
     this.myTicketAction()
+    wx.getSystemInfo({
+      success: function(res) {
+        that.setData({
+          windowH:res.windowHeight
+        })
+      },
+    })
+    console.log(that.data.windowH)
   },
   /**
    * 我的优惠券
@@ -146,6 +157,11 @@ Page(Object.assign({}, netWrok, {
       })
     }
   },
+
+  refreshDataAction(event){
+    console.log("pullup")
+  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -180,7 +196,6 @@ Page(Object.assign({}, netWrok, {
   onPullDownRefresh: function () {
 
   },
-
   /**
    * 页面上拉触底事件的处理函数
    */

@@ -1,76 +1,85 @@
-.delivery_list_content{
+.delivery_list_content {
   width: 100%;
+  overflow-x: hidden;
+   padding-bottom: 100rpx;
 }
-/*列表项*/
-.list_item{
-  width:100%;
-  background-color: white;
-  position: relative;
-  padding: 15rpx 0;
-  border-bottom: 1px solid #f3f3f3;
 
+/*列表项*/
+
+.list_item {
+  width: 100%;
+  background-color: white;
+  padding: 20rpx 30rpx;
+  border-bottom: 1px solid #f3f3f3;
+  margin-bottom: 20rpx;
 }
-.list_item .left{
-  position: absolute;
-  width: 10%;
-  left: 0;
-  top:28%;
-}
-.dot{
-  width: 15px;
-  height: 15px;
-  border: 1px solid #999;
-  border-radius: 50%;
-  margin: 0 auto;
-  position: relative;
-}
-.dot_selected{
-  background: #3283fa;
-}
-.gou{
-  width: 15px;
-  height: 15px;
-  object-fit: cover;
-  position: absolute;
-  top:0;
-  
-}
-.list_item .mid{
-  width: 70%;
-  position: relative;
-  margin: 0 auto;
+
+.up {
   font-size: 28rpx;
+  height: 120rpx;
+  border-bottom: 1px solid #f3f3f3;
 }
-.info_person{
-  font-family: 700;
-  padding-bottom:20rpx
+
+.down {
+  font-size: 28rpx;
+  height: 40rpx;
+  background: white;
+  padding: 10rpx 0rpx;
 }
-.info_address{
-  font-weight: 300;
+
+.left {
+  float: left;
+  width: 40%;
+  height: 60rpx;
 }
-.list_item .right{
-  position: absolute;
-  width: 10%;
-  top:28%;
-  right: 0;
-}
-.right .img{
+
+.left_img {
+  margin-top: 10rpx;
+  float: left;
   width: 40rpx;
   height: 40rpx;
-  object-fit: cover;
 }
-.list_item:last-child{
-  margin-bottom: 68rpx;
+
+.left_label {
+  width: 160rpx;
+  float: left;
+  margin: 10rpx 20rpx;
 }
+
+.right {
+  float: right;
+  height: 60rpx;
+  width: 55%;
+}
+
+.right_item {
+  width: 45%;
+  float: right;
+  margin: 10rpx 0rpx;
+}
+
+.right_image {
+  margin-top: -2rpx;
+  float: left;
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.right_label {
+  float: left;
+  margin-left: 15rpx;
+}
+
 /*新增按钮*/
-.add_btn{
+
+.add_btn {
+  font-size: 34rpx;
   width: 100%;
   height: 100rpx;
-  background: #fff;
-  /* border-top:1px solid #999; */
   position: fixed;
   bottom: 0;
-  line-height:100rpx;
+  line-height: 100rpx;
   text-align: center;
   letter-spacing: 2rpx;
+  background: #9a5afa;
 }

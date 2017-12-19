@@ -7,8 +7,9 @@
       全部优惠
     </view>
   </view>
-
-  <view class='ticket_item' wx:for='{{ticketList}}' wx:key='item' bindtap='selectAction' id='{{item.id}}'>
+<view style='margin-bottom:10rpx;margin-top:10rpx'>
+<scroll-view scroll-y  bindscrolltolower = 'refreshDataAction' style='height:{{windowH-70}}px;' lower-threshold= '10'>
+ <view class='ticket_item' wx:for='{{ticketList}}' wx:key='item' bindtap='selectAction' id='{{item.id}}'>
     <view class='ticket_content'>
       <view class='ticket_content_left'>
         <view class='ticket_label_white' style='font-size:30rpx;width:40rpx;margin-left:10rpx;margin-top:20rpx;height:60rpx;'>全品类</view>
@@ -29,4 +30,6 @@
       <view class='ticket_label_white ticket_content_right'>{{btnTitle}}</view>
     </view>
   </view>
+</scroll-view>
+</view>
 </view>

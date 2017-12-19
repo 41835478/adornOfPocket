@@ -32,6 +32,5 @@
       </view>
     </view>
     <button type="primary" bindtap="primary" class='btn zan-btn--large' bindtap='submit'> 保存 </button>
-    <button type="default" bindtap="primary" class='btn zan-btn--large' bindtap='del' wx:if='{{delFlag}}'> 删除收获地址</button>
   </form>
 </view>
