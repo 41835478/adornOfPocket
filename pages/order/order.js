@@ -189,11 +189,7 @@ Page(Object.assign({}, Zan, netWork, {
           haveMoreData:false
         })
       } else {
-        wx.showModal({
-          title: '提示',
-          content: '没有更多了',
-          showCancel: false
-        })
+       console.log("no more data!")
         return
       }
     }

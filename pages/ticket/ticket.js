@@ -56,11 +56,7 @@ Page(Object.assign({}, netWrok, {
           haveMoreData:false
         })
       } else {
-        wx.showModal({
-          title: '提示',
-          content: '没有更多了',
-          showCancel: false
-        })
+        console.log("no more data!")
         return
       }
     } else {
@@ -132,11 +128,7 @@ Page(Object.assign({}, netWrok, {
       if (that.data.haveMoreData) {
         params.pageNo = that.data.pageNo + 1
       }else{
-        wx.showModal({
-          title: '提示',
-          content: '没有更多了',
-          showCancel: false
-        })
+        console.log("no more data!")
         return
       }
     }else{
