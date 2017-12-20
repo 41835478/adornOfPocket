@@ -3,7 +3,7 @@
   <view class='order_tab'>
     <template is="zan-tab" data="{{tab: tab, componentId: 'tab'}}"></template>
   </view>
-  <scroll-view scroll-y="true" style='width:100%;background:#f9f9f9f9'>
+  <scroll-view scroll-y style='height:{{windowH-50}}px;background:#f9f9f9f9' bindscrolltolower='getDataFromNet' lower-threshold= '1'>
     <view class="zan-panel" wx:for="{{goods}}" wx:key="item" style='background:white'>
       <view class='zan-card' style='margin-top:10rpx'>
         <view class='zan-card__detail-row zan-c-gray-darker'>

@@ -19,6 +19,9 @@ downLoadData(){
   let params = {}
   if (that.data.haveMoreData) {
     params.pageNo = that.data.pageNo + 1
+    that.setData({
+      haveMoreData:false
+    })
   } else {
     wx.showModal({
       title: '提示',

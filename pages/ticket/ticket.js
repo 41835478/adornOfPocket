@@ -52,6 +52,9 @@ Page(Object.assign({}, netWrok, {
     if (pull == 'pull') {
       if (that.data.haveMoreData) {
         params.pageNo = that.data.pageNo + 1
+        that.setData({
+          haveMoreData:false
+        })
       } else {
         wx.showModal({
           title: '提示',

@@ -28,11 +28,11 @@ Page(Object.assign({}, Zan, netWork, {
       }],
       selectedId: 'ALL',
     },
-    lastPage: false,
-    pageComplete: true,
-    pageNo: 1,
     goods: [],
     baseImgUrl: getApp().globalData.baseImgUrl,
+    windowH: '',
+    haveMoreData: true,
+    pageNo: 0,
   },
   /**
    * 点击导航切换数据
@@ -169,80 +169,126 @@ Page(Object.assign({}, Zan, netWork, {
   },
 
   /**
-   * 获取当前列订单信息 e:0 导航栏点击 1:上拉刷新
+   * 获取当前列订单信息 e:0 点击刷新
    */
   getDataFromNet(e, selectedId) {
-
     let that = this
-    wx.showLoading({
-      title: '加载中',
-    })
     let pageNo
     if (e == 0) {
-      that.setData({
-        pageNo: 1
-      })
+      //点击目录刷新
       pageNo = 1
-    } else
-      if (e == 1) {
+      this.setData({
+        pageNo: 1,
+        haveMoreData: true
+      })
+    } else {
+      //上拉刷新
+      if (this.data.haveMoreData) {
         pageNo = this.data.pageNo + 1
-        if (that.data.lastPage || !that.data.pageComplete) {
-          wx.hideLoading()
-          return;
-        }
-        // 防止过度频繁请求
-        this.setData({
-          pageComplete: false
+        that.setData({
+          haveMoreData:false
         })
+      } else {
+        wx.showModal({
+          title: '提示',
+          content: '没有更多了',
+          showCancel: false
+        })
+        return
       }
+    }
     //根据selectId设置请求orderStatus
     var status = ''
     console.log("code=" + selectedId + "  e= " + e)
-    status = selectedId
-    wx.setStorageSync('selectedId', selectedId)
+    if(selectedId){
+      status = selectedId
+      wx.setStorageSync('selectedId', selectedId)
+      that.downLoadData(pageNo,status,e)
+    }else{
+      wx.getStorage({
+        key: 'selectedId',
+        //重载
+        success: function (res) {
+          if (res) {
+            console.log("selectedId=" + res.data)
+            status = res.data
+            that.downLoadData(pageNo, status,e)
+          }
+        },
+        //初始化
+        fail: function (err) {
+            status = 'ALL'
+            that.downLoadData(pageNo, status,e)
+        },
+      })
+    }
+  },
+/**
+ * 下载数据
+ */
+downLoadData(pageNo,status,e){
+  let that = this
+  wx.showLoading({
+    title: '加载中',
+  })
+  var params = {}
+  params.pageNo = pageNo
+  params.pageSize = 2
+  params.orderStatus = status
+  netWork.GET({
+    url: that.data.url,
+    wxCode: true,
+    params: params,
+    success: res => {
+      console.log(res)
+      if (res.statusCode == 200) {
+        console.log(res.data.list)
+        if (e == 0) {
+          that.setData({
+            goods: res.data.list,
+            pageNo: res.data.pageNum
+          })
+          wx.hideLoading()
 
-    var params = {}
-    params.pageNo = pageNo
-    params.pageSize = 10
-    params.orderStatus = status
-    netWork.GET({
-      url: that.data.url,
-      wxCode: true,
-      params: params,
-      success: res => {
-        wx.hideLoading()
-        console.log(res)
-        if (res.statusCode == 200) {
-          if (e == 0) {
-            that.setData({
-              goods: res.data.list,
-              lastPage: res.data.lastPage,
-              pageComplete: true,
-              pageNo: pageNo
-            })
-          } else {
-            let arr = that.data.goods.concat(res.data.list);
-            console.log(res.data.list)
+        } else {
+          let arr = that.data.goods.concat(res.data.list)
+          if (res.data.list.length > 0) {
             that.setData({
               goods: arr,
-              lastPage: res.data.lastPage,
-              pageComplete: true,
-              pageNo: pageNo
+              haveMoreData: true,
+              pageNo: res.data.pageNum
             })
+            wx.hideLoading()
+
+          } else {
+            that.setData({
+              haveMoreData: false
+            })
+            wx.hideLoading()
+
           }
         }
-      },
-      fail: err => {
-        wx.hideLoading()
-        console.log(err)
       }
-    })
-  },
+    },
+    fail: err => {
+      wx.hideLoading()
+      console.log(err)
+    }
+  })
+},
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // this.getDataFromNet(0, 'all')
+    let that = this
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          windowH: res.windowHeight
+        })
+      },
+    })
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -299,18 +345,6 @@ Page(Object.assign({}, Zan, netWork, {
    */
   onReachBottom: function () {
 
-    let that = this
-    wx.getStorage({
-      key: 'selectedId',
-      success: function (res) {
-        if (res) {
-          that.getDataFromNet(1, res.data)
-        }
-      },
-      fail: function (err) {
-        that.getDataFromNet(1, "ALL")
-      }
-    })
   },
 
   /**
