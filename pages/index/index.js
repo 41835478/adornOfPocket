@@ -3,9 +3,8 @@
 const app = getApp()
 var Zan = require('../../component/zanui-weapp/dist/index');
 var ZanTab = require('../../component/zanui-weapp/dist/tab/index');
-var Hongbao = require('../../common/template/hongbao/hongbao');
 var netWork = require('../../common/requestTool/request.js');
-Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab, netWork, {
+Page(Object.assign({}, Zan.NoticeBar, ZanTab, netWork, {
   data: {
     categoryUrl: 'mall/wx/category/findHomePage',
     goodListUrl: 'mall/wx/good/findHomePage',
@@ -13,16 +12,16 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab, netWork, {
     goodList: [],
     baseUrl: getApp().globalData.baseImgUrl,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    pageNo: 1,
     tab: {
       list: [],
       selectedId: 0,
       style: 'index',
-      scroll:true,
+      scroll: true,
     },
     hasUserInfo: false,
-    lastPage: false,
-    animationData: {},
+    //分页
+    haveMoreData: true,
+    pageNo: 0
   },
 
   /**
@@ -70,8 +69,10 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab, netWork, {
    * 成功回调
    */
   dataSuccBack(res, style) {
-    console.log(res)
+
     if (style == 'categroy') {
+      console.log(style)
+      console.log(res)
       let list = res.data.list
       let receive = []
       for (let i = 0; i < list.length; i++) {
@@ -91,18 +92,36 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab, netWork, {
       })
     }
     if (style == 'goodList') {
+      console.log(style)
+      console.log(res)
+
       if (res.statusCode == 200) {
         this.setData({
-          goodList: res.data.list
+          goodList: res.data.list,
+          haveMoreData: true,
+          pageNo:1
         })
       }
     }
-  },
-  /**
-   * 上拉刷新
-   */
-  pullUp: function () {
-    //待定
+    if (style == 'pullUp') {
+      console.log(style)
+      console.log(res.data.list)
+      if (res.statusCode == 200) {
+        let arr = res.data.list
+        let newArr = this.data.goodList.concat(arr)
+        if (arr.length > 0) {
+          this.setData({
+            goodList: newArr,
+            pageNo: res.data.pageNum,
+            haveMoreData: true
+          })
+        } else {
+          this.setData({
+            haveMoreData: false
+          })
+        }
+      }
+    }
   },
   /**
    * 点击查看商品详情
@@ -124,20 +143,20 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab, netWork, {
     var params = {}
     params.searchKey = e.detail.value
     params.pageNo = 1
-    params.pageSize = 20
+    params.pageSize = 100
 
     netWork.GET({
       url: "mall/wx/good/findBySearchKey",
-      params:params,
-      success:res=>{
+      params: params,
+      success: res => {
         console.log(res)
-        if(res.data){
+        if (res.data) {
           that.setData({
             goodList: res.data.list
           })
         }
       },
-      fail:err=>{
+      fail: err => {
         console.log(err)
       }
     })
@@ -214,11 +233,23 @@ Page(Object.assign({}, Zan.NoticeBar, Hongbao, ZanTab, netWork, {
   },
   // 页面上拉触底事件的处理函数
   onReachBottom: function () {
-    // this.pullUp()
+
+    if (this.data.haveMoreData) {
+      this.setData({
+        haveMoreData: false
+      })
+      var params = {}
+      params.pageSize = 10
+      params.pageNo = this.data.pageNo + 1
+      params.categoryId = this.data.tab.selectedId
+      this.downLoadData(this.data.goodListUrl, params, 'pullUp')
+    } else {
+      console.log("no more data!")
+    }
   },
   // 下拉刷新事件
   onPullDownRefresh() {
-    // this.pullUp()
+
     wx.stopPullDownRefresh();
   },
   getUserInfo: function (e) {

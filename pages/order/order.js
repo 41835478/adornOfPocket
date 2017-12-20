@@ -233,7 +233,7 @@ downLoadData(pageNo,status,e){
   })
   var params = {}
   params.pageNo = pageNo
-  params.pageSize = 2
+  params.pageSize = 10
   params.orderStatus = status
   netWork.GET({
     url: that.data.url,
