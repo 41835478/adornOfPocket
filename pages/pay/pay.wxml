@@ -1,5 +1,5 @@
 <view class='pay_content'>
-  <view class='zan-panel delivery_pay '>
+  <view class='zan-panel delivery_pay' style='background:white'>
     <view class='add_delivery_pay zan-cell--access' hidden="{{deliveryFlag}}" bindtap='skipToPage' data-url='/pages/delivery/delivery?flag=1'>
       <view class='zan-cell__body'>
         <image class='add_pay_img' src='../../images/add_pay.png'></image>
@@ -41,23 +41,30 @@
         </view>
       </view>
     </view>
-    <view class='zan-cell'>
+  </view>
+  <!-- <view style='font-size:28rpx;padding:10rpx 30rpx;background:white;height:60rpx;margin-top:240rpx'>
+      <view style='float:left;width:40%'>配送方式</view>
+      <view style='float:right;width:40%;text-align:right'>快递发货</view>
+    </view> -->
+    <!-- <view style='font-size:28rpx;padding:10rpx 30rpx;background:white;height:60rpx;margin-top:20rpx'>
+      <view style='float:left;width:20%'>买家留言</view>
+      <view style='float:left;width:50%;'>
+        <input class='word_pay' placeholder='点击给商家留言' value='{{customerOpt.word}}' bindinput='getData' data-name='word' />
+      </view> -->
+    <!-- </view> -->
+       <view class='zan-cell'>
       <view class='zan-cell__bd'>配送方式</view>
-      <view class='zan-cell__ft'>
-        <view style='margin-bottom:10rpx;'>{{goodType=='FREE_ORDER'?'¥ '+goodInfo.freight_fee:'免运费'}}</view>
-        <view style='font-size:24rpx'>快递发货</view>
-      </view>
+      <view class='zan-cell__ft price_color'>快递运输</view>
     </view>
-    <view class='zan-cell'>
+     <view class='zan-cell'>
       <view class='zan-cell__bd'>买家留言：
         <input class='word_pay' placeholder='点击给商家留言' value='{{customerOpt.word}}' bindinput='getData' data-name='word' />
       </view>
-    </view>
+    </view> 
     <view class='zan-cell'>
       <view class='zan-cell__bd'>小计</view>
       <view class='zan-cell__ft price_color'>共件{{quantity}}商品 ¥{{totalPrice/100}}</view>
     </view>
-  </view>
   <view class='zan-panel token_pay' wx:if="{{goodType==''}}">
     <view class='zan-cell zan-cell--access' bindtap='toggleDialog'>
       <view class='zan-cell__bd'>优惠</view>
